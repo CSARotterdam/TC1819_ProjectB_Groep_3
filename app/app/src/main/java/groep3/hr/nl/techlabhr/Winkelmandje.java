@@ -13,12 +13,12 @@ import android.widget.TextView;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link Inventaris.OnFragmentInteractionListener} interface
+ * {@link Winkelmandje.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link Inventaris#newInstance} factory method to
+ * Use the {@link Winkelmandje#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Inventaris extends Fragment {
+public class Winkelmandje extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -30,7 +30,7 @@ public class Inventaris extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public Inventaris() {
+    public Winkelmandje() {
         // Required empty public constructor
     }
 
@@ -40,11 +40,11 @@ public class Inventaris extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment Inventaris.
+     * @return A new instance of fragment Winkelmandje.
      */
     // TODO: Rename and change types and number of parameters
-    public static Inventaris newInstance(String param1, String param2) {
-        Inventaris fragment = new Inventaris();
+    public static Winkelmandje newInstance(String param1, String param2) {
+        Winkelmandje fragment = new Winkelmandje();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -69,7 +69,7 @@ public class Inventaris extends Fragment {
 
         TextView text = (TextView) view.findViewById(R.id.textView);
 
-        text.setText("Inventaris Fragment");
+        text.setText("Winkelmandje Fragment");
 
         return view;
     }
