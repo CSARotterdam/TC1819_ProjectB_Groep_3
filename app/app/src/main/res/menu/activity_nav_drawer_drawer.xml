@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_inventaris"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Inventaris" />
+        <item
+            android:id="@+id/nav_winkelmandje"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Winkelmandje" />
+        <item
+            android:id="@+id/nav_leningen"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Mijn leningen" />
+        <item
+            android:id="@+id/nav_info"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Informatie" />
+    </group>
+
+    <item android:title="Beheerder">
+        <menu>
+            <item
+                android:id="@+id/nav_uitgeleend"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Uitgeleend" />
+            <item
+                android:id="@+id/nav_leerlingen"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Leerlingen" />
+
+            <item
+                android:id="@+id/nav_broken"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Beschadigingen" />
+
+            <item
+                android:id="@+id/nav_stock"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Voorraden" />
+
+            <item
+                android:id="@+id/nav_stats"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Statistieken" />
+
+        </menu>
+    </item>
+
+    <item android:title="Admin">
+        <menu>
+            <item
+                android:id="@+id/nav_add_beheerder"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Permissies" />
+
+            <item
+                android:id="@+id/nav_change_stock"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Inventaris aanpassen" />
+        </menu>
+    </item>
+
+</menu>
