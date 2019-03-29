@@ -37,6 +37,8 @@ public class NavDrawer extends AppCompatActivity {
         toggle.syncState();
 
         nvDrawer = (NavigationView) findViewById(R.id.nav_view);
+        configureDrawer(nvDrawer);
+
         nvDrawer.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -45,6 +47,20 @@ public class NavDrawer extends AppCompatActivity {
                         return true;
                     }
                 });
+    }
+
+    public void configureDrawer(NavigationView nv){
+        if (nv.getMenu().findItem(R.id.nav_beheerder) != null) {
+            if (getIntent().getStringExtra("password").equals("beheerder")) {
+                nv.getMenu().findItem(R.id.nav_beheerder).setVisible(true);
+            }
+        }
+        if (nv.getMenu().findItem(R.id.nav_admin)!= null){
+            if (getIntent().getStringExtra("password").equals("admin")) {
+                nv.getMenu().findItem(R.id.nav_beheerder).setVisible(true);
+                nv.getMenu().findItem(R.id.nav_admin).setVisible(true);
+            }
+        }
     }
     public void selectDrawerItem(MenuItem menuItem){
         Fragment fragment = null;
