@@ -118,15 +118,29 @@ public class NavDrawer extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (toggle.onOptionsItemSelected(item)){
+        if (toggle.onOptionsItemSelected(item)) {
             return true;
         }
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             //noinspection SimplifiableIfStatement
             case R.id.action_settings:
                 return true;
-        }
 
+            case R.id.action_winkelmandje:
+                Fragment fragment = null;
+                try {
+                    fragment = (Fragment) Winkelmandje.newInstance("", "");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                nvDrawer.getMenu().findItem(R.id.nav_winkelmandje).setChecked(true);
+                setTitle(nvDrawer.getMenu().findItem(R.id.nav_winkelmandje).getTitle());
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.fragment_container, fragment);
+                transaction.commit();
+        }
         return super.onOptionsItemSelected(item);
     }
     @Override
