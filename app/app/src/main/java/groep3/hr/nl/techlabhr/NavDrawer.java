@@ -50,17 +50,16 @@ public class NavDrawer extends AppCompatActivity {
     }
 
     public void configureDrawer(NavigationView nv){
-        if (nv.getMenu().findItem(R.id.nav_beheerder) != null) {
+
             if (getIntent().getStringExtra("password").equals("beheerder")) {
-                nv.getMenu().findItem(R.id.nav_beheerder).setVisible(true);
+                nv.getMenu().setGroupVisible(R.id.nav_beheerder, true);
             }
-        }
-        if (nv.getMenu().findItem(R.id.nav_admin)!= null){
+
             if (getIntent().getStringExtra("password").equals("admin")) {
-                nv.getMenu().findItem(R.id.nav_beheerder).setVisible(true);
-                nv.getMenu().findItem(R.id.nav_admin).setVisible(true);
+                nv.getMenu().setGroupVisible(R.id.nav_beheerder,true);
+                nv.getMenu().setGroupVisible(R.id.nav_admin,true);
             }
-        }
+
     }
     public void selectDrawerItem(MenuItem menuItem){
         Fragment fragment = null;
@@ -73,10 +72,10 @@ public class NavDrawer extends AppCompatActivity {
                 fragmentClass = Winkelmandje.class;
                 break;
             case R.id.nav_leningen:
-                fragmentClass = Inventaris.class;
+                fragmentClass = Mijn_leningen.class;
                 break;
             default:
-                fragmentClass = Inventaris.class;
+                fragmentClass = Placeholder.class;
         }
 
         try {
