@@ -2,7 +2,7 @@ package groep3.hr.nl.techlabhr;
 
 public class Contacts {
 
-    String name, username, email, password;
+    String name="", username="", email="", password = "", permission = "";
 
     public void setName(String name)
     {
@@ -36,4 +36,6 @@ public class Contacts {
     {
         return  this.password;
     }
+    public void setPermission(String permission){ this.permission = permission;}
+    public String getPermission(){ return this.permission;}
 }

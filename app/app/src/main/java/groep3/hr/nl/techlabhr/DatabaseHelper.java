@@ -16,9 +16,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_USERNAME = "username";
     private static final String COLUMN_EMAIL = "email";
     private static final String COLUMN_PASSWORD = "password";
+    private static final String COLUMN_PERMISSION = "permission";
     SQLiteDatabase db;
     private static final String TABLE_CREATE = ("CREATE TABLE users (ID INTEGER PRIMARY KEY NOT NULL,"+
-            "name TEXT NOT NULL, username TEXT NOT NULL, email TEXT NOT NULL, password TEXT NOT NULL)");
+            "name TEXT NOT NULL, username TEXT NOT NULL, email TEXT NOT NULL, password TEXT NOT NULL, permission TEXT NOT NULL)");
 
     public DatabaseHelper(Context context)
     {
@@ -45,14 +46,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_USERNAME, c.getUsername());
         values.put(COLUMN_EMAIL, c.getEmail());
         values.put(COLUMN_PASSWORD, c.getPassword());
-
+        values.put(COLUMN_PERMISSION, c.getPermission());
         db.insert(TABLE_NAME, null, values);
         db.close();
     }
-    public String searchPass(String username)
+
+
+
+    public String searchPass(String email)
     {
         db = this.getReadableDatabase();
-        String query = "select username, password from "+TABLE_NAME;
+        String query = "select email, password from "+TABLE_NAME;
         Cursor cursor = db.rawQuery(query, null);
         String a, b;
         b = "not found";
@@ -61,7 +65,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             do {
                 a = cursor.getString(0);
 
-                if (a.equals(username))
+                if (a.equals(email))
                 {
                     b = cursor.getString(1);
                     break;
@@ -71,9 +75,58 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return b;
     }
+
+    public String searchPerm(String email)
+        {
+            db = this.getReadableDatabase();
+            String query = "select email, permission from "+TABLE_NAME;
+            Cursor cursor = db.rawQuery(query, null);
+            String a, b;
+            b = "not found";
+            if(cursor.moveToFirst())
+            {
+                do {
+                    a = cursor.getString(0);
+
+                    if (a.equals(email))
+                    {
+                        b = cursor.getString(1);
+                        break;
+                    }
+                }
+                while(cursor.moveToNext());
+            }
+            return b;
+    }
+
+
+    public boolean emailExists(String email){
+        db = this.getReadableDatabase();
+        String query = "select email from "+TABLE_NAME;
+        Cursor cursor = db.rawQuery(query, null);
+        String a;
+        boolean b;
+        b = false;
+        if(cursor.moveToFirst())
+        {
+            do {
+                a = cursor.getString(0);
+
+                if (a.equals(email))
+                {
+                    b = true;
+                    break;
+                }
+            }
+            while(cursor.moveToNext());
+        }
+        return b;
+
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String query = "DROP TABLE IF EXISTS"+TABLE_NAME;
+        String query = "DROP TABLE IF EXISTS "+TABLE_NAME;
         db.execSQL(query);
         this.onCreate(db);
     }
