@@ -20,10 +20,13 @@
             android:id="@+id/nav_info"
             android:icon="@drawable/ic_menu_manage"
             android:title="Informatie" />
-    </group>
 
-    <item android:title="Beheerder">
-        <menu>
+        <group
+            android:id="@+id/nav_beheerder"
+            android:title="Beheerder"
+            android:visible="false"
+            android:checkableBehavior="single">
+
             <item
                 android:id="@+id/nav_uitgeleend"
                 android:icon="@drawable/ic_menu_share"
@@ -47,12 +50,14 @@
                 android:id="@+id/nav_stats"
                 android:icon="@drawable/ic_menu_send"
                 android:title="Statistieken" />
+        </group>
 
-        </menu>
-    </item>
+        <group
+            android:id="@+id/nav_admin"
+            android:title="Admin"
+            android:visible="false"
+            android:checkableBehavior="single">
 
-    <item android:title="Admin">
-        <menu>
             <item
                 android:id="@+id/nav_add_beheerder"
                 android:icon="@drawable/ic_menu_send"
@@ -62,7 +67,9 @@
                 android:id="@+id/nav_change_stock"
                 android:icon="@drawable/ic_menu_send"
                 android:title="Inventaris aanpassen" />
-        </menu>
-    </item>
+
+        </group>
+
+    </group>
 
 </menu>

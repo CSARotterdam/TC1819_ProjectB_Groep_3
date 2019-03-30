@@ -37,6 +37,8 @@ public class NavDrawer extends AppCompatActivity {
         toggle.syncState();
 
         nvDrawer = (NavigationView) findViewById(R.id.nav_view);
+        configureDrawer(nvDrawer);
+
         nvDrawer.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -45,6 +47,19 @@ public class NavDrawer extends AppCompatActivity {
                         return true;
                     }
                 });
+    }
+
+    public void configureDrawer(NavigationView nv){
+
+            if (getIntent().getStringExtra("password").equals("beheerder")) {
+                nv.getMenu().setGroupVisible(R.id.nav_beheerder, true);
+            }
+
+            if (getIntent().getStringExtra("password").equals("admin")) {
+                nv.getMenu().setGroupVisible(R.id.nav_beheerder,true);
+                nv.getMenu().setGroupVisible(R.id.nav_admin,true);
+            }
+
     }
     public void selectDrawerItem(MenuItem menuItem){
         Fragment fragment = null;
@@ -57,10 +72,10 @@ public class NavDrawer extends AppCompatActivity {
                 fragmentClass = Winkelmandje.class;
                 break;
             case R.id.nav_leningen:
-                fragmentClass = Inventaris.class;
+                fragmentClass = Mijn_leningen.class;
                 break;
             default:
-                fragmentClass = Inventaris.class;
+                fragmentClass = Placeholder.class;
         }
 
         try {
@@ -103,15 +118,29 @@ public class NavDrawer extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (toggle.onOptionsItemSelected(item)){
+        if (toggle.onOptionsItemSelected(item)) {
             return true;
         }
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             //noinspection SimplifiableIfStatement
             case R.id.action_settings:
                 return true;
-        }
 
+            case R.id.action_winkelmandje:
+                Fragment fragment = null;
+                try {
+                    fragment = (Fragment) Winkelmandje.newInstance("", "");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                nvDrawer.getMenu().findItem(R.id.nav_winkelmandje).setChecked(true);
+                setTitle(nvDrawer.getMenu().findItem(R.id.nav_winkelmandje).getTitle());
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.fragment_container, fragment);
+                transaction.commit();
+        }
         return super.onOptionsItemSelected(item);
     }
     @Override
