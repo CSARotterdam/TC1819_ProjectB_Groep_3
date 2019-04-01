@@ -1,14 +1,16 @@
 <resources>
     <string name="app_name">Techlab HR</string>
     <string name="menu">This is a drawer</string>
-    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_login">Techlab HR</string>
     <string name="title_activity_main">Inventaris</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
+    <string name="prompt_password">Password</string>
+    <string name="prompt_password_repeat">Repeat password</string>
+    <string name="action_sign_in">Sign in</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="action_register">Register</string>
+    <string name="action_register">Don\'t have an account yet? Register here.</string>
+    <string name="action_register_short">Register</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_password_match">The password does not match</string>
     <string name="error_email_already_exists">This email address is already used</string>
@@ -22,7 +24,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Techlab HR</string>
-    <string name="nav_header_subtitle">Wijnhaven 107 4tbh idk the actual room number</string>
+    <string name="nav_header_subtitle">Wijnhaven 107 WD 04.21 (or 19, something like that)</string>
     <string name="nav_header_desc">Navigation header</string>
 
     <string name="action_settings">Settings</string>

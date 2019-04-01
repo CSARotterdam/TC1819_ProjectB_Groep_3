@@ -91,7 +91,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 attemptLogin();
             }
         });
-        Button RegisterButton = (Button) findViewById(R.id.register_button);
+        TextView RegisterButton = (TextView) findViewById(R.id.register_button);
         RegisterButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -308,7 +308,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         private final String mEmail;
         private final String mPassword;
-        private String permission;
+        private String mPermission;
 
 
         UserLoginTask(String email, String password) {
@@ -330,7 +330,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
 
 
-            permission = mDatabaseHelper.searchPerm(mEmail);
+            mPermission = mDatabaseHelper.searchPerm(mEmail);
             return(mDatabaseHelper.searchPass(mEmail).equals(mPassword));
 
         }
@@ -344,7 +344,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 Intent intent = new Intent(LoginActivity.this, NavDrawer.class);
                 intent.putExtra("email",mEmail);
                 intent.putExtra("password",mPassword);
-                intent.putExtra("permission",mPassword);
+                intent.putExtra("permission",mPermission);
                 startActivity(intent);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));

@@ -6,19 +6,19 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_inventaris"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_inventaris"
             android:title="Inventaris" />
         <item
             android:id="@+id/nav_winkelmandje"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_action_winkel"
             android:title="Winkelmandje" />
         <item
             android:id="@+id/nav_leningen"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_mijn_leningen"
             android:title="Mijn leningen" />
         <item
             android:id="@+id/nav_info"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_info"
             android:title="Informatie" />
 
         <group
@@ -29,26 +29,26 @@
 
             <item
                 android:id="@+id/nav_uitgeleend"
-                android:icon="@drawable/ic_menu_share"
+                android:icon="@drawable/ic_inventaris"
                 android:title="Uitgeleend" />
             <item
                 android:id="@+id/nav_leerlingen"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_leerlingen"
                 android:title="Leerlingen" />
 
             <item
                 android:id="@+id/nav_broken"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_broken"
                 android:title="Beschadigingen" />
 
             <item
                 android:id="@+id/nav_stock"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_inventaris"
                 android:title="Voorraden" />
 
             <item
                 android:id="@+id/nav_stats"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_stats"
                 android:title="Statistieken" />
         </group>
 
@@ -60,12 +60,12 @@
 
             <item
                 android:id="@+id/nav_add_beheerder"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_leerlingen"
                 android:title="Permissies" />
 
             <item
                 android:id="@+id/nav_change_stock"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_inventaris"
                 android:title="Inventaris aanpassen" />
 
         </group>

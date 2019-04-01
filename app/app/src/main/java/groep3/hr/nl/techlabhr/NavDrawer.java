@@ -51,11 +51,11 @@ public class NavDrawer extends AppCompatActivity {
 
     public void configureDrawer(NavigationView nv){
 
-            if (getIntent().getStringExtra("password").equals("beheerder")) {
+            if (getIntent().getStringExtra("permission").equals("beheerder")) {
                 nv.getMenu().setGroupVisible(R.id.nav_beheerder, true);
             }
 
-            if (getIntent().getStringExtra("password").equals("admin")) {
+            if (getIntent().getStringExtra("permission").equals("admin")) {
                 nv.getMenu().setGroupVisible(R.id.nav_beheerder,true);
                 nv.getMenu().setGroupVisible(R.id.nav_admin,true);
             }

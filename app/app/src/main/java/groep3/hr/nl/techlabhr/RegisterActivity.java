@@ -9,12 +9,15 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
 
 //  private UserRegisterTask URTask;
@@ -23,6 +26,8 @@ public class RegisterActivity extends AppCompatActivity {
     private AutoCompleteTextView emailView;
     private EditText passwordView1;
     private EditText passwordView2;
+    private Spinner spinner_permission;
+    private String chosen_permission;
 
     DatabaseHelper mDatabaseHelper;
 
@@ -42,6 +47,13 @@ public class RegisterActivity extends AppCompatActivity {
         emailView = (AutoCompleteTextView) findViewById(R.id.email);
         passwordView1 = (EditText) findViewById(R.id.password1);
         passwordView2 = (EditText) findViewById(R.id.password2);
+
+        spinner_permission = (Spinner) findViewById(R.id.spinner_permission);
+        String[] permissions = new String[]{"user", "beheerder", "admin"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item, permissions);
+        spinner_permission.setAdapter(adapter);
+        spinner_permission.setOnItemSelectedListener(this);
+
         mDatabaseHelper = new DatabaseHelper(this);
 
 
@@ -80,7 +92,7 @@ public class RegisterActivity extends AppCompatActivity {
             Contacts newUser = new Contacts();
             newUser.setEmail(email);
             newUser.setPassword(password1);
-            newUser.setPermission("user");
+            newUser.setPermission(chosen_permission);
             mDatabaseHelper.insertContacts(newUser);
             Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
             startActivity(intent);
@@ -101,6 +113,18 @@ public class RegisterActivity extends AppCompatActivity {
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
         return email.contains("@");
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        chosen_permission = (String) spinner_permission.getItemAtPosition(position);
+        System.out.println(chosen_permission);
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 
 //    public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
