@@ -1,13 +1,31 @@
 package groep3.hr.nl.techlabhr;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 /**
@@ -27,6 +45,20 @@ public class Inventaris extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    // json object response url
+    private String urlJsonObj = "http://10.0.2.2/get_all_products.php";
+
+    private static String TAG = NavDrawer.class.getSimpleName();
+    private Button btnMakeObjectRequest;
+
+    // Progress dialog
+    private ProgressDialog pDialog;
+
+    private TextView txtResponse;
+
+    // temporary string to show the parsed response
+    private String jsonResponse;
 
     private OnFragmentInteractionListener mListener;
 
@@ -64,15 +96,107 @@ public class Inventaris extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_inventaris, container, false);
 
-        TextView text = (TextView) view.findViewById(R.id.textView);
+        btnMakeObjectRequest = (Button) view.findViewById(R.id.btnObjRequest);
+        txtResponse = (TextView) view.findViewById(R.id.txtResponse);
 
-        text.setText("Inventaris Fragment");
+        pDialog = new ProgressDialog(getActivity());
+        pDialog.setMessage("Please wait...");
+        pDialog.setCancelable(false);
+
+        btnMakeObjectRequest.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // making json object request
+                makeJsonObjectRequest();
+            }
+        });
 
         return view;
     }
+
+    /**
+     * Method to make json object request where json response starts wtih {
+     * */
+    private void makeJsonObjectRequest() {
+
+        showpDialog();
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                urlJsonObj, null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d(TAG, response.toString());
+
+                try {
+                    if(response.getInt("Success")==1) {
+                        jsonResponse = "";
+                        JSONArray Products =(JSONArray) response.get("Products");
+                        for (int i = 0; i < response.length(); i++) {
+
+                            JSONObject product = (JSONObject) Products.get(i);
+                            // Parsing json object response
+                            // response will be a json object
+                            String productID = product.getString("ProductID");
+                            String productManufacturer = product.getString("ProductManufacturer");
+                            String productCategory = product.getString("ProductCategory");
+                            String productName = product.getString("ProductName");
+                            int productStock = product.getInt("ProductStock");
+                            int productAmountBroken = product.getInt("ProductAmountBroken");
+
+
+                            jsonResponse += "ID: " + productID + "\n\n";
+                            jsonResponse += "Manufacturer: " + productManufacturer + "\n\n";
+                            jsonResponse += "Category: " + productCategory + "\n\n";
+                            jsonResponse += "Name: " + productName + "\n\n";
+                            jsonResponse += "Stock: " + productStock + "\n\n";
+                            jsonResponse += "Broken: " + productAmountBroken + "\n\n";
+
+                            txtResponse.setText(jsonResponse);
+                        }
+                        txtResponse.setText(jsonResponse);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getActivity().getApplicationContext(),
+                            "Error: " + e.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                }
+                hidepDialog();
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                Toast.makeText(getActivity().getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_SHORT).show();
+                // hide the progress dialog
+                hidepDialog();
+            }
+        });
+
+        // Adding request to request queue
+        SingletonQueue.getInstance().addToRequestQueue(jsonObjReq);
+    }
+
+
+
+    private void showpDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
+
+    private void hidepDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
+    }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
