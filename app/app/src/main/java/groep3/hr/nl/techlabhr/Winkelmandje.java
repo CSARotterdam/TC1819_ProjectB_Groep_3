@@ -65,7 +65,7 @@ public class Winkelmandje extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_inventaris, container, false);
+        View view = inflater.inflate(R.layout.fragment_winkelmandje, container, false);
 
         TextView text = (TextView) view.findViewById(R.id.textView);
 
