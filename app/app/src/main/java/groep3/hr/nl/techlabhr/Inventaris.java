@@ -139,7 +139,7 @@ public class Inventaris extends Fragment {
                 try {
                     if(response.getInt("Success")==1) {
                         JSONArray Products =(JSONArray) response.get("Products");
-                        for (int i = 0; i <= response.length(); i++) {
+                        for (int i = 0; i < Products.length(); i++) {
 
                             JSONObject product = (JSONObject) Products.get(i);
                             // Parsing json object response
