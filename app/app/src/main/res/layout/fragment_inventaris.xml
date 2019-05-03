@@ -6,30 +6,10 @@
     android:background="@color/colorAccent"
     tools:context=".Inventaris">
 
-    <Button
-        android:id="@+id/btnObjRequest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:text="@string/make_json_object_request" />
-
-
-    <TextView
-        android:id="@+id/txtResponse"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btnObjRequest"
-        android:layout_marginTop="40dp"
-        android:padding="20dp" />
-
     <ListView
         android:id="@+id/listResponse"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtResponse">
+        android:layout_height="wrap_content">
 
     </ListView>
 

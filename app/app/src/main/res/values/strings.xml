@@ -39,4 +39,10 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="make_json_object_request">Make JSON Object Request</string>
+    <string name="product_id">Product ID</string>
+    <string name="product_name">Product Name</string>
+    <string name="product_manufacturer">Product Manufacturer</string>
+    <string name="category">Category</string>
+    <string name="stock">Stock</string>
+    <string name="create_and_add_product">Create and add Product</string>
 </resources>

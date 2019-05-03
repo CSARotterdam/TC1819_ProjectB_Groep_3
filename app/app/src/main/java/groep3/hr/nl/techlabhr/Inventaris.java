@@ -68,7 +68,7 @@ public class Inventaris extends Fragment {
     private static final String TAG_BROKEN = "ProductAmountBroken";
 
     private static String TAG = NavDrawer.class.getSimpleName();
-    private Button btnMakeObjectRequest;
+
 
     // Progress dialog for loading
     private ProgressDialog pDialog;
@@ -88,17 +88,12 @@ public class Inventaris extends Fragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment Inventaris.
      */
     // TODO: Rename and change types and number of parameters
-    public static Inventaris newInstance(String param1, String param2) {
+    public static Inventaris newInstance() {
         Inventaris fragment = new Inventaris();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -119,26 +114,18 @@ public class Inventaris extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_inventaris, container, false);
 
-        btnMakeObjectRequest = (Button) view.findViewById(R.id.btnObjRequest);
         lv = (ListView) view.findViewById(R.id.listResponse);
 
 
         pDialog = new ProgressDialog(getActivity());
         pDialog.setMessage("Please wait...");
         pDialog.setCancelable(false);
+        makeJsonObjectRequest();
 
-        btnMakeObjectRequest.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // making json object request
-                makeJsonObjectRequest();
-            }
-        });
 
         return view;
     }
-    private void makeJsonObjectRequest() {
+    public void makeJsonObjectRequest() {
 
         showpDialog();
 
@@ -152,7 +139,7 @@ public class Inventaris extends Fragment {
                 try {
                     if(response.getInt("Success")==1) {
                         JSONArray Products =(JSONArray) response.get("Products");
-                        for (int i = 0; i < response.length(); i++) {
+                        for (int i = 0; i <= response.length(); i++) {
 
                             JSONObject product = (JSONObject) Products.get(i);
                             // Parsing json object response
@@ -167,8 +154,9 @@ public class Inventaris extends Fragment {
                             HashMap<String,String> map = new HashMap<String,String>();
                             map.put(TAG_PID,productID);
                             map.put(TAG_NAME,productName);
-                            map.put(TAG_STOCK,Integer.toString(productStock));
+                            map.put(TAG_STOCK,"In stock: " + Integer.toString(productStock));
                             productsList.add(map);
+                            Log.d(TAG,productsList.toString());
 
 
                         }
