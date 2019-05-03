@@ -3,8 +3,11 @@ package groep3.hr.nl.techlabhr;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -64,6 +67,11 @@ public class Winkelmandje extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Toolbar toolbar= (Toolbar) getActivity().findViewById(R.id.toolbar);
+        NavigationView nav = (NavigationView) getActivity().findViewById(R.id.nav_view);
+        MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_winkelmandje);
+        menuItem.setChecked(true);
+        toolbar.setTitle("Winkelmandje");
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_winkelmandje, container, false);
 

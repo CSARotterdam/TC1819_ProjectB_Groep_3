@@ -4,9 +4,13 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -96,6 +100,11 @@ public class Inventaris_Aanpassen extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Toolbar toolbar= (Toolbar) getActivity().findViewById(R.id.toolbar);
+        NavigationView nav = (NavigationView) getActivity().findViewById(R.id.nav_view);
+        MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_change_stock);
+        menuItem.setChecked(true);
+        toolbar.setTitle("Inventaris Aanpassen");
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_item_toevoegen, container, false);
 
