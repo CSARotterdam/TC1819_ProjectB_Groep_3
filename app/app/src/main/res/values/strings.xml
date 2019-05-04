@@ -57,4 +57,5 @@
     <string name="cat_smart">Smart Technology</string>
     <string name="cat_cables">Kabels</string>
     <string name="cat_computer">Computer</string>
+    <string name="cat_internet">Internet</string>
 </resources>

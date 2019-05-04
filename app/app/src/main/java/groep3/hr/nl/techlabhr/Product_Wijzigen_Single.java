@@ -2,11 +2,13 @@ package groep3.hr.nl.techlabhr;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,6 +47,7 @@ public class Product_Wijzigen_Single extends Fragment {
 
     private String selectURL = "http://10.0.2.2/select_from_products.php";
     private String updateURL = "http://10.0.2.2/update_product.php";
+    private String deleteURL = "http://10.0.2.2/delete_product.php";
     private String TAG = NavDrawer.class.getSimpleName();
     private String TAG_PID = "ProductID";
 
@@ -114,7 +117,8 @@ public class Product_Wijzigen_Single extends Fragment {
                 getString(R.string.cat_console),getString(R.string.cat_computer),
                 getString(R.string.cat_drone),getString(R.string.cat_game),
                 getString(R.string.cat_micro),getString(R.string.cat_rc),
-                getString(R.string.cat_smart),getString(R.string.cat_virtual)};
+                getString(R.string.cat_smart),getString(R.string.cat_virtual),
+                getString(R.string.cat_internet)};
         adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_dropdown_item, categories);
         spinner_category.setAdapter(adapter);
         spinner_category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -144,7 +148,31 @@ public class Product_Wijzigen_Single extends Fragment {
             @Override
             public void onClick(View view) {
                 // creating new product in background thread
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                //Yes button clicked
+                                deleteProduct();
+                                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                                transaction.replace(R.id.fragment_container,Product_Wijzigen.newInstance()).addToBackStack(null);
+                                transaction.commit();
+                                break;
 
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                //No button clicked
+                                FragmentTransaction transaction2 = getActivity().getSupportFragmentManager().beginTransaction();
+                                transaction2.replace(R.id.fragment_container,Product_Wijzigen.newInstance()).addToBackStack(null);
+                                transaction2.commit();
+                                break;
+                        }
+                    }
+                };
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("Are you sure? This action cannot be undone").setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show();
             }
         });
         pDialog = new ProgressDialog(getActivity());
@@ -153,6 +181,7 @@ public class Product_Wijzigen_Single extends Fragment {
         readSingleProduct();
         return view;
     }
+
     /*
      * JsonObjectRequest takes in five paramaters
      * Request Type - This specifies the type of the request eg: GET,POST
@@ -252,6 +281,45 @@ public class Product_Wijzigen_Single extends Fragment {
                     params.put("ProductStock", inputStock.getText().toString());}
                 if (inputBroken.getText().toString().length() > 0){
                     params.put("ProductAmountBroken", inputBroken.getText().toString());}
+
+                return params;
+            }
+        };
+
+        // Adding request to request queue
+        SingletonQueue.getInstance().addToRequestQueue(sr);
+    }
+    private void deleteProduct() {
+        showpDialog();
+        StringRequest sr = new StringRequest(Request.Method.POST,
+                deleteURL,new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, response);
+                hidepDialog();
+                Toast.makeText(getActivity().getApplicationContext(), response, Toast.LENGTH_SHORT).show();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container,Product_Wijzigen.newInstance()).addToBackStack(null);
+                transaction.commit();
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                Toast.makeText(getActivity().getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_SHORT).show();
+                // hide the progress dialog
+                hidepDialog();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("ProductID",getArguments().getString(TAG_PID));
 
                 return params;
             }

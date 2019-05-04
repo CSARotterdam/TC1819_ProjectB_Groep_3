@@ -109,7 +109,8 @@ public class Product_Toevoegen extends Fragment {
                 getString(R.string.cat_console),getString(R.string.cat_computer),
                 getString(R.string.cat_drone),getString(R.string.cat_game),
                 getString(R.string.cat_micro),getString(R.string.cat_rc),
-                getString(R.string.cat_smart),getString(R.string.cat_virtual)};
+                getString(R.string.cat_smart),getString(R.string.cat_virtual),
+                getString(R.string.cat_internet)};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_dropdown_item, categories);
         spinner_category.setAdapter(adapter);
         spinner_category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
