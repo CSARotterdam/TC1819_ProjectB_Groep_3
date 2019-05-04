@@ -2,7 +2,6 @@ package groep3.hr.nl.techlabhr;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -75,7 +74,7 @@ public class NavDrawer extends AppCompatActivity {
                 fragmentClass = Mijn_leningen.class;
                 break;
             case R.id.nav_change_stock:
-                fragmentClass = Inventaris_Aanpassen.class;
+                fragmentClass = Inventaris_aanpassen.class;
                 break;
             default:
                 fragmentClass = Placeholder.class;

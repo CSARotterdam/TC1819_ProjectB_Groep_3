@@ -45,4 +45,16 @@
     <string name="category">Category</string>
     <string name="stock">Stock</string>
     <string name="create_and_add_product">Create and add Product</string>
+    <string name="product_toevoegen">Product Toevoegen</string>
+    <string name="product_wijzigen">Product Wijzigen/Verwijderen</string>
+
+    <string name="cat_virtual">Virtual Reality</string>
+    <string name="cat_console">Gameconsole</string>
+    <string name="cat_micro">MicroComputer</string>
+    <string name="cat_drone">Drone</string>
+    <string name="cat_rc">Radio Controlled</string>
+    <string name="cat_game">Game</string>
+    <string name="cat_smart">Smart Technology</string>
+    <string name="cat_cables">Kabels</string>
+    <string name="cat_computer">Computer</string>
 </resources>
