@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -76,8 +77,7 @@ public class Placeholder extends Fragment {
         View view = inflater.inflate(R.layout.fragment_placeholder, container, false);
 
         TextView text = (TextView) view.findViewById(R.id.textView);
-
-        text.setText("Overige Placeholder Fragment");
+        text.setText(System.getProperty("YEET"));
 
         return view;
     }

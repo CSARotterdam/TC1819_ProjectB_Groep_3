@@ -19,6 +19,9 @@ android {
 }
 
 dependencies {
+    implementation 'com.kosprov.jargon2:jargon2-api:1.1.1'
+    implementation 'com.kosprov.jargon2:jargon2-native-ri-backend:1.1.1'
+    implementation 'com.kosprov.jargon2:jargon2-native-ri-binaries-generic:1.1.1'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
