@@ -5,7 +5,7 @@ import static com.kosprov.jargon2.api.Jargon2.*;
 
 public class Jargontest {
     public static void main(String[] args) {
-        byte[] password = "this is a password".getBytes();
+        byte[] password = "123456".getBytes();
 
         // Configure the hasher
         Hasher hasher = jargon2Hasher()
