@@ -19,8 +19,9 @@ EOF;
 
 // initialize response
 $response = array();
-$response["Products"] = array();
 $response["Success"] = 0;
+$response["Products"] = array();
+
 
 //construct response
 $ret = $db->query($sql);

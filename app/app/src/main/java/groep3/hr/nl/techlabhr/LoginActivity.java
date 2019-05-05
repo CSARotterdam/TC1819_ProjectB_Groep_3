@@ -36,7 +36,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.kosprov.jargon2.api.Jargon2;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,7 +47,7 @@ import java.util.List;
 import java.util.Map;
 
 import static android.Manifest.permission.READ_CONTACTS;
-import static com.kosprov.jargon2.api.Jargon2.jargon2Hasher;
+
 
 /**
  * A login screen that offers login via email/password.
