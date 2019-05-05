@@ -58,4 +58,6 @@
     <string name="cat_cables">Kabels</string>
     <string name="cat_computer">Computer</string>
     <string name="cat_internet">Internet</string>
+
+    <string name="salt">MyNameIsSalt</string>
 </resources>

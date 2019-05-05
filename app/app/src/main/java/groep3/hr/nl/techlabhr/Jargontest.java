@@ -1,11 +1,13 @@
 package groep3.hr.nl.techlabhr;
+
 import java.util.Arrays;
 
 import static com.kosprov.jargon2.api.Jargon2.*;
 
 public class Jargontest {
     public static void main(String[] args) {
-        byte[] password = "123456".getBytes();
+        byte[] salt = "mynameissalt".getBytes();
+        byte[] password = "this is a password".getBytes();
 
         // Configure the hasher
         Hasher hasher = jargon2Hasher()
@@ -13,11 +15,10 @@ public class Jargontest {
                 .memoryCost(65536)  // 64MB memory cost
                 .timeCost(3)        // 3 passes through memory
                 .parallelism(4)     // use 4 lanes and 4 threads
-                .saltLength(16)     // 16 random bytes salt
                 .hashLength(16);    // 16 bytes output hash
 
         // Set the password and calculate the encoded hash
-        String encodedHash = hasher.password(password).encodedHash();
+        String encodedHash = hasher.salt(salt).password(password).encodedHash();
 
         System.out.printf("Hash: %s%n", encodedHash);
 
