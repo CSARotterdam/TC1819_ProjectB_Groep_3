@@ -1,5 +1,6 @@
 package groep3.hr.nl.techlabhr;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -46,6 +47,8 @@ public class NavDrawer extends AppCompatActivity {
                         return true;
                     }
                 });
+
+        selectDrawerItem(nvDrawer.getMenu().findItem(R.id.nav_inventaris));
     }
 
     public void configureDrawer(NavigationView nv){
@@ -72,6 +75,9 @@ public class NavDrawer extends AppCompatActivity {
                 break;
             case R.id.nav_leningen:
                 fragmentClass = Mijn_leningen.class;
+                break;
+            case R.id.nav_info:
+                fragmentClass = Informatie.class; 
                 break;
             case R.id.nav_change_stock:
                 fragmentClass = Inventaris_aanpassen.class;
