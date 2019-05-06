@@ -2,13 +2,12 @@ package groep3.hr.nl.techlabhr;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,8 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -28,9 +25,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,29 +34,18 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+public class Product_Wijzigen extends Fragment {
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link Inventaris.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link Inventaris#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class Inventaris extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private ListView lv;
+    ArrayList<HashMap<String,String>> productsList;
+
+    private Product_Wijzigen.OnFragmentInteractionListener mListener;
+    private ProgressDialog pDialog;
 
     // json object response url
     private String urlJsonObj = "http://10.0.2.2/get_all_products.php";
-
-
+    private String TAG = NavDrawer.class.getSimpleName();
     private static final String TAG_SUCCESS = "Success";
     private static final String TAG_PRODUCTS = "Products";
     private static final String TAG_PID = "ProductID";
@@ -71,32 +55,19 @@ public class Inventaris extends Fragment {
     private static final String TAG_STOCK = "ProductStock";
     private static final String TAG_BROKEN = "ProductAmountBroken";
 
-    private static String TAG = NavDrawer.class.getSimpleName();
-
-
-    // Progress dialog for loading
-    private ProgressDialog pDialog;
-
-
-    private ListView lv;
-    ArrayList<HashMap<String,String>> productsList;
-    // temporary string to show the parsed response
-
-
-    private OnFragmentInteractionListener mListener;
-
-    public Inventaris() {
+    public Product_Wijzigen() {
         // Required empty public constructor
     }
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     * @return A new instance of fragment Inventaris.
+     *
+     * @return A new instance of fragment Product_Wijzigen.
      */
     // TODO: Rename and change types and number of parameters
-    public static Inventaris newInstance() {
-        Inventaris fragment = new Inventaris();
+    public static Product_Wijzigen newInstance() {
+        Product_Wijzigen fragment = new Product_Wijzigen();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -106,36 +77,42 @@ public class Inventaris extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //// Set title and menu to appropriate fragment
         Toolbar toolbar= (Toolbar) getActivity().findViewById(R.id.toolbar);
         NavigationView nav = (NavigationView) getActivity().findViewById(R.id.nav_view);
-        MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_inventaris);
+        MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_change_stock);
         menuItem.setChecked(true);
-        toolbar.setTitle("Inventaris");
-
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_inventaris, container, false);
-
-        lv = (ListView) view.findViewById(R.id.listResponse);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-        });
-
-
+        toolbar.setTitle("Product Wijzigen");
+        //Initialize pdialog
         pDialog = new ProgressDialog(getActivity());
         pDialog.setMessage("Please wait...");
         pDialog.setCancelable(false);
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_product_wijzigen, container, false);
+        // Load all products into list
+        lv = (ListView) view.findViewById(R.id.listResponse);
         getAllProducts();
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Product_Wijzigen_Single fragment =(Product_Wijzigen_Single) Product_Wijzigen_Single.newInstance();
+                Bundle product = new Bundle();
+                product.putString(TAG_PID,((TextView) view.findViewById(R.id.pid)).getText().toString());
+                fragment.setArguments(product);
+                Log.d(TAG,product.toString());
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container,fragment).addToBackStack(null);
+                transaction.commit();
+            }
+        });
 
 
         return view;
@@ -168,8 +145,11 @@ public class Inventaris extends Fragment {
 
                             HashMap<String,String> map = new HashMap<String,String>();
                             map.put(TAG_PID,productID);
+                            map.put(TAG_MANUFACTURER,productManufacturer);
+                            map.put(TAG_CATEGORY,productCategory);
                             map.put(TAG_NAME,productName);
-                            map.put(TAG_STOCK,"In stock: " + Integer.toString(productStock));
+                            map.put(TAG_STOCK,Integer.toString(productStock));
+                            map.put(TAG_BROKEN,Integer.toString(productAmountBroken));
                             productsList.add(map);
                             Log.d(TAG,productsList.toString());
 
@@ -226,7 +206,6 @@ public class Inventaris extends Fragment {
             pDialog.dismiss();
     }
 
-
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -265,5 +244,4 @@ public class Inventaris extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
 }
