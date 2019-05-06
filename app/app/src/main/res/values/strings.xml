@@ -9,7 +9,7 @@
     <string name="prompt_password_repeat">Repeat password</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="action_register">Don\'t have an account yet? Register here.</string>
+    <string name="action_register">Don\'t have an account yet? Register <u>here</u>.</string>
     <string name="action_register_short">Register</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_password_match">The password does not match</string>
@@ -35,7 +35,12 @@
 
     <string name="fragment_inventaris">Inventaris</string>
     <string name="fragment_winkelmandje">Winkelmandje</string>
+    <string name="fragment_informatie">Informatie</string>
+    <string name="openingstijden">Openingstijden</string>
 
+    <string name="informatie_over_text">quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur</string>
+
+    <string name="openings_tijden_kop">Openingstijden</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="make_json_object_request">Make JSON Object Request</string>
