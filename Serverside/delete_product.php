@@ -11,26 +11,27 @@ if (isset($_POST["ProductID"])){
 	
 	$ID = $_POST["ProductID"];
 	
-	
-	// include db connect class
-	require_once __DIR__ . '/db_connect.php';
  
 	// connecting to db
-	$db = new DB_CONNECT();
+	$db = new PDO('sqlite:Test.db');
+	$db -> setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 	
 	$sql =<<<EOF
-      DELETE from Products WHERE ProductID = '$ID'
-	
+      DELETE from Products WHERE ProductID = :id;
 EOF;
-	 $ret = $db->exec($sql);
-	 if (!$ret){
+	$stmt = $db->prepare($sql);
+	$stmt->bindValue(':id',$ID);
+	
+	$ret = $stmt->execute();
+	if (!$ret){
 			$response = $db->lastErrorMsg();
-	 }else{
+	}else{
 			$response = "Product successfully deleted";
-	 }
+			$db = null;
+	}
 }else{
-
 	$response = "Missing at least 1 required field";
 }
 echo ($response);
+db=null;
 ?>

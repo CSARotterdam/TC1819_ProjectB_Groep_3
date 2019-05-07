@@ -6,12 +6,10 @@
 // array for JSON response
 $response = array();
 
-
-// include db connect class
-require_once __DIR__ . '/db_connect.php';
  
 // connecting to db
-$db = new DB_CONNECT();
+$db = new PDO('sqlite:Test.db');
+$db -> setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
    
 // read db
 $sql =<<<EOF
@@ -25,7 +23,7 @@ $response["Categories"] = array();
 
 //construct response
 $ret = $db->query($sql);
-   while($row = $ret->fetchArray(SQLITE3_ASSOC) ) {
+   foreach($ret as $row) {
 		$Category = $row['ProductCategory'];
 		array_push($response["Categories"],$Category);
    }

@@ -6,15 +6,13 @@
 // array for JSON response
 $response = array();
  
-// include db connect class
-require_once __DIR__ . '/db_connect.php';
  
 // connecting to db
-$db = new DB_CONNECT();
+$db = new PDO('sqlite:Test.db');
    
 // read db
 $sql =<<<EOF
-      SELECT * from Users;
+      SELECT DISTINCT Email from Users;
 EOF;
 
 // initialize response
@@ -25,7 +23,7 @@ $response["Email"] = array();
 
 //construct response
 $ret = $db->query($sql);
-   while($row = $ret->fetchArray(SQLITE3_ASSOC) ) {
+   foreach($ret as $row){
 	    $Email = $row["Email"];
 		array_push($response["Email"],$Email);
    }

@@ -12,18 +12,17 @@ if (isset($_POST["email"])){
 	$OrderID = 0;
 	$ProductID = '';
 	$ProductAmount = 0;
-	// include db connect class
-	require_once __DIR__ . '/db_connect.php';
+	
  
 	// connecting to db
-	$db = new DB_CONNECT();
+	$db = new PDO('sqlite:Test.db');
 	
 	$sql =<<<EOF
 		  SELECT COALESCE(MAX(OrderID),0) AS 'Max value' FROM Orders;
 EOF;
 	
 	$ret = $db->query($sql);
-		while($row = $ret->fetchArray(SQLITE3_ASSOC) ) {
+		foreach($ret as $row){
 			$OrderID = $row['Max value'] + 1;
 		}
 	
@@ -54,15 +53,20 @@ EOF;
 		//Initialize SQL statement placing data into Database
 		$sql = <<<EOF
 		INSERT INTO Orders(OrderID,Email,ProductID,ProductAmount)
-		VALUES ('$OrderID','$Email','$ProductID','$ProductAmount');
+		VALUES (:OrderID,:Email,:ProductID,:ProductAmount);
 EOF;
+		$stmt = $db->prepare($sql);
+		$stmt->bindParam(':OrderID',$OrderID);
+		$stmt->bindParam(':Email',$Email);
+		$stmt->bindParam(':ProductID',$ProductID);
+		$stmt->bindParam(':ProductAmount',$ProductAmount);
 
 		//Execute SQL statement
-		$ret = $db->exec($sql);
+		$ret = $stmt->execute();
 		if (!$ret){
 			$response = $db->lastErrorMsg();
 		}else{
-			$response = "Product successfully created";
+			$response = "Order succesfully placed";
 		}
 	}
 }else{
