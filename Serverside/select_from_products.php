@@ -9,25 +9,22 @@ $response["Success"] = 0;
 if (isset($_POST["ProductID"])){
 	$pid = $_POST["ProductID"];
 	
-	// include db connect class
-	require_once __DIR__ . '/db_connect.php';
+	
 	 
 	// connecting to db
-	$db = new DB_CONNECT();
+	$db = new PDO('sqlite:Test.db');
 	   
 	// read db
 	$sql =<<<EOF
-		  SELECT * from Products WHERE ProductID = "$pid"
+		  SELECT * from Products WHERE ProductID = :pid
 EOF;
-
-	// initialize response
-	$response = array();
 	
+	$stmt = $db->prepare($sql);
+	$stmt->execute([':pid'=>$pid]);
 
 
 	//construct response
-	$ret = $db->query($sql);
-	   while($row = $ret->fetchArray(SQLITE3_ASSOC) ) {
+	   while($row = $stmt->fetch(\PDO::FETCH_ASSOC) ) {
 			$response["ProductID"] = $row['ProductID'];
 			$response["ProductManufacturer"] = $row['ProductManufacturer'];
 			$response["ProductCategory"] = $row['ProductCategory'];
@@ -42,5 +39,5 @@ EOF;
 }
 //encode response to json
 	   echo json_encode($response);
-	   $db->close();
+	   $db=null;
 ?>

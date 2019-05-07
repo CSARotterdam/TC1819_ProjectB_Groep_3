@@ -14,17 +14,18 @@ if (isset($_POST["Email"]) && isset($_POST["Password"])){
 	require_once __DIR__ . '/db_connect.php';
 	 
 	// connecting to db
-	$db = new DB_CONNECT();
+	$db = new PDO('sqlite:Test.db');
 	   
 	// read db
 	$sql =<<<EOF
-		  SELECT * from Users WHERE Email = "$Email"
+		  SELECT * from Users WHERE Email = :Email
 EOF;
+	$stmt = $db->prepare($sql);
+	$stmt->execute([':Email' => $Email]);
 
 	
 	//construct response
-	$ret = $db->query($sql);
-	   while($row = $ret->fetchArray(SQLITE3_ASSOC) ) {
+	   while($row = $stmt->fetch(\PDO::FETCH_ASSOC) ) {
 			if(password_verify($Pass,$row['Password'])){
 				$response["Success"] = 1;
 				$response["Email"] = $row['Email'];

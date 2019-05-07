@@ -13,17 +13,23 @@ if (isset($_POST["Email"])&& isset($_POST["Password"]) && isset($_POST["Permissi
 	$Pass = password_hash($_POST["Password"],PASSWORD_DEFAULT);
 	$Perm = $_POST["Permission"];
 	
-	// include db connect class
-	require_once __DIR__ . '/db_connect.php';
+	
  
 	// connecting to db
-	$db = new DB_CONNECT();
+	$db = new PDO('sqlite:Test.db');
+	$db->setAttribute(PDO::ATTR_ERRMODE, 
+                            PDO::ERRMODE_EXCEPTION);
 	
 	$sql =<<<EOF
       INSERT INTO Users (Email,Password,Permission)
-	  VALUES ('$Email','$Pass','$Perm');
+	  VALUES (:Email,:Pass,:Perm);
 EOF;
-	 $ret = $db->exec($sql);
+	$stmt = $db->prepare($sql);
+	$stmt->bindParam(':Email',$Email);
+	$stmt->bindParam(':Pass',$Pass);
+	$stmt->bindParam(':Perm',$Perm);
+	
+	 $ret = $stmt->execute();
 	 if (!$ret){
 			$response = "Something went horribly wrong" + $db->lastErrorMsg();
 	 }else{
@@ -34,5 +40,6 @@ EOF;
 	$response = "Missing at least 1 required field";
 }
 echo ($response);
+$db=null;
 ?>
 
