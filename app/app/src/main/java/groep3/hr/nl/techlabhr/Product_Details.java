@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -32,6 +33,7 @@ import com.android.volley.toolbox.StringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,7 +49,14 @@ public class Product_Details extends Fragment {
     private String updateURL = "http://10.0.2.2/update_product.php";
     private String deleteURL = "http://10.0.2.2/delete_product.php";
     private String TAG = NavDrawer.class.getSimpleName();
-    private String TAG_PID = "ProductID";
+    private static final String TAG_SUCCESS = "Success";
+    private static final String TAG_PRODUCTS = "Products";
+    private static final String TAG_PID = "ProductID";
+    private static final String TAG_MANUFACTURER = "ProductManufacturer";
+    private static final String TAG_CATEGORY = "ProductCategory";
+    private static final String TAG_NAME = "ProductName";
+    private static final String TAG_AMOUNT = "Amount";
+    private static final String TAG_STOCK = "ProductStock";
 
 
     private ProgressDialog pDialog;
@@ -57,6 +66,7 @@ public class Product_Details extends Fragment {
     private TextView detailName;
     private TextView detailStock;
     private TextView detailBroken;
+    private EditText inputAmount;
 
     private Button btnCart;
 
@@ -108,6 +118,7 @@ public class Product_Details extends Fragment {
         detailStock = (TextView) view.findViewById(R.id.detailStock);
         detailBroken = (TextView) view.findViewById(R.id.detailBroken);
         detailCategory = (TextView) view.findViewById(R.id.detailCategory);
+        inputAmount = (EditText) view.findViewById(R.id.inputAmount);
         btnCart = (Button) view.findViewById(R.id.btnCart);
 
 
@@ -115,9 +126,11 @@ public class Product_Details extends Fragment {
 
             @Override
             public void onClick(View view) {
-                // creating new product in background thread
+                // Adding product to cart
+                addToCart();
 
             }
+
         });
 
         pDialog = new ProgressDialog(getActivity());
@@ -125,6 +138,49 @@ public class Product_Details extends Fragment {
         pDialog.setCancelable(false);
         readSingleProduct();
         return view;
+    }
+
+    private void addToCart() {
+        Boolean alreadyPresent = false;
+        int amount;
+
+        if (inputAmount.getText().length() == 0){
+            amount = 1;
+        }else{
+            amount = Integer.parseInt(inputAmount.getText().toString());
+        }
+        ArrayList<HashMap<String,String>> winkelmandje =((NavDrawer) getActivity()).winkelmandje;
+        for(int i = 0; i < winkelmandje.size();i++){
+            if(winkelmandje.get(i).containsValue(detailID.getText().toString())){
+                alreadyPresent = true;
+            }
+        }
+        if(!alreadyPresent) {
+            if(amount <= Integer.parseInt(detailStock.getText().toString())){
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put(TAG_PID, detailID.getText().toString());
+                map.put(TAG_MANUFACTURER, detailManufacturer.getText().toString());
+                map.put(TAG_CATEGORY, detailCategory.getText().toString());
+                map.put(TAG_NAME, detailName.getText().toString());
+                map.put(TAG_STOCK,detailStock.getText().toString());
+                map.put(TAG_AMOUNT, Integer.toString(amount));
+
+                winkelmandje.add(map);
+
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.fragment_container, Winkelmandje.newInstance()).addToBackStack(null);
+                transaction.commit();
+            }else{
+                Toast.makeText(getActivity().getApplicationContext(),
+                        "Desired amount of items exceeds current stock",
+                        Toast.LENGTH_LONG).show();
+            }
+        }else{
+            Toast.makeText(getActivity().getApplicationContext(),
+                    "Item already present in winkelmandje",
+                    Toast.LENGTH_LONG).show();
+        }
     }
 
     /*
@@ -144,6 +200,7 @@ public class Product_Details extends Fragment {
      * the request
      */
     private void readSingleProduct() {
+        showpDialog();
         StringRequest sr = new StringRequest(Request.Method.POST,
                 selectURL, new Response.Listener<String>() {
 
@@ -185,7 +242,6 @@ public class Product_Details extends Fragment {
 
 
     }
-
 
     private void showpDialog() {
         if (!pDialog.isShowing())

@@ -15,12 +15,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class NavDrawer extends AppCompatActivity {
 
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
     private NavigationView nvDrawer;
     private ActionBarDrawerToggle toggle;
+    public ArrayList<HashMap<String,String>> winkelmandje = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +138,7 @@ public class NavDrawer extends AppCompatActivity {
             case R.id.action_winkelmandje:
                 Fragment fragment = null;
                 try {
-                    fragment = (Fragment) Winkelmandje.newInstance("", "");
+                    fragment = (Fragment) Winkelmandje.newInstance();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -114,20 +114,23 @@
 
     <LinearLayout android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        style="?android:attr/buttonBarStyle">
         <!-- Button Create Product -->
         <Button android:id="@+id/btnSave"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Save Changes"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            style="?android:attr/buttonBarButtonStyle"/>
 
         <!-- Button Create Product -->
         <Button android:id="@+id/btnDelete"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Delete"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            style="?android:attr/buttonBarButtonStyle"/>
     </LinearLayout>
 
 </LinearLayout>
