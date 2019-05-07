@@ -12,12 +12,14 @@ if (isset($_POST["ProductCategory"])){
 require_once __DIR__ . '/db_connect.php';
  
 // connecting to db
-$db = new DB_CONNECT();
+$db = new PDO('sqlite:Test.db');
    
 // read db
 $sql =<<<EOF
-      SELECT * from Products Where ProductCategory = "$Cat" ;
+      SELECT * from Products Where ProductCategory = :Cat ;
 EOF;
+	$stmt = $db->prepare($sql);
+	$stmt->execute([':Cat'=>$Cat]);
 
 // initialize response
 $response = array();
@@ -26,8 +28,7 @@ $response["Products"] = array();
 
 
 //construct response
-$ret = $db->query($sql);
-   while($row = $ret->fetchArray(SQLITE3_ASSOC) ) {
+   while($row = $stmt->fetch(\PDO::FETCH_ASSOC) ) {
 	    $product = array();
 		$product["ProductID"] = $row['ProductID'];
 		$product["ProductManufacturer"] = $row['ProductManufacturer'];
@@ -44,6 +45,6 @@ $ret = $db->query($sql);
 }
 	//encode response to json
    echo json_encode($response);
-   $db->close();
+   $db=null;
 ?>
 
