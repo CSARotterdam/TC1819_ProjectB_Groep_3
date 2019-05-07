@@ -68,7 +68,7 @@ public class NavDrawer extends AppCompatActivity {
         Class fragmentClass;
         switch(menuItem.getItemId()) {
             case R.id.nav_inventaris:
-                fragmentClass = Inventaris.class;
+                fragmentClass = Categories.class;
                 break;
             case R.id.nav_winkelmandje:
                 fragmentClass = Winkelmandje.class;
