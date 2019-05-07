@@ -1,5 +1,6 @@
 package groep3.hr.nl.techlabhr;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,8 +22,18 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.StringRequest;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -43,6 +54,8 @@ public class Winkelmandje extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private static final String orderURL = "http://10.0.2.2/create_new_order.php";
+
     private static final String TAG = NavDrawer.class.getSimpleName();
     private static final String TAG_SUCCESS = "Success";
     private static final String TAG_PRODUCTS = "Products";
@@ -58,6 +71,7 @@ public class Winkelmandje extends Fragment {
     private Button btnOrder;
     private Button btnEmptyCart;
     private OnFragmentInteractionListener mListener;
+    private ProgressDialog pDialog;
 
     public Winkelmandje() {
         // Required empty public constructor
@@ -131,6 +145,15 @@ public class Winkelmandje extends Fragment {
         });
 
         btnOrder = (Button) view.findViewById(R.id.btnOrder);
+
+        btnOrder.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                createNewOrder();
+            }
+
+        });
         btnEmptyCart = (Button) view.findViewById(R.id.btnEmptyCart);
 
         btnEmptyCart.setOnClickListener(new View.OnClickListener() {
@@ -147,8 +170,64 @@ public class Winkelmandje extends Fragment {
             }
 
         });
+        pDialog = new ProgressDialog(getActivity());
+        pDialog.setMessage("Please wait...");
+        pDialog.setCancelable(false);
 
         return view;
+    }
+
+    private void createNewOrder() {
+        showpDialog();
+        StringRequest sr = new StringRequest(Request.Method.POST,
+                orderURL,new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, response);
+                hidepDialog();
+                Toast.makeText(getActivity().getApplicationContext(), response, Toast.LENGTH_SHORT).show();
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                Toast.makeText(getActivity().getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_SHORT).show();
+                // hide the progress dialog
+                hidepDialog();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("email",getActivity().getIntent().getStringExtra("email"));
+
+                ArrayList<HashMap<String,String>> winkelmandje = ((NavDrawer) getActivity()).winkelmandje;
+                for (int i = 0;i < winkelmandje.size();i++){
+                    params.put("Product" + i, winkelmandje.get(i).get(TAG_PID));
+                    params.put("ProductAmount" + i, winkelmandje.get(i).get(TAG_AMOUNT));
+                }
+
+                return params;
+            }
+        };
+
+        // Adding request to request queue
+        SingletonQueue.getInstance().addToRequestQueue(sr);
+    }
+
+    private void showpDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
+
+    private void hidepDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
