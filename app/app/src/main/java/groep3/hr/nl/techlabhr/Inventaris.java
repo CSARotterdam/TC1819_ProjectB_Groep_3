@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -128,7 +129,14 @@ public class Inventaris extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                Product_Details fragment =(Product_Details) Product_Details.newInstance();
+                Bundle product = new Bundle();
+                product.putString(TAG_PID,((TextView) view.findViewById(R.id.pid)).getText().toString());
+                fragment.setArguments(product);
+                Log.d(TAG,product.toString());
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container,fragment).addToBackStack(null);
+                transaction.commit();
             }
         });
 

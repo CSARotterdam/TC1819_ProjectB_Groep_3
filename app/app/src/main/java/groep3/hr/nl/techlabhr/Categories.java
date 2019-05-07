@@ -107,7 +107,7 @@ public class Categories extends Fragment {
         toolbar.setTitle("Categories");
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_inventaris, container, false);
+        View view = inflater.inflate(R.layout.fragment_categories, container, false);
 
         lv = (ListView) view.findViewById(R.id.listResponse);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
