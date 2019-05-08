@@ -1,31 +1,31 @@
 <?php
 /*
- * Following code will list all the E-mail adresses.
+ * Following code will list all the products
  */
  
 // array for JSON response
 $response = array();
- 
+
  
 // connecting to db
 $db = new PDO('sqlite:Test.db');
+$db -> setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
    
 // read db
 $sql =<<<EOF
-      SELECT DISTINCT Email from Users;
+      SELECT DISTINCT ProductCategory from Products;
 EOF;
 
 // initialize response
-$response = array();
 $response["Success"] = 0;
-$response["Email"] = array();
+$response["Categories"] = array();
 
 
 //construct response
 $ret = $db->query($sql);
-   foreach($ret as $row){
-	    $Email = $row["Email"];
-		array_push($response["Email"],$Email);
+   foreach($ret as $row) {
+		$Category = $row['ProductCategory'];
+		array_push($response["Categories"],$Category);
    }
    //encode response to json
    $response["Success"] = 1;

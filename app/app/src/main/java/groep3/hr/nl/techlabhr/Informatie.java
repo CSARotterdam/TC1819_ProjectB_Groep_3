@@ -3,8 +3,11 @@ package groep3.hr.nl.techlabhr;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -64,7 +67,13 @@ public class Informatie extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_informatie, container, false);
+        Toolbar toolbar= (Toolbar) getActivity().findViewById(R.id.toolbar);
+        NavigationView nav = (NavigationView) getActivity().findViewById(R.id.nav_view);
+        MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_info);
+        menuItem.setChecked(true);
+        toolbar.setTitle("Informatie");
+        View view = inflater.inflate(R.layout.fragment_informatie, container, false);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

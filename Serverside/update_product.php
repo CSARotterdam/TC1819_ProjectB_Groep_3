@@ -16,24 +16,29 @@ isset($_POST["ProductName"])&& isset($_POST["ProductStock"]) && isset($_POST["Pr
 	$Name = $_POST["ProductName"];
 	$Stock = $_POST["ProductStock"];
 	$AmountBroken = $_POST["ProductAmountBroken"];
-	
-	// include db connect class
-	require_once __DIR__ . '/db_connect.php';
  
 	// connecting to db
-	$db = new DB_CONNECT();
+	$db = new PDO('sqlite:Test.db');
+	
 	
 	$sql =<<<EOF
       UPDATE Products 
-	  SET 	ProductManufacturer = '$Manufacturer',
-			ProductCategory = '$Category',
-			ProductName = '$Name',
-			ProductStock = '$Stock',
-			ProductAmountBroken = '$AmountBroken'
-	  WHERE ProductID = '$ID'
-	
+	  SET 	ProductManufacturer = :Manufacturer,
+			ProductCategory = :Category,
+			ProductName = :Name,
+			ProductStock = :Stock,
+			ProductAmountBroken = :AmountBroken
+	  WHERE ProductID = :ID
 EOF;
-	 $ret = $db->exec($sql);
+	$stmt = $db->prepare($sql);
+	$stmt->bindParam(':Manufacturer',$Manufacturer);
+	$stmt->bindParam(':Category',$Category);
+	$stmt->bindParam(':Name',$Name);
+	$stmt->bindParam(':Stock',$Stock);
+	$stmt->bindParam(':AmountBroken',$AmountBroken);
+	$stmt->bindParam(':ID',$ID);
+	
+	 $ret = $stmt->execute();
 	 if (!$ret){
 			$response = $db->lastErrorMsg();
 	 }else{
@@ -44,4 +49,5 @@ EOF;
 	$response = "Missing at least 1 required field";
 }
 echo ($response);
+$db=null;
 ?>

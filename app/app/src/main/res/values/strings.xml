@@ -65,4 +65,6 @@
     <string name="cat_internet">Internet</string>
 
     <string name="salt">MyNameIsSalt</string>
+    <string name="add_to_cart">Add to Cart</string>
+    <string name="amountbroken">AmountBroken</string>
 </resources>
