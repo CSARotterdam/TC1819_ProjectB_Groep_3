@@ -3,25 +3,21 @@ package groep3.hr.nl.techlabhr;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link Mijn_leningen.OnFragmentInteractionListener} interface
+ * {@link Informatie.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link Mijn_leningen#newInstance} factory method to
+ * Use the {@link Informatie#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Mijn_leningen extends Fragment {
+public class Informatie extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -33,7 +29,7 @@ public class Mijn_leningen extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public Mijn_leningen() {
+    public Informatie() {
         // Required empty public constructor
     }
 
@@ -43,11 +39,11 @@ public class Mijn_leningen extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment Mijn_leningen.
+     * @return A new instance of fragment Informatie.
      */
     // TODO: Rename and change types and number of parameters
-    public static Mijn_leningen newInstance(String param1, String param2) {
-        Mijn_leningen fragment = new Mijn_leningen();
+    public static Informatie newInstance(String param1, String param2) {
+        Informatie fragment = new Informatie();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -67,19 +63,8 @@ public class Mijn_leningen extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Toolbar toolbar= (Toolbar) getActivity().findViewById(R.id.toolbar);
-        NavigationView nav = (NavigationView) getActivity().findViewById(R.id.nav_view);
-        MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_leningen);
-        menuItem.setChecked(true);
-        toolbar.setTitle("Mijn Leningen");
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_mijn_leningen, container, false);
-
-        TextView text = (TextView) view.findViewById(R.id.textView);
-
-        text.setText("Mijn leningen Fragment");
-
-        return view;
+        return inflater.inflate(R.layout.fragment_informatie, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -92,12 +77,12 @@ public class Mijn_leningen extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
 //            throw new RuntimeException(context.toString()
 //                    + " must implement OnFragmentInteractionListener");
-//        }
+        }
     }
 
     @Override

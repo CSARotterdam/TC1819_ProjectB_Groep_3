@@ -35,7 +35,34 @@
 
     <string name="fragment_inventaris">Inventaris</string>
     <string name="fragment_winkelmandje">Winkelmandje</string>
+    <string name="fragment_informatie">Informatie</string>
+    <string name="openingstijden">Openingstijden</string>
 
+    <string name="informatie_over_text">quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur</string>
+
+    <string name="openings_tijden_kop">Openingstijden</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="make_json_object_request">Make JSON Object Request</string>
+    <string name="product_id">Product ID</string>
+    <string name="product_name">Product Name</string>
+    <string name="product_manufacturer">Product Manufacturer</string>
+    <string name="category">Category</string>
+    <string name="stock">Stock</string>
+    <string name="create_and_add_product">Create and add Product</string>
+    <string name="product_toevoegen">Product Toevoegen</string>
+    <string name="product_wijzigen">Product Wijzigen/Verwijderen</string>
+
+    <string name="cat_virtual">Virtual Reality</string>
+    <string name="cat_console">Gameconsole</string>
+    <string name="cat_micro">MicroComputer</string>
+    <string name="cat_drone">Drone</string>
+    <string name="cat_rc">Radio Controlled</string>
+    <string name="cat_game">Game</string>
+    <string name="cat_smart">Smart Technology</string>
+    <string name="cat_cables">Kabels</string>
+    <string name="cat_computer">Computer</string>
+    <string name="cat_internet">Internet</string>
+
+    <string name="salt">MyNameIsSalt</string>
 </resources>

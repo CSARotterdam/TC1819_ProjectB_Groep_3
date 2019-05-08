@@ -3,7 +3,6 @@ package groep3.hr.nl.techlabhr;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -77,6 +76,12 @@ public class NavDrawer extends AppCompatActivity {
             case R.id.nav_leningen:
                 fragmentClass = Mijn_leningen.class;
                 break;
+            case R.id.nav_info:
+                fragmentClass = Informatie.class; 
+                break;
+            case R.id.nav_change_stock:
+                fragmentClass = Inventaris_aanpassen.class;
+                break;
             default:
                 fragmentClass = Placeholder.class;
         }
@@ -90,13 +95,10 @@ public class NavDrawer extends AppCompatActivity {
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment);
+        transaction.replace(R.id.fragment_container, fragment).addToBackStack(null);
         transaction.commit();
 
-        // Highlight the selected item has been done by NavigationView
-        menuItem.setChecked(true);
-        // Set action bar title
-        setTitle(menuItem.getTitle());
+
         // Close the navigation drawer
         mDrawer.closeDrawers();
 

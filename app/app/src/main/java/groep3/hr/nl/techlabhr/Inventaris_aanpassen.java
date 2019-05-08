@@ -5,35 +5,29 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link Mijn_leningen.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link Mijn_leningen#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class Mijn_leningen extends Fragment {
+public class Inventaris_aanpassen extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    Button btnAddProduct;
+    Button btnChangeProduct;
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
 
-    public Mijn_leningen() {
+    private Placeholder.OnFragmentInteractionListener mListener;
+
+    public Inventaris_aanpassen() {
         // Required empty public constructor
     }
 
@@ -41,16 +35,13 @@ public class Mijn_leningen extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Mijn_leningen.
+
+     * @return A new instance of fragment Placeholder.
      */
     // TODO: Rename and change types and number of parameters
-    public static Mijn_leningen newInstance(String param1, String param2) {
-        Mijn_leningen fragment = new Mijn_leningen();
+    public static Inventaris_aanpassen newInstance() {
+        Inventaris_aanpassen fragment = new Inventaris_aanpassen();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -59,25 +50,45 @@ public class Mijn_leningen extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Set title and menu to appropriate fragment
         Toolbar toolbar= (Toolbar) getActivity().findViewById(R.id.toolbar);
         NavigationView nav = (NavigationView) getActivity().findViewById(R.id.nav_view);
-        MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_leningen);
+        MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_change_stock);
         menuItem.setChecked(true);
-        toolbar.setTitle("Mijn Leningen");
+        toolbar.setTitle("Inventaris Aanpassen");
+
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_mijn_leningen, container, false);
+        View view = inflater.inflate(R.layout.fragment_inventaris_aanpassen, container, false);
+        btnAddProduct = (Button) view.findViewById(R.id.btnAddProduct);
+        btnAddProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.fragment_container, Product_Toevoegen.newInstance()).addToBackStack(null);
+                transaction.commit();
+            }
+        });
+        btnChangeProduct = (Button) view.findViewById(R.id.btnChangeProduct);
+        btnChangeProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.fragment_container, Product_Wijzigen.newInstance()).addToBackStack(null);
+                transaction.commit();
+            }
+        });
 
-        TextView text = (TextView) view.findViewById(R.id.textView);
 
-        text.setText("Mijn leningen Fragment");
+
 
         return view;
     }
