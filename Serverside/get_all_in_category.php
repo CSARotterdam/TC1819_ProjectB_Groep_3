@@ -8,8 +8,6 @@ $response = array();
 
 if (isset($_POST["ProductCategory"])){
 		$Cat = $_POST["ProductCategory"];
-// include db connect class
-require_once __DIR__ . '/db_connect.php';
  
 // connecting to db
 $db = new PDO('sqlite:Test.db');
