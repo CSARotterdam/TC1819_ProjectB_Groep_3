@@ -44,7 +44,7 @@ public class Product_Wijzigen extends Fragment {
     private ProgressDialog pDialog;
 
     // json object response url
-    private String urlJsonObj = "http://10.0.2.2/get_all_products.php";
+    private String urlJsonObj = "http://eduardterlouw.com/techlab/get_all_products.php";
     private String TAG = NavDrawer.class.getSimpleName();
     private static final String TAG_SUCCESS = "Success";
     private static final String TAG_PRODUCTS = "Products";

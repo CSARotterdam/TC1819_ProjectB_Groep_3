@@ -40,8 +40,8 @@ import java.util.Map;
 public class RegisterActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private final String TAG = RegisterActivity.class.getSimpleName();
-    private final String urlAllEmail = "http://10.0.2.2/get_all_email.php";
-    private final String urlNewUser = "http://10.0.2.2/create_new_user.php";
+    private final String urlAllEmail = "http://eduardterlouw.com/techlab/get_all_email.php";
+    private final String urlNewUser = "http://eduardterlouw.com/techlab/create_new_user.php";
 //    private UserRegisterTask URTask;
     //UI reference
     private Button registerButton;
