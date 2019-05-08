@@ -37,5 +37,5 @@ EOF;
 }
 //encode response to json
 	   echo json_encode($response);
-	   $db->close();
+	   $db=null;
 ?>

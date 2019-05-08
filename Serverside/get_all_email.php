@@ -30,6 +30,6 @@ $ret = $db->query($sql);
    //encode response to json
    $response["Success"] = 1;
    echo json_encode($response);
-   $db->close();
+   $db=null;
 ?>
 

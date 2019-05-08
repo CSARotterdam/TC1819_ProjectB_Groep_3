@@ -49,4 +49,5 @@ EOF;
 	$response = "Missing at least 1 required field";
 }
 echo ($response);
+$db=null;
 ?>
