@@ -159,6 +159,30 @@
                             android:gravity="center_horizontal"
                             android:text="@string/do_10_30_17_00" />
                     </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center_horizontal">
+
+
+                        <TextView
+                            android:id="@+id/textVrijdag"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:text="@string/vrijdag" />
+
+                        <TextView
+                            android:id="@+id/textView200"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:text="@string/gesloten" />
+                    </TableRow>
                 </TableLayout>
             </LinearLayout>
 
