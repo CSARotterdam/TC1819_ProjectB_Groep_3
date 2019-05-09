@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final int REQUEST_READ_CONTACTS = 0;
 
     private static final String TAG = LoginActivity.class.getSimpleName();
-    private static final String selectURL = "http://eduardterlouw.com/techlab/select_from_users.php";
+    private static final String selectURL = "https://eduardterlouw.com/techlab/select_from_users.php";
     private UserLoginTask mAuthTask = null;
 
     // UI references.

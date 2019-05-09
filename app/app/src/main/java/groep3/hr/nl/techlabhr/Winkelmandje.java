@@ -54,7 +54,7 @@ public class Winkelmandje extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private static final String orderURL = "http://eduardterlouw.com/techlab/create_new_order.php";
+    private static final String orderURL = "https://eduardterlouw.com/techlab/create_new_order.php";
 
     private static final String TAG = NavDrawer.class.getSimpleName();
     private static final String TAG_SUCCESS = "Success";
