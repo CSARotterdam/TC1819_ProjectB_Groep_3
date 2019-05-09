@@ -38,8 +38,8 @@
     <string name="fragment_informatie">Informatie</string>
     <string name="openingstijden">Openingstijden</string>
 
-    <string name="informatie_over_text">quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur</string>
-
+    <string name="informatie_over_text">TechLab HR is een instelling van de Hogeschool Rotterdam. TechLab is bedoelt om te voorzien in de behoeftes van studenten die CMI studeren. Bij het TechLab kan je verschillende aparaten lenen voor creatieve doeleinde. TechLab is te gebruiken door alle studenten en personeel aan de Hogeschool Rotterdam</string>
+    <string name="informatie_contact_text">U kunt contact opnemen met het TechLab tijdens de openingstijden via Tel: 06-1234567, of via TechLab@hr.nl</string>
     <string name="openings_tijden_kop">Openingstijden</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -65,7 +65,23 @@
     <string name="cat_internet">Internet</string>
 
     <string name="salt">MyNameIsSalt</string>
+
+    <string name="maandag">Maandag</string>
+    <string name="ma_10_30_17_00">10:30 - 17:00</string>
+    <string name="donderdag">Donderdag</string>
+    <string name="do_10_30_17_00">10:30 - 17:00</string>
+    <string name="dinsdag">Dinsdag</string>
+    <string name="di_10_30_15_50">10:30 - 15:50</string>
+    <string name="woensdag">Woensdag</string>
+    <string name="wo_10_30_15_50">10:30 - 15:50</string>
+    <string name="locatie">Locatie</string>
+    <string name="vrijdag">Vrijdag</string>
+    <string name="contact">Contact</string>
+    <string name="gesloten">Gesloten</string>
+    <string name="Informatie_locatie">TechLab is gevestigt op de HR locatie Wijnhaven 107. In lokaal WD4.019.</string>
+
     <string name="add_to_cart">Add to Cart</string>
     <string name="amountbroken">AmountBroken</string>
     <string name="email">Email</string>
+
 </resources>
