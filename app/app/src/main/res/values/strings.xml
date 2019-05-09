@@ -38,7 +38,7 @@
     <string name="fragment_informatie">Informatie</string>
     <string name="openingstijden">Openingstijden</string>
 
-    <string name="informatie_over_text">TechLab HR is een instelling van de Hogeschool Rotterdam. TechLab is bedoelt om te voorzien in de behoeftes van studenten die CMI studeren. Bij het TechLab kan je verschillende aparaten lenen voor creatieve doeleinde. TechLab is te gebruiken door alle studenten en personeel aan de Hogeschool Rotterdam</string>
+    <string name="informatie_over_text">TechLab HR is een instelling van de Hogeschool Rotterdam. Het doel van het TechLab is om de behoeftes van CMI studenten te voorzien. Bij het TechLab kan je verschillende apparaten lenen voor creatieve doeleinden. TechLab is te gebruiken door alle studenten en personeel aan de Hogeschool Rotterdam</string>
     <string name="informatie_contact_text">U kunt contact opnemen met het TechLab tijdens de openingstijden via Tel: 06-1234567, of via TechLab@hr.nl</string>
     <string name="openings_tijden_kop">Openingstijden</string>
     <!-- TODO: Remove or change this placeholder text -->
