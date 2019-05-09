@@ -37,18 +37,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RegisterActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class RegisterActivity extends AppCompatActivity {
 
     private final String TAG = RegisterActivity.class.getSimpleName();
-    private final String urlAllEmail = "http://10.0.2.2/get_all_email.php";
-    private final String urlNewUser = "http://10.0.2.2/create_new_user.php";
-//    private UserRegisterTask URTask;
+    private final String urlAllEmail = "https://eduardterlouw.com/techlab/get_all_email.php";
+    private final String urlNewUser = "https://eduardterlouw.com/techlab/create_new_user.php";
+    //    private UserRegisterTask URTask;
     //UI reference
     private Button registerButton;
     private AutoCompleteTextView emailView;
     private EditText passwordView1;
     private EditText passwordView2;
-    private Spinner spinner_permission;
+    //    private Spinner spinner_permission;
     private String chosen_permission;
 
     DatabaseHelper mDatabaseHelper;
@@ -77,44 +77,44 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
         passwordView1 = (EditText) findViewById(R.id.password1);
         passwordView2 = (EditText) findViewById(R.id.password2);
 
-        spinner_permission = (Spinner) findViewById(R.id.spinner_permission);
-        String[] permissions = new String[]{"user", "beheerder", "admin"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item, permissions);
-        spinner_permission.setAdapter(adapter);
-        spinner_permission.setOnItemSelectedListener(this);
+//        spinner_permission = (Spinner) findViewById(R.id.spinner_permission);
+//        String[] permissions = new String[]{"user", "beheerder", "admin"};
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item, permissions);
+//        spinner_permission.setAdapter(adapter);
+//        spinner_permission.setOnItemSelectedListener(this);
 
         mDatabaseHelper = new DatabaseHelper(this);
 
     }
 
-    private void registerAttempt(){
+    private void registerAttempt() {
         String password1 = passwordView1.getText().toString();
         String password2 = passwordView2.getText().toString();
         String email = emailView.getText().toString();
 
         Boolean permission = true;
 
-        if (!isPasswordValid(password1)){
+        if (!isPasswordValid(password1)) {
             permission = false;
             passwordView1.setError(getString(R.string.error_invalid_password));
             passwordView2.setError(getString(R.string.error_invalid_password));
         }
 
-        if(!password1.equals(password2)){
+        if (!password1.equals(password2)) {
             permission = false;
             passwordView2.setError(getString(R.string.error_password_match));
         }
-        if (!isEmailValid(email)){
+        if (!isEmailValid(email)) {
             permission = false;
             emailView.setError(getString(R.string.error_invalid_email));
         }
 
-        if(emailList.contains(email)){
+        if (emailList.contains(email)) {
             permission = false;
             emailView.setError(getString(R.string.error_email_already_exists));
         }
 
-        if (permission){
+        if (permission) {
 //          URTask = new UserRegisterTask(email,password1);
 //          URTask.execute((Void) null);
 //            Contacts newUser = new Contacts();
@@ -123,7 +123,7 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
 //            newUser.setPermission(chosen_permission);
 //            mDatabaseHelper.insertContacts(newUser);
             registerNewUser();
-            Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
+            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
             startActivity(intent);
 
         }
@@ -132,7 +132,7 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
     private void registerNewUser() {
         showpDialog();
         StringRequest sr = new StringRequest(Request.Method.POST,
-                urlNewUser,new Response.Listener<String>() {
+                urlNewUser, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -151,17 +151,17 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
                 // hide the progress dialog
                 hidepDialog();
             }
-        }){
+        }) {
             @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String, String>  params = new HashMap<String, String>();
-                if (emailView.getText().toString().length() > 0){
-                    params.put("Email", emailView.getText().toString());}
-                if (passwordView1.getText().toString().length() > 0){
-                    params.put("Password", passwordView1.getText().toString());}
-                if (spinner_permission.getSelectedItem().toString().length() > 0){
-                    params.put("Permission", spinner_permission.getSelectedItem().toString());}
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                if (emailView.getText().toString().length() > 0) {
+                    params.put("Email", emailView.getText().toString());
+                }
+                if (passwordView1.getText().toString().length() > 0) {
+                    params.put("Password", passwordView1.getText().toString());
+                }
+                params.put("Permission", "user");
 
                 return params;
             }
@@ -182,13 +182,13 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
             public void onResponse(JSONObject response) {
                 Log.d(TAG, response.toString());
                 try {
-                    if(response.getInt("Success")==1) {
-                        JSONArray Emails =(JSONArray) response.get("Email");
+                    if (response.getInt("Success") == 1) {
+                        JSONArray Emails = (JSONArray) response.get("Email");
                         for (int i = 0; i < Emails.length(); i++) {
 
                             emailList.add((String) Emails.get(i));
                         }
-                        Log.d(TAG,emailList.toString());
+                        Log.d(TAG, emailList.toString());
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -224,8 +224,8 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
             pDialog.dismiss();
     }
 
-    private boolean isPasswordValid(String password){
-        if(password.length() > 4){
+    private boolean isPasswordValid(String password) {
+        if (password.length() > 4) {
 
             return true;
         }
@@ -236,67 +236,4 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
         //TODO: Replace this with your own logic
         return email.contains("@");
     }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        chosen_permission = (String) spinner_permission.getItemAtPosition(position);
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
-
-//    public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
-//
-//        private final String mEmail;
-//        private final String mPassword;
-//
-//        UserRegisterTask(String email, String password) {
-//            mEmail = email;
-//            mPassword = password;
-//        }
-//
-//        @Override
-//        protected Boolean doInBackground(Void... params) {
-////            // TODO: attempt authentication against a network service.
-////
-//            try {
-//                // Simulate network access.
-//                Thread.sleep(2000);
-//
-//            } catch (InterruptedException e) {
-//                return false;
-//            }
-//
-//
-//
-//            // TODO: register the new account here.
-//            return true;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(final Boolean success) {
-//            URTask = null;
-////            showProgress(false);
-//
-//            if (success) {
-////                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-////                intent.putExtra("email",mEmail);
-////                intent.putExtra("password",mPassword);
-////                startActivity(intent);
-//                tv.setText(mDatabaseHelper.searchPass("eduard"));
-//            } else {
-////                mPasswordView.setError(getString(R.string.error_incorrect_password));
-////                mPasswordView.requestFocus();
-//            }
-//        }
-//
-//        @Override
-//        protected void onCancelled() {
-//            URTask = null;
-////            showProgress(false);
-//        }
-//    }
 }

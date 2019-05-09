@@ -65,6 +65,7 @@
     <string name="cat_internet">Internet</string>
 
     <string name="salt">MyNameIsSalt</string>
+
     <string name="maandag">Maandag</string>
     <string name="ma_10_30_17_00">10:30 - 17:00</string>
     <string name="donderdag">Donderdag</string>
@@ -78,4 +79,9 @@
     <string name="contact">Contact</string>
     <string name="gesloten">Gesloten</string>
     <string name="Informatie_locatie">TechLab is gevestigt op de HR locatie Wijnhaven 107. In lokaal WD4.019.</string>
+
+    <string name="add_to_cart">Add to Cart</string>
+    <string name="amountbroken">AmountBroken</string>
+    <string name="email">Email</string>
+
 </resources>

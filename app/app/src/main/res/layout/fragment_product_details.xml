@@ -15,13 +15,12 @@
         />
 
     <!-- Input ID -->
-    <TextView android:id="@+id/inputID"
+    <TextView android:id="@+id/detailID"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dip"
         android:layout_marginBottom="15dip"
-        android:singleLine="true"
-        android:importantForAutofill="no" />
+        android:singleLine="true" />
 
     <!-- Manufacturer Label -->
     <TextView android:layout_width="fill_parent"
@@ -33,13 +32,12 @@
         android:textSize="17sp"/>
 
     <!-- Input Manufacturer -->
-    <EditText android:id="@+id/inputManufacturer"
+    <TextView android:id="@+id/detailManufacturer"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dip"
         android:layout_marginBottom="15dip"
-        android:singleLine="true"
-        android:inputType="" />
+        android:singleLine="true" />
 
     <!-- Category Label -->
     <TextView android:layout_width="fill_parent"
@@ -51,12 +49,13 @@
         android:textSize="17dip"/>
 
     <!-- Input Category -->
-    <Spinner
-        android:id="@+id/spinner_category"
-        android:layout_width="match_parent"
+    <TextView android:id="@+id/detailCategory"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown"/>
+        android:layout_margin="5dip"
+        android:layout_marginBottom="15dip"
+        android:singleLine="true" />
+
 
     <!-- Name Label -->
     <TextView android:layout_width="fill_parent"
@@ -68,7 +67,7 @@
         android:textSize="17dip"/>
 
     <!-- Input Name -->
-    <EditText android:id="@+id/inputName"
+    <TextView android:id="@+id/detailName"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dip"
@@ -85,52 +84,57 @@
         android:textSize="17dip"/>
 
     <!-- Input Stock -->
-    <EditText android:id="@+id/inputStock"
+    <TextView android:id="@+id/detailStock"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dip"
         android:layout_marginBottom="15dip"
-        android:inputType="number"
         android:singleLine="true" />
 
     <!-- Broken Label -->
     <TextView android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="AmountBroken"
+        android:text="@string/amountbroken"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:paddingTop="10dip"
+        android:textSize="17dip"
+        android:visibility="gone"/>
+
+    <!-- Input Broken -->
+    <TextView android:id="@+id/detailBroken"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dip"
+        android:layout_marginBottom="15dip"
+        android:singleLine="true"
+        android:visibility="gone"/>
+
+    <TextView android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Amount"
         android:paddingLeft="10dip"
         android:paddingRight="10dip"
         android:paddingTop="10dip"
         android:textSize="17dip"/>
 
-    <!-- Input Broken -->
-    <EditText android:id="@+id/inputBroken"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dip"
-        android:layout_marginBottom="15dip"
-        android:inputType="number"
-        android:singleLine="true" />
-
-
+    <!-- Horizontal layout for side to side buttons-->
     <LinearLayout android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        style="?android:attr/buttonBarStyle">
-        <!-- Button Create Product -->
-        <Button android:id="@+id/btnSave"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Save Changes"
-            android:layout_weight="1"
-            style="?android:attr/buttonBarButtonStyle"/>
+        android:orientation="horizontal">
 
-        <!-- Button Create Product -->
-        <Button android:id="@+id/btnDelete"
-            android:layout_width="fill_parent"
+        <EditText
+            android:id="@+id/inputAmount"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:text="Delete"
-            android:layout_weight="1"
-            style="?android:attr/buttonBarButtonStyle"/>
+            android:inputType="number"/>
+
+        <!-- Button add to cart -->
+        <Button android:id="@+id/btnCart"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/add_to_cart"
+            android:layout_weight="1"/>
     </LinearLayout>
 
 </LinearLayout>

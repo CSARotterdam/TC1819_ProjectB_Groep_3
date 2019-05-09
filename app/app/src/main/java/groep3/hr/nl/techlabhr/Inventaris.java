@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,6 +39,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -59,7 +61,7 @@ public class Inventaris extends Fragment {
     private String mParam2;
 
     // json object response url
-    private String urlJsonObj = "http://10.0.2.2/get_all_products.php";
+    private String urlJsonObj = "https://eduardterlouw.com/techlab/get_all_in_category.php";
 
 
     private static final String TAG_SUCCESS = "Success";
@@ -127,7 +129,14 @@ public class Inventaris extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                Product_Details fragment =(Product_Details) Product_Details.newInstance();
+                Bundle product = new Bundle();
+                product.putString(TAG_PID,((TextView) view.findViewById(R.id.pid)).getText().toString());
+                fragment.setArguments(product);
+                Log.d(TAG,product.toString());
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container,fragment).addToBackStack(null);
+                transaction.commit();
             }
         });
 
@@ -144,16 +153,17 @@ public class Inventaris extends Fragment {
 
         showpDialog();
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                urlJsonObj, null, new Response.Listener<JSONObject>() {
+        StringRequest stringReq = new StringRequest(Request.Method.POST,
+                urlJsonObj, new Response.Listener<String>() {
 
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(String response) {
                 Log.d(TAG, response.toString());
                 productsList = new ArrayList<HashMap<String, String>>();
                 try {
-                    if(response.getInt("Success")==1) {
-                        JSONArray Products =(JSONArray) response.get("Products");
+                    JSONObject json = new JSONObject(response);
+                    if(json.getInt("Success")==1) {
+                        JSONArray Products =(JSONArray) json.get("Products");
                         for (int i = 0; i < Products.length(); i++) {
 
                             JSONObject product = (JSONObject) Products.get(i);
@@ -210,10 +220,18 @@ public class Inventaris extends Fragment {
                 // hide the progress dialog
                 hidepDialog();
             }
-        });
+        }){
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put(TAG_CATEGORY, getArguments().getString(TAG_CATEGORY));
+                return params;
+            }
+        };
 
         // Adding request to request queue
-        SingletonQueue.getInstance().addToRequestQueue(jsonObjReq);
+        SingletonQueue.getInstance().addToRequestQueue(stringReq);
     }
 
     private void showpDialog() {

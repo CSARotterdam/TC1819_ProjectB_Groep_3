@@ -45,7 +45,7 @@ public class Product_Toevoegen extends Fragment {
 
     // TODO: Rename and change types of parameters\
 
-    private String url = "http://10.0.2.2/create_new_product.php";
+    private String url = "https://eduardterlouw.com/techlab/create_new_product.php";
     private String TAG = NavDrawer.class.getSimpleName();
 
 

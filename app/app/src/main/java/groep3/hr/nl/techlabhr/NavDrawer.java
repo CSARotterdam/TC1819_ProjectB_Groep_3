@@ -15,12 +15,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class NavDrawer extends AppCompatActivity {
 
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
     private NavigationView nvDrawer;
     private ActionBarDrawerToggle toggle;
+    public ArrayList<HashMap<String,String>> winkelmandje = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +33,7 @@ public class NavDrawer extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(this, mDrawer, toolbar,
@@ -48,7 +53,12 @@ public class NavDrawer extends AppCompatActivity {
                     }
                 });
 
-        selectDrawerItem(nvDrawer.getMenu().findItem(R.id.nav_inventaris));
+        getSupportActionBar().setTitle("Categories");
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.fragment_container, Categories.newInstance());
+        transaction.commit();
+
     }
 
     public void configureDrawer(NavigationView nv){
@@ -68,7 +78,7 @@ public class NavDrawer extends AppCompatActivity {
         Class fragmentClass;
         switch(menuItem.getItemId()) {
             case R.id.nav_inventaris:
-                fragmentClass = Inventaris.class;
+                fragmentClass = Categories.class;
                 break;
             case R.id.nav_winkelmandje:
                 fragmentClass = Winkelmandje.class;
@@ -78,6 +88,9 @@ public class NavDrawer extends AppCompatActivity {
                 break;
             case R.id.nav_info:
                 fragmentClass = Informatie.class; 
+                break;
+            case R.id.nav_add_beheerder:
+                fragmentClass = Permissions.class;
                 break;
             case R.id.nav_change_stock:
                 fragmentClass = Inventaris_aanpassen.class;
@@ -134,7 +147,7 @@ public class NavDrawer extends AppCompatActivity {
             case R.id.action_winkelmandje:
                 Fragment fragment = null;
                 try {
-                    fragment = (Fragment) Winkelmandje.newInstance("", "");
+                    fragment = (Fragment) Winkelmandje.newInstance();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

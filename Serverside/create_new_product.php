@@ -17,17 +17,23 @@ isset($_POST["ProductName"])&& isset($_POST["ProductStock"])){
 	$Stock = $_POST["ProductStock"];
 	$AmountBroken = 0;
 	
-	// include db connect class
-	require_once __DIR__ . '/db_connect.php';
- 
+
 	// connecting to db
-	$db = new DB_CONNECT();
+	$db = new PDO('sqlite:Test.db');
 	
 	$sql =<<<EOF
       INSERT INTO Products (ProductID,ProductManufacturer,ProductCategory,ProductName,ProductStock,ProductAmountBroken)
-	  VALUES ('$ID','$Manufacturer','$Category','$Name','$Stock','$AmountBroken');
+	  VALUES (:ProductID,:ProductManufacturer,:ProductCategory,:ProductName,:ProductStock,:ProductAmountBroken);
 EOF;
-	 $ret = $db->exec($sql);
+	$stmt = $db->prepare($sql);
+	$stmt->bindParam(':ProductID',$ID);
+	$stmt->bindParam(':ProductManufacturer',$Manufacturer);
+	$stmt->bindParam(':ProductCategory',$Category);
+	$stmt->bindParam(':ProductName',$Name);
+	$stmt->bindParam(':ProductStock',$Stock);
+	$stmt->bindParam(':ProductAmountBroken',$AmountBroken);
+	
+	 $ret = $stmt->execute();
 	 if (!$ret){
 			$response = "Something went horribly wrong" + $db->lastErrorMsg();
 	 }else{
@@ -38,5 +44,6 @@ EOF;
 	$response = "Missing at least 1 required field";
 }
 echo ($response);
+$db=null;
 ?>
 

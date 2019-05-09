@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -34,40 +33,49 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Product_Wijzigen extends Fragment {
+public class Permissions extends Fragment {
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+
+    // json object response url
+    private String urlJsonObj = "https://eduardterlouw.com/techlab/get_all_email_and_perm.php";
+
+    private static final String TAG_EMAIL = "Email";
+    private static final String TAG_PERMISSION = "Permission";
+
+
+    private static String TAG = NavDrawer.class.getSimpleName();
+
+
+    // Progress dialog for loading
+    private ProgressDialog pDialog;
 
 
     private ListView lv;
-    ArrayList<HashMap<String,String>> productsList;
+    ArrayList<HashMap<String,String>> emailList;
+    // temporary string to show the parsed response
 
-    private Product_Wijzigen.OnFragmentInteractionListener mListener;
-    private ProgressDialog pDialog;
 
-    // json object response url
-    private String urlJsonObj = "https://eduardterlouw.com/techlab/get_all_products.php";
-    private String TAG = NavDrawer.class.getSimpleName();
-    private static final String TAG_SUCCESS = "Success";
-    private static final String TAG_PRODUCTS = "Products";
-    private static final String TAG_PID = "ProductID";
-    private static final String TAG_MANUFACTURER = "ProductManufacturer";
-    private static final String TAG_CATEGORY = "ProductCategory";
-    private static final String TAG_NAME = "ProductName";
-    private static final String TAG_STOCK = "ProductStock";
-    private static final String TAG_BROKEN = "ProductAmountBroken";
+    private Inventaris.OnFragmentInteractionListener mListener;
 
-    public Product_Wijzigen() {
+    public Permissions() {
         // Required empty public constructor
     }
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment Product_Wijzigen.
+     * @return A new instance of fragment Inventaris.
      */
     // TODO: Rename and change types and number of parameters
-    public static Product_Wijzigen newInstance() {
-        Product_Wijzigen fragment = new Product_Wijzigen();
+    public static Permissions newInstance() {
+        Permissions fragment = new Permissions();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -77,37 +85,32 @@ public class Product_Wijzigen extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //// Set title and menu to appropriate fragment
         Toolbar toolbar= (Toolbar) getActivity().findViewById(R.id.toolbar);
         NavigationView nav = (NavigationView) getActivity().findViewById(R.id.nav_view);
-        MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_change_stock);
+        MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_add_beheerder);
         menuItem.setChecked(true);
-        toolbar.setTitle("Product Wijzigen");
-        //Initialize pdialog
-        pDialog = new ProgressDialog(getActivity());
-        pDialog.setMessage("Please wait...");
-        pDialog.setCancelable(false);
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_product_wijzigen, container, false);
-        // Load all products into list
-        lv = (ListView) view.findViewById(R.id.listResponse);
-        getAllProducts();
+        toolbar.setTitle("Permissions");
 
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_permissions, container, false);
+
+        lv = (ListView) view.findViewById(R.id.listResponse);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Product_Wijzigen_Single fragment =(Product_Wijzigen_Single) Product_Wijzigen_Single.newInstance();
-                Bundle product = new Bundle();
-                product.putString(TAG_PID,((TextView) view.findViewById(R.id.pid)).getText().toString());
-                fragment.setArguments(product);
-                Log.d(TAG,product.toString());
+                Permissions_Single fragment =(Permissions_Single) Permissions_Single.newInstance();
+                Bundle user = new Bundle();
+                user.putString(TAG_EMAIL,((TextView) view.findViewById(R.id.user_Email)).getText().toString());
+                fragment.setArguments(user);
+                Log.d(TAG,user.toString());
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_container,fragment).addToBackStack(null);
                 transaction.commit();
@@ -115,46 +118,38 @@ public class Product_Wijzigen extends Fragment {
         });
 
 
+        pDialog = new ProgressDialog(getActivity());
+        pDialog.setMessage("Please wait...");
+        pDialog.setCancelable(false);
+        getAllEmail();
+
+
         return view;
     }
-    public void getAllProducts() {
+    public void getAllEmail() {
 
         showpDialog();
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
                 urlJsonObj, null, new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {
                 Log.d(TAG, response.toString());
-                productsList = new ArrayList<HashMap<String, String>>();
+
+                emailList = new ArrayList<HashMap<String, String>>();
                 try {
                     if(response.getInt("Success")==1) {
-                        JSONArray Products =(JSONArray) response.get("Products");
-                        for (int i = 0; i < Products.length(); i++) {
-
-                            JSONObject product = (JSONObject) Products.get(i);
-                            // Parsing json object response
-                            // response will be a json object
-                            String productID = product.getString("ProductID");
-                            String productManufacturer = product.getString("ProductManufacturer");
-                            String productCategory = product.getString("ProductCategory");
-                            String productName = product.getString("ProductName");
-                            int productStock = product.getInt("ProductStock");
-                            int productAmountBroken = product.getInt("ProductAmountBroken");
-
+                        JSONArray EmailPermlist =(JSONArray) response.get("Email");
+                        for (int i = 0; i < EmailPermlist.length(); i++) {
+                            JSONObject EmailPerm = (JSONObject) EmailPermlist.get(i);
                             HashMap<String,String> map = new HashMap<String,String>();
-                            map.put(TAG_PID,productID);
-                            map.put(TAG_MANUFACTURER,productManufacturer);
-                            map.put(TAG_CATEGORY,productCategory);
-                            map.put(TAG_NAME,productName);
-                            map.put(TAG_STOCK,Integer.toString(productStock));
-                            map.put(TAG_BROKEN,Integer.toString(productAmountBroken));
-                            productsList.add(map);
-                            Log.d(TAG,productsList.toString());
+                            map.put(TAG_EMAIL,(String) EmailPerm.get(TAG_EMAIL));
+                            map.put(TAG_PERMISSION,(String) EmailPerm.get(TAG_PERMISSION));
 
-
+                            emailList.add(map);
                         }
+                        Log.d(TAG, emailList.toString());
                         hidepDialog();
                         getActivity().runOnUiThread(new Runnable() {
                             public void run() {
@@ -162,10 +157,9 @@ public class Product_Wijzigen extends Fragment {
                                  * Updating parsed JSON data into ListView
                                  * */
                                 ListAdapter adapter = new SimpleAdapter(
-                                        getActivity(), productsList,
-                                        R.layout.product_list_item, new String[] { TAG_PID,
-                                        TAG_NAME,TAG_STOCK},
-                                        new int[] { R.id.pid, R.id.product_name,R.id.product_stock });
+                                        getActivity(), emailList,
+                                        R.layout.user_list_item, new String[] {TAG_EMAIL,TAG_PERMISSION},
+                                        new int[] { R.id.user_Email, R.id.user_Permission});
 
                                 lv.setAdapter(adapter);
                             }
@@ -206,6 +200,7 @@ public class Product_Wijzigen extends Fragment {
             pDialog.dismiss();
     }
 
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -244,4 +239,5 @@ public class Product_Wijzigen extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 }
