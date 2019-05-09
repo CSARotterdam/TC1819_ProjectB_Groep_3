@@ -45,9 +45,7 @@ public class Product_Details extends Fragment {
 
     // TODO: Rename and change types of parameters\
 
-    private String selectURL = "http://10.0.2.2/select_from_products.php";
-    private String updateURL = "http://10.0.2.2/update_product.php";
-    private String deleteURL = "http://10.0.2.2/delete_product.php";
+    private String selectURL = "https://eduardterlouw.com/techlab/select_from_products.php";
     private String TAG = NavDrawer.class.getSimpleName();
     private static final String TAG_SUCCESS = "Success";
     private static final String TAG_PRODUCTS = "Products";
