@@ -34,6 +34,7 @@ public class NavDrawer extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(this, mDrawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -52,7 +53,12 @@ public class NavDrawer extends AppCompatActivity {
                     }
                 });
 
-        selectDrawerItem(nvDrawer.getMenu().findItem(R.id.nav_inventaris));
+        getSupportActionBar().setTitle("Categories");
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.fragment_container, Categories.newInstance());
+        transaction.commit();
+
     }
 
     public void configureDrawer(NavigationView nv){

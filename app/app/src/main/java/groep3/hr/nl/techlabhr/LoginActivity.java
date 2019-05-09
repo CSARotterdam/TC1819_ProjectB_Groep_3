@@ -250,7 +250,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 if (mSuccess[0]) {
                     Intent intent = new Intent(LoginActivity.this, NavDrawer.class);
                     intent.putExtra("email",mEmail[0]);
-                    intent.putExtra("password",mPassword[0]);
                     intent.putExtra("permission",mPermission[0]);
                     startActivity(intent);
                 } else {
