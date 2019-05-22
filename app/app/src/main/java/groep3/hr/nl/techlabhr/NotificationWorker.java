@@ -67,8 +67,9 @@ public class NotificationWorker extends Worker {
                     JSONObject json = new JSONObject(response);
 
                     if (json.getInt("Success") == 1) {
-                        Log.e("Response","Received");
+                        Log.e("Response","received");
                         JSONArray Orders = (JSONArray) json.get("Orders");
+                        Log.e("Response",response);
                         for (int i = 0; i < Orders.length(); i++) {
 
                             JSONObject Order = (JSONObject) Orders.get(i);
@@ -78,7 +79,7 @@ public class NotificationWorker extends Worker {
                             String DateOfReady = Order.getString("DateOfReady");
                             String DateOfReturn = Order.getString("DateOfReturn");
                             String ReadyBroadCasted = Order.getString("ReadyBroadcasted");
-
+                            Log.e("Info", productID + " " + DateOfReady);
                             checkData(productID, DateOfReady, DateOfReturn, ReadyBroadCasted);
                         }
                     }
@@ -95,7 +96,7 @@ public class NotificationWorker extends Worker {
             protected Map<String, String> getParams()
             {
                 Map<String, String>  params = new HashMap<String, String>();
-                params.put("Email", Email);
+                params.put("email", Email);
                 return params;
             }
         };
@@ -108,14 +109,14 @@ public class NotificationWorker extends Worker {
     }
 
     public void checkData(String PruductID, String DateOfReady, String DateOfReturn, String ReadyBroadcasted) {
-        Log.e("Response","Checke");
-        if (ReadyBroadcasted == "False") {
-            if (DateOfReady != "31-12-1999") {
+        Log.d("Response","Checked");
+        Log.d("Response", DateOfReady + " " + ReadyBroadcasted);
+        if (ReadyBroadcasted.equals("False")) {
+            if (!DateOfReady.equals("31-12-1999")){
                 Log.e("Notification","should display now");
                 simple_Notification("Lening gereed", "Uw lening is gereed om opgehaald te worden!");
             }
         }
-
     }
 
     private void simple_Notification(String title, String contentText) {
@@ -139,4 +140,6 @@ public class NotificationWorker extends Worker {
         NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(1, notificationBuilder.build());
     }
+
+    
 }
