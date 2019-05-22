@@ -4,7 +4,9 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -32,6 +34,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.Worker;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -45,6 +51,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -75,6 +82,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        PeriodicWorkRequest notificationWorkRequest = new PeriodicWorkRequest.Builder(
+                NotificationWorker.class, 20, TimeUnit.SECONDS).build();
+
+        WorkManager.getInstance().enqueue(notificationWorkRequest);
 
         pDialog = new ProgressDialog(this);
         pDialog.setMessage("Please wait...");
@@ -205,6 +217,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             userLogin(email,password);
+            Context context = getApplicationContext();
+            SharedPreferences userEmail = context.getSharedPreferences(getString(R.string.sharedPreferenceKey),Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = userEmail.edit();
+            editor.putString("Email", email);
+            editor.commit();
 //            showProgress(true);
 //            mAuthTask = new UserLoginTask(email, password);
 //            mAuthTask.execute((Void) null);

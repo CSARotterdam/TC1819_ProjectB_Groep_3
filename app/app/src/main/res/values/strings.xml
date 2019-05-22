@@ -84,4 +84,6 @@
     <string name="amountbroken">AmountBroken</string>
     <string name="email">Email</string>
 
+    <string name="sharedPreferenceKey">groep3.hr.nl.techlabhr.PREFFERENCE_FILE_KEY</string>
+
 </resources>
