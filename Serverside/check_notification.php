@@ -7,6 +7,7 @@ if(isset($_POST["email"])){
 $response = array();
 $response["Success"] = 0;
 $response["Orders"] = array();
+$response["Update"] = "";
 
 $db = new PDO('sqlite:Test.db');
 
@@ -27,8 +28,24 @@ EOF;
 						$order["DateOfReady"] = $row['DateOfReady'];
 						$order["DateOfReturn"] = $row["DateOfReturn"];
 						$order["ReadyBroadcasted"] = $row["ReadyBroadcasted"];
+						$order["ReturnWarningBroadcasted"] = $row["ReturnWarningBroadcasted"];
             array_push($response["Orders"],$order);
     }
+
+$sql2 = <<<EOF
+			UPDATE Orders SET ReadyBroadcasted="True" WHERE Email = :Email
+EOF;
+
+$stmt = $db->prepare($sql2);
+$stmt->bindParam(':Email',$Email);
+
+$ret = $stmt->execute();
+if (!$ret){
+		$response["Update"] = $db->lastErrorMsg();
+}else{
+		$response["Update"] = "ReadyBroadcasted successfully updated";
+}
+
 
 $response["Success"] = 1;
 
