@@ -40,6 +40,11 @@ import java.util.Map;
 
 public class NotificationWorker extends Worker {
     private String urlJsonObj = "https://eduardterlouw.com/test/check_notification.php";
+    private String urlQuery = "https://eduardterlouw.com/test/update_notification.php";
+    private String CHANNEL_READY_ID = "Order_ready_channel";
+    private String CHANNEL_RETURN_ID = "Order_return_channel";
+
+    private String Email;
 
 
     public NotificationWorker(
@@ -53,13 +58,10 @@ public class NotificationWorker extends Worker {
     public Result doWork() {
         Context context = getApplicationContext();
         SharedPreferences userEmail = context.getSharedPreferences(context.getString(R.string.sharedPreferenceKey), Context.MODE_PRIVATE);
-        final String Email = userEmail.getString("Email", "notFound");
-//        final String Email = "admin@";
-        Log.i("Email", Email);
-        if (Email == "notFound") {
-            Log.i("Email", "Not found");
-            return Result.success();
+        Email = userEmail.getString("Email", "notFound");
 
+        if (Email == "notFound") {
+            return Result.success();
         }
 
         StringRequest stringReq = new StringRequest(Request.Method.POST,
@@ -120,27 +122,31 @@ public class NotificationWorker extends Worker {
         if (ReadyBroadcasted.equals("False")) {
             if (!DateOfReady.equals("31-12-1999")){
                 Log.e("Notification","should display now");
-                simple_Notification("Lening gereed", "Uw lening is gereed om opgehaald te worden!");
+                simple_Notification("Lening gereed", "Uw lening is gereed om opgehaald te worden!",CHANNEL_READY_ID);
             }
         }
 
         String date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        Log.d("data", date + " " + DateOfReturn);
         if(date.equals(DateOfReturn)){
-            if(ReturnWarningBroadcasted == "False"){
-                simple_Notification("Uw lening verloopt", "Uw lening verloopt vandaag, vergeet niet om het in te leveren!");
+            Log.d("data", "equals");
+            if(ReturnWarningBroadcasted.equals("False")){
+
+                simple_Notification("Uw lening verloopt", "Uw lening verloopt vandaag, vergeet niet om het in te leveren!",CHANNEL_RETURN_ID);
+                update_notifications(date);
             }
         }
     }
 
 
-    private void simple_Notification(String title, String contentText) {
+    private void simple_Notification(String title, String contentText, String CHANNEL_ID) {
         //declare an id for your notification
         //id is used in many things especially when setting action buttons and their intents
         NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
 
 
-            String CHANNEL_ID = "my_channel_01";
+
             CharSequence name = "my_channel";
             String Description = "This is my channel";
             int importance = NotificationManager.IMPORTANCE_HIGH;
@@ -169,6 +175,47 @@ public class NotificationWorker extends Worker {
                 .setContentInfo("Info");
 
         notificationManager.notify(1, notificationBuilder.build());
+    }
+
+    private void update_notifications(final String date){
+        Log.d("update_notification", "executed");
+        StringRequest stringReq = new StringRequest(Request.Method.POST,
+                urlQuery, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject json = new JSONObject(response);
+
+                    if (json.getInt("Success") == 1) {
+                        Log.d("notificaton update", "succesfull");
+                    }
+                    else{
+                        Log.d("notificaton update", json.getString("Update"));
+                    }
+                } catch (JSONException e) {
+                    Log.e("Respone","is not JSON");
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("email", Email);
+                params.put("date", date);
+                return params;
+            }
+        };
+
+        // Adding request to request queue
+        SingletonQueue.getInstance().addToRequestQueue(stringReq);
+
     }
 
     
