@@ -213,13 +213,20 @@
                     android:layout_marginBottom="30dp"
                     android:text="TechLab is gevestigt op de HR locatie Wijnhaven 107. In lokaal WD4.019." />
 
-                <ImageView
+                <com.google.android.gms.maps.MapView
                     android:id="@+id/InfoScreenMap"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
+                    android:layout_height="0dp" />
+
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginHorizontal="30dp"
                     android:layout_marginBottom="30dp"
-                    android:src="@drawable/tl_location"/>
+                    android:src="@drawable/tl_location"
+                    android:contentDescription="@null"/>
+
             </LinearLayout>
 
             <LinearLayout
