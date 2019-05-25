@@ -6,12 +6,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -130,7 +133,12 @@ public class Product_Toevoegen extends Fragment {
             @Override
             public void onClick(View view) {
                 // creating new product in background thread
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.fragment_container, Inventaris_aanpassen.newInstance()).addToBackStack(null);
+                transaction.commit();
                 createNewProduct();
+                inputStock.onEditorAction(EditorInfo.IME_ACTION_DONE);
             }
         });
         pDialog = new ProgressDialog(getActivity());
