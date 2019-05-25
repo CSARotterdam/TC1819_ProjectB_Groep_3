@@ -17,6 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -126,6 +128,7 @@ public class Product_Details extends Fragment {
 
             @Override
             public void onClick(View view) {
+                inputAmount.onEditorAction(EditorInfo.IME_ACTION_DONE);
                 // Adding product to cart
                 addToCart();
 
