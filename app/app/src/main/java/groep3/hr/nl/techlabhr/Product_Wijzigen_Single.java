@@ -156,14 +156,14 @@ public class Product_Wijzigen_Single extends Fragment {
                                 //Yes button clicked
                                 deleteProduct();
                                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                                transaction.replace(R.id.fragment_container,Product_Wijzigen.newInstance()).addToBackStack(null);
+                                transaction.replace(R.id.fragment_container,Product_wijzigen_categories.newInstance()).addToBackStack(null);
                                 transaction.commit();
                                 break;
 
                             case DialogInterface.BUTTON_NEGATIVE:
                                 //No button clicked
                                 FragmentTransaction transaction2 = getActivity().getSupportFragmentManager().beginTransaction();
-                                transaction2.replace(R.id.fragment_container,Product_Wijzigen.newInstance()).addToBackStack(null);
+                                transaction2.replace(R.id.fragment_container,Product_wijzigen_categories.newInstance()).addToBackStack(null);
                                 transaction2.commit();
                                 break;
                         }
@@ -251,7 +251,7 @@ public class Product_Wijzigen_Single extends Fragment {
                 hidepDialog();
                 Toast.makeText(getActivity().getApplicationContext(), response, Toast.LENGTH_SHORT).show();
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container,Product_Wijzigen.newInstance()).addToBackStack(null);
+                transaction.replace(R.id.fragment_container,Product_wijzigen_categories.newInstance()).addToBackStack(null);
                 transaction.commit();
 
             }
@@ -300,7 +300,7 @@ public class Product_Wijzigen_Single extends Fragment {
                 hidepDialog();
                 Toast.makeText(getActivity().getApplicationContext(), response, Toast.LENGTH_SHORT).show();
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container,Product_Wijzigen.newInstance()).addToBackStack(null);
+                transaction.replace(R.id.fragment_container,Product_wijzigen_categories.newInstance()).addToBackStack(null);
                 transaction.commit();
 
             }

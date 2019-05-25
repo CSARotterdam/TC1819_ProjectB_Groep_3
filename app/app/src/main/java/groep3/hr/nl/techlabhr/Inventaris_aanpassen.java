@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 
 public class Inventaris_aanpassen extends Fragment {
@@ -48,6 +49,7 @@ public class Inventaris_aanpassen extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
 
@@ -82,7 +84,7 @@ public class Inventaris_aanpassen extends Fragment {
             public void onClick(View v) {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.fragment_container, Product_Wijzigen.newInstance()).addToBackStack(null);
+                transaction.replace(R.id.fragment_container, Product_wijzigen_categories.newInstance()).addToBackStack(null);
                 transaction.commit();
             }
         });
