@@ -123,7 +123,7 @@ public class Product_Wijzigen extends Fragment {
         toolbar.setTitle("Inventaris");
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_inventaris, container, false);
+        View view = inflater.inflate(R.layout.fragment_product_wijzigen, container, false);
 
         lv = (ListView) view.findViewById(R.id.listResponse);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
