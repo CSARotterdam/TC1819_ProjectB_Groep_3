@@ -137,8 +137,9 @@ public class Product_Toevoegen extends Fragment {
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.replace(R.id.fragment_container, Inventaris_aanpassen.newInstance()).addToBackStack(null);
                 transaction.commit();
-                createNewProduct();
                 inputStock.onEditorAction(EditorInfo.IME_ACTION_DONE);
+                createNewProduct();
+
             }
         });
         pDialog = new ProgressDialog(getActivity());
