@@ -85,5 +85,7 @@
     <string name="email">Email</string>
 
     <string name="sharedPreferenceKey">groep3.hr.nl.techlabhr.PREFFERENCE_FILE_KEY</string>
+    <string name="MarkOrderReady">Markeer order als ready for pickup</string>
+    <string name="MarkOrderHandedIn">Markeer order als ingeleverd</string>
 
 </resources>
