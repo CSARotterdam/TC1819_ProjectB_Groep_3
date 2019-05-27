@@ -25,15 +25,15 @@ EOF;
             $order["Email"] = $row['Email'];
             $order["OrderID"] = $row['OrderID'];
             $order["ProductID"] = $row['ProductID'];
-						$order["DateOfReady"] = $row['DateOfReady'];
-						$order["DateOfReturn"] = $row["DateOfReturn"];
-						$order["ReadyBroadcasted"] = $row["ReadyBroadcasted"];
-						$order["ReturnWarningBroadcasted"] = $row["ReturnWarningBroadcasted"];
+            $order["DateOfReady"] = $row['DateOfReady'];
+            $order["DateOfReturn"] = $row["DateOfReturn"];
+            $order["ReadyBroadcasted"] = $row["ReadyBroadcasted"];
+            $order["ReturnWarningBroadcasted"] = $row["ReturnWarningBroadcasted"];
             array_push($response["Orders"],$order);
     }
 
 $sql2 = <<<EOF
-			UPDATE Orders SET ReadyBroadcasted="True" WHERE Email = :Email
+			UPDATE Orders SET ReadyBroadcasted="True" WHERE Email = :Email AND Status = "readyForPickup"
 EOF;
 
 $stmt = $db->prepare($sql2);

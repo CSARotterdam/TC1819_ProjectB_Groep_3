@@ -35,7 +35,7 @@ EOF;
 	$productamounts = array();
 	$returndates = array();
 	$checkAmount = 'Amount';
-	$checkDateOfReturn = "Return";
+	$checkDateOfReturn = 'Return';
 
 
 
@@ -47,7 +47,7 @@ EOF;
 		}
 
 		$amount = strpos($key, $checkAmount, 6);
-		$return = strpos($key, $checkDateOfReturn,4);
+		$return = strpos($key, $checkDateOfReturn,5);
 		if($amount){
 			//If “Amount” is present in the key, add the value to amount array
 			array_push($productamounts, $value);
@@ -72,7 +72,7 @@ EOF;
 		//Initialize SQL statement placing data into Database
 		$sql = <<<EOF
 		INSERT INTO Orders(OrderID,Email,ProductID,ProductAmount, DateOfReady, DateOfReturn,ReadyBroadcasted,ReturnWarningBroadcasted, Status)
-		VALUES (:OrderID,:Email,:ProductID,:ProductAmount,:DateOfReady,:DateOfReturn,:ReadyBroadcasted,:ReturnWarningBroadcasted,:Status);
+		VALUES (:OrderID,:Email,:ProductID,:ProductAmount,:DateOfReady,:DateOfReturn,:ReadyBroadcasted,:ReturnWarningBroadcasted,:Status)
 EOF;
 		$stmt = $db->prepare($sql);
 		$stmt->bindParam(':OrderID',$OrderID);

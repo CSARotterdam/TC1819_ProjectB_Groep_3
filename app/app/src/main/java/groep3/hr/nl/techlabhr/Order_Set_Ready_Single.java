@@ -50,6 +50,7 @@ public class Order_Set_Ready_Single extends Fragment {
     // TODO: Rename and change types of parameters\
 
     private String selectURL = "https://eduardterlouw.com/techlab/select_from_pending_orders.php";
+    private String updateURL = "https://eduardterlouw.com/techlab/update_pending_order.php";
     private String TAG = NavDrawer.class.getSimpleName();
     private static final String TAG_PID = "ProductID";
     private static final String TAG_NAME = "ProductName";
@@ -133,10 +134,6 @@ public class Order_Set_Ready_Single extends Fragment {
         return view;
     }
 
-    private void setOrderReady() {
-        //TODO: Make request to php file setting all items with corresponding OrderID to ready for pickup
-    }
-
     /*
      * JsonObjectRequest takes in five paramaters
      * Request Type - This specifies the type of the request eg: GET,POST
@@ -210,10 +207,47 @@ public class Order_Set_Ready_Single extends Fragment {
         };
         // Adding request to request queue
         SingletonQueue.getInstance().addToRequestQueue(sr);
-
-
     }
 
+    private void setOrderReady() {
+        showpDialog();
+        StringRequest sr = new StringRequest(Request.Method.POST,
+                updateURL,new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, response);
+                hidepDialog();
+                Toast.makeText(getActivity().getApplicationContext(), response, Toast.LENGTH_SHORT).show();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container,Uitgeleend.newInstance()).addToBackStack(null);
+                transaction.commit();
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                Toast.makeText(getActivity().getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_SHORT).show();
+                // hide the progress dialog
+                hidepDialog();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("OrderID",getArguments().getString(TAG_ORDERID));
+
+                return params;
+            }
+        };
+
+        // Adding request to request queue
+        SingletonQueue.getInstance().addToRequestQueue(sr);
+    }
 
     private void showpDialog() {
         if (!pDialog.isShowing())
