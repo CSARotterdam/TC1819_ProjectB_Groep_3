@@ -54,7 +54,7 @@ public class Winkelmandje extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private static final String orderURL = "https://eduardterlouw.com/techlab/create_new_order.php";
+    private static final String orderURL = "https://eduardterlouw.com/test/create_new_order.php";
 
     private static final String TAG = NavDrawer.class.getSimpleName();
     private static final String TAG_SUCCESS = "Success";
@@ -206,10 +206,14 @@ public class Winkelmandje extends Fragment {
                 Map<String, String>  params = new HashMap<String, String>();
                 params.put("email",getActivity().getIntent().getStringExtra("email"));
 
+
                 ArrayList<HashMap<String,String>> winkelmandje = ((NavDrawer) getActivity()).winkelmandje;
                 for (int i = 0;i < winkelmandje.size();i++){
                     params.put("Product" + i, winkelmandje.get(i).get(TAG_PID));
                     params.put("ProductAmount" + i, winkelmandje.get(i).get(TAG_AMOUNT));
+                    params.put("DateOfReturn" + i,"27-05-2019");
+
+
                 }
 
                 return params;

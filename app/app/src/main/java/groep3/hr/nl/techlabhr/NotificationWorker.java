@@ -189,13 +189,13 @@ public class NotificationWorker extends Worker {
                     JSONObject json = new JSONObject(response);
 
                     if (json.getInt("Success") == 1) {
-                        Log.d("notificaton update", "succesfull");
+                        Log.d("notification update", "successful");
                     }
                     else{
-                        Log.d("notificaton update", json.getString("Update"));
+                        Log.d("notification update", json.getString("Update"));
                     }
                 } catch (JSONException e) {
-                    Log.e("Respone","is not JSON");
+                    Log.e("Response","is not JSON");
                 }
             }
         }, new Response.ErrorListener() {
