@@ -20,7 +20,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +33,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -46,21 +49,21 @@ public class Order_Set_Ready_Single extends Fragment {
 
     // TODO: Rename and change types of parameters\
 
-    private String selectURL = "https://eduardterlouw.com/techlab/select_from_products.php";
+    private String selectURL = "https://eduardterlouw.com/techlab/select_from_pending_orders.php";
     private String TAG = NavDrawer.class.getSimpleName();
-    private static final String TAG_SUCCESS = "Success";
-    private static final String TAG_PRODUCTS = "Products";
     private static final String TAG_PID = "ProductID";
-    private static final String TAG_MANUFACTURER = "ProductManufacturer";
-    private static final String TAG_CATEGORY = "ProductCategory";
     private static final String TAG_NAME = "ProductName";
-    private static final String TAG_AMOUNT = "Amount";
-    private static final String TAG_STOCK = "ProductStock";
+    private static final String TAG_AMOUNT = "ProductAmount";
+    private static final String TAG_ORDERID = "OrderID";
+    private static final String TAG_EMAIL = "Email";
 
 
     private ProgressDialog pDialog;
-    private ListView lv;
+    ArrayList<HashMap<String,String>> orderList;
 
+    private TextView OrderID;
+    private TextView userEmail;
+    private ListView lv;
     private Button btnSetOrderReady;
 
     private Order_Set_Ready_Single.OnFragmentInteractionListener mListener;
@@ -105,9 +108,14 @@ public class Order_Set_Ready_Single extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_order_ready_single, container, false);
 
+        OrderID = (TextView) view.findViewById(R.id.OrderID_order_ready);
+        OrderID.setText(getArguments().getString(TAG_ORDERID));
+        userEmail = (TextView) view.findViewById(R.id.user_email_order_ready);
+        userEmail.setText(getArguments().getString(TAG_EMAIL));
         lv = (ListView) view.findViewById(R.id.listResponse);
+        readSingleOrder();
 
-
+        btnSetOrderReady = (Button) view.findViewById(R.id.btnSetOrderReadySingle);
         btnSetOrderReady.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -122,7 +130,6 @@ public class Order_Set_Ready_Single extends Fragment {
         pDialog = new ProgressDialog(getActivity());
         pDialog.setMessage("Please wait...");
         pDialog.setCancelable(false);
-        readSingleProduct();
         return view;
     }
 
@@ -146,8 +153,67 @@ public class Order_Set_Ready_Single extends Fragment {
      * interface which is invoked if any error is encountered while processing
      * the request
      */
-    private void readSingleProduct() {
+    private void readSingleOrder() {
+        StringRequest sr = new StringRequest(Request.Method.POST,
+                selectURL, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, response);
+                orderList = new ArrayList<HashMap<String, String>>();
+                hidepDialog();
+                try {
+                    JSONObject responseObj = new JSONObject(response);
+                    JSONArray Orders = (JSONArray) responseObj.get("Orders");
+                    for(int i = 0;i < Orders.length();i++){
+                        JSONObject OrderItem = (JSONObject) Orders.get(i);
+                        HashMap<String,String> map = new HashMap<>();
+                        map.put(TAG_PID,OrderItem.getString("ProductID"));
+                        map.put(TAG_NAME,OrderItem.getString("ProductName"));
+                        map.put(TAG_AMOUNT,OrderItem.getString("ProductAmount"));
+                        orderList.add(map);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        /**
+                         * Updating parsed JSON data into ListView
+                         * */
+                        ListAdapter adapter = new SimpleAdapter(
+                                getActivity(), orderList,
+                                R.layout.order_list_item_single, new String[] { TAG_PID,TAG_NAME,
+                                TAG_AMOUNT},
+                                new int[] { R.id.detailID,R.id.detailName, R.id.detailAmount});
+
+                        lv.setAdapter(adapter);
+                    }
+                });
+
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put(TAG_ORDERID, getArguments().getString(TAG_ORDERID));
+                return params;
+            }
+        };
+        // Adding request to request queue
+        SingletonQueue.getInstance().addToRequestQueue(sr);
+
+
     }
+
 
     private void showpDialog() {
         if (!pDialog.isShowing())

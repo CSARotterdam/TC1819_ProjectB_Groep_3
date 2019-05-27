@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -87,7 +86,7 @@ public class Order_Set_Ready extends Fragment {
         MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_change_stock);
         menuItem.setChecked(true);
         toolbar.setTitle("Product Wijzigen");
-        //Initialize pdialog
+        //Initialize pDialog
         pDialog = new ProgressDialog(getActivity());
         pDialog.setMessage("Please wait...");
         pDialog.setCancelable(false);
@@ -101,10 +100,11 @@ public class Order_Set_Ready extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Order_Set_Ready_Single fragment =(Order_Set_Ready_Single) Order_Set_Ready_Single.newInstance();
-                Bundle product = new Bundle();
-                product.putString(TAG_ORDERID,((TextView) view.findViewById(R.id.pid)).getText().toString());
-                fragment.setArguments(product);
-                Log.d(TAG,product.toString());
+                Bundle order = new Bundle();
+                order.putString(TAG_ORDERID,((TextView) view.findViewById(R.id.OrderID)).getText().toString());
+                order.putString(TAG_EMAIL,((TextView) view.findViewById(R.id.user_email)).getText().toString());
+                fragment.setArguments(order);
+                Log.d(TAG,order.toString());
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_container,fragment).addToBackStack(null);
                 transaction.commit();
