@@ -39,8 +39,8 @@ import java.util.Locale;
 import java.util.Map;
 
 public class NotificationWorker extends Worker {
-    private String urlJsonObj = "https://eduardterlouw.com/test/check_notification.php";
-    private String urlQuery = "https://eduardterlouw.com/test/update_notification.php";
+    private String urlJsonObj = "https://eduardterlouw.com/techlab/check_notification.php";
+    private String urlQuery = "https://eduardterlouw.com/techlab/update_notification.php";
     private String CHANNEL_READY_ID = "Order_ready_channel";
     private String CHANNEL_RETURN_ID = "Order_return_channel";
 
