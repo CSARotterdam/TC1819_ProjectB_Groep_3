@@ -120,7 +120,7 @@ public class Product_Wijzigen extends Fragment {
         NavigationView nav = (NavigationView) getActivity().findViewById(R.id.nav_view);
         MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_inventaris);
         menuItem.setChecked(true);
-        toolbar.setTitle("Inventaris");
+        toolbar.setTitle("Inventaris wijzigen");
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_product_wijzigen, container, false);
