@@ -11,7 +11,7 @@
         android:text="OrderID"/>
 
     <TextView
-        android:id="@+id/OrderID_order_picked_up"
+        android:id="@+id/OrderID_order_handed_in"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textStyle="bold"/>
@@ -23,7 +23,7 @@
         android:text="User"/>
 
     <TextView
-        android:id="@+id/user_email_order_picked_up"
+        android:id="@+id/user_email_order_handed_in"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textStyle="bold"/>
@@ -37,9 +37,9 @@
 
     <!-- Button set Ready -->
     <Button
-        android:id="@+id/btnSetOrderPickedUpSingle"
+        android:id="@+id/btnSetOrderHandedInSingle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/markeer_order_als_afgegeven" />
+        android:text="@string/markeer_order_als_ingeleverd" />
 
 </LinearLayout>

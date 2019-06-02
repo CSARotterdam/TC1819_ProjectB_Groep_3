@@ -85,7 +85,7 @@ public class Order_Set_Ready extends Fragment {
         NavigationView nav = (NavigationView) getActivity().findViewById(R.id.nav_view);
         MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_change_stock);
         menuItem.setChecked(true);
-        toolbar.setTitle("Order Wijzigen");
+        toolbar.setTitle("All Pending Orders");
         //Initialize pDialog
         pDialog = new ProgressDialog(getActivity());
         pDialog.setMessage("Please wait...");

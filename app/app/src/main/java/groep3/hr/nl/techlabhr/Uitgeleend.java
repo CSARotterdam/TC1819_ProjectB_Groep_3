@@ -92,11 +92,16 @@ public class Uitgeleend extends Fragment {
                 transaction.commit();
             }
         });
+
         btnSetOrderHandedIn = (Button) view.findViewById(R.id.btnSetOrderHandedIn);
         btnSetOrderHandedIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO:handle button click for mark order handed in
+                Order_Set_Handed_In fragment = Order_Set_Handed_In.newInstance();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.fragment_container, fragment).addToBackStack(null);
+                transaction.commit();
             }
         });
 

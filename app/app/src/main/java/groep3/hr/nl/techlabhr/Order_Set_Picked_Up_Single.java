@@ -104,7 +104,7 @@ public class Order_Set_Picked_Up_Single extends Fragment {
         NavigationView nav = (NavigationView) getActivity().findViewById(R.id.nav_view);
         MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_inventaris);
         menuItem.setChecked(true);
-        toolbar.setTitle("Order Wijzigen");
+        toolbar.setTitle("Hand out Order");
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_order_picked_up_single, container, false);

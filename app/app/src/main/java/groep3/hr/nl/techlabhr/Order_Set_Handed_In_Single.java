@@ -41,7 +41,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Order_Set_Ready_Single extends Fragment {
+public class Order_Set_Handed_In_Single extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -49,8 +49,8 @@ public class Order_Set_Ready_Single extends Fragment {
 
     // TODO: Rename and change types of parameters\
 
-    private String selectURL = "https://eduardterlouw.com/techlab/select_from_pending_orders.php";
-    private String updateURL = "https://eduardterlouw.com/techlab/update_pending_order.php";
+    private String selectURL = "https://eduardterlouw.com/techlab/select_from_running_orders.php";
+    private String updateURL = "https://eduardterlouw.com/techlab/update_running_order.php";
     private String TAG = NavDrawer.class.getSimpleName();
     private static final String TAG_PID = "ProductID";
     private static final String TAG_NAME = "ProductName";
@@ -65,11 +65,11 @@ public class Order_Set_Ready_Single extends Fragment {
     private TextView OrderID;
     private TextView userEmail;
     private ListView lv;
-    private Button btnSetOrderReady;
+    private Button btnSetOrderHanded_In;
 
-    private Order_Set_Ready_Single.OnFragmentInteractionListener mListener;
+    private Order_Set_Handed_In_Single.OnFragmentInteractionListener mListener;
 
-    public Order_Set_Ready_Single() {
+    public Order_Set_Handed_In_Single() {
         // Required empty public constructor
     }
 
@@ -81,8 +81,8 @@ public class Order_Set_Ready_Single extends Fragment {
      * @return A new instance of fragment Placeholder.
      */
     // TODO: Rename and change types and number of parameters
-    public static Order_Set_Ready_Single newInstance() {
-        Order_Set_Ready_Single fragment = new Order_Set_Ready_Single();
+    public static Order_Set_Handed_In_Single newInstance() {
+        Order_Set_Handed_In_Single fragment = new Order_Set_Handed_In_Single();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -104,25 +104,25 @@ public class Order_Set_Ready_Single extends Fragment {
         NavigationView nav = (NavigationView) getActivity().findViewById(R.id.nav_view);
         MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_inventaris);
         menuItem.setChecked(true);
-        toolbar.setTitle("Approve Order");
+        toolbar.setTitle("Take In Order");
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_order_ready_single, container, false);
+        View view = inflater.inflate(R.layout.fragment_order_handed_in_single, container, false);
 
-        OrderID = (TextView) view.findViewById(R.id.OrderID_order_ready);
+        OrderID = (TextView) view.findViewById(R.id.OrderID_order_handed_in);
         OrderID.setText(getArguments().getString(TAG_ORDERID));
-        userEmail = (TextView) view.findViewById(R.id.user_email_order_ready);
+        userEmail = (TextView) view.findViewById(R.id.user_email_order_handed_in);
         userEmail.setText(getArguments().getString(TAG_EMAIL));
         lv = (ListView) view.findViewById(R.id.listResponse);
         readSingleOrder();
 
-        btnSetOrderReady = (Button) view.findViewById(R.id.btnSetOrderReadySingle);
-        btnSetOrderReady.setOnClickListener(new View.OnClickListener() {
+        btnSetOrderHanded_In = (Button) view.findViewById(R.id.btnSetOrderHandedInSingle);
+        btnSetOrderHanded_In.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 // Adding product to cart
-                setOrderReady();
+                setOrderHanded_In();
 
             }
 
@@ -209,7 +209,7 @@ public class Order_Set_Ready_Single extends Fragment {
         SingletonQueue.getInstance().addToRequestQueue(sr);
     }
 
-    private void setOrderReady() {
+    private void setOrderHanded_In() {
         showpDialog();
         StringRequest sr = new StringRequest(Request.Method.POST,
                 updateURL,new Response.Listener<String>() {
