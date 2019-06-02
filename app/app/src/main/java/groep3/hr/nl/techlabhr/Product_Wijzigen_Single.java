@@ -211,7 +211,7 @@ public class Product_Wijzigen_Single extends Fragment {
                     inputID.setText(product.getString("ProductID"));
                     inputManufacturer.setText(product.getString("ProductManufacturer"));
                     inputName.setText(product.getString("ProductName"));
-                    inputStock.setText(product.getString("ProductStock"));
+                    inputStock.setText(Integer.toString(product.getInt("ProductStock")));
                     inputBroken.setText(product.getString("ProductAmountBroken"));
                     spinner_category.setSelection(adapter.getPosition(product.getString("ProductCategory")));
                 } catch (JSONException e) {

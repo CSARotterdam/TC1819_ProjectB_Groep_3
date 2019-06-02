@@ -212,7 +212,8 @@ public class Product_Details extends Fragment {
                     detailManufacturer.setText(product.getString("ProductManufacturer"));
                     detailCategory.setText(product.getString("ProductCategory"));
                     detailName.setText(product.getString("ProductName"));
-                    detailStock.setText(product.getString("ProductStock"));
+                    detailStock.setText(Integer.toString(product.getInt("ProductStock")
+                            - (product.getInt("ProductAmountBroken") + product.getInt("ProductAmountInProgress"))));
                     detailBroken.setText(product.getString("ProductAmountBroken"));
 
                 } catch (JSONException e) {

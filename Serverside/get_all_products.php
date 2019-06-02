@@ -5,19 +5,17 @@
  
 // array for JSON response
 $response = array();
-
-if (isset($_POST["ProductCategory"])){
-		$Cat = $_POST["ProductCategory"];
+ 
+// include db connect class
+require_once __DIR__ . '/db_connect.php';
  
 // connecting to db
-$db = new PDO('sqlite:Test.db');
+$db = new DB_CONNECT();
    
 // read db
 $sql =<<<EOF
-      SELECT * from Products Where ProductCategory = :Cat ;
+      SELECT * from Products;
 EOF;
-	$stmt = $db->prepare($sql);
-	$stmt->execute([':Cat'=>$Cat]);
 
 // initialize response
 $response = array();
@@ -26,7 +24,8 @@ $response["Products"] = array();
 
 
 //construct response
-   while($row = $stmt->fetch(\PDO::FETCH_ASSOC) ) {
+$ret = $db->query($sql);
+   while($row = $ret->fetchArray(SQLITE3_ASSOC) ) {
 	    $product = array();
 		$product["ProductID"] = $row['ProductID'];
 		$product["ProductManufacturer"] = $row['ProductManufacturer'];
@@ -37,13 +36,9 @@ $response["Products"] = array();
 		$product["ProductAmountInProgress"] = $row['ProductAmountInProgress'];
 		array_push($response["Products"],$product);
    }
-   
+   //encode response to json
    $response["Success"] = 1;
-}else{
-	$response["Message"] = "Missing at least 1 required field";
-}
-	//encode response to json
    echo json_encode($response);
-   $db=null;
+   $db->close();
 ?>
 

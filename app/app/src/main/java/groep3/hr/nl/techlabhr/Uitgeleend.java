@@ -63,7 +63,7 @@ public class Uitgeleend extends Fragment {
         NavigationView nav = (NavigationView) getActivity().findViewById(R.id.nav_view);
         MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_change_stock);
         menuItem.setChecked(true);
-        toolbar.setTitle("Inventaris Aanpassen");
+        toolbar.setTitle("Manage Orders");
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_uitgeleend, container, false);

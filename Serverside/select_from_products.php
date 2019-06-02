@@ -30,7 +30,8 @@ EOF;
 			$response["ProductCategory"] = $row['ProductCategory'];
 			$response["ProductName"] = $row['ProductName'];
 			$response["ProductStock"] = $row['ProductStock']; 
-			$response["ProductAmountBroken"] = $row['ProductAmountBroken']; 
+			$response["ProductAmountBroken"] = $row['ProductAmountBroken'];
+			$response["ProductAmountInProgress"] = $row['ProductAmountInProgress'];
 	   }
 	   $response["Success"] = 1;
 	   
