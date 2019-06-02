@@ -12,11 +12,19 @@
         android:text="@string/MarkOrderReady" />
 
     <Button
+        android:id="@+id/btnSetOrderPickedUp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/markeer_order_als_opgehaald"
+        />
+
+    <Button
         android:id="@+id/btnSetOrderHandedIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/MarkOrderHandedIn"
         />
+
 
 
 

@@ -20,6 +20,7 @@ public class Uitgeleend extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     Button btnSetOrderReady;
+    Button btnSetOrderPickedUp;
     Button btnSetOrderHandedIn;
 
     // TODO: Rename and change types of parameters
@@ -73,6 +74,18 @@ public class Uitgeleend extends Fragment {
             @Override
             public void onClick(View v) {
                 Order_Set_Ready fragment = Order_Set_Ready.newInstance();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.fragment_container, fragment).addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
+        btnSetOrderPickedUp = (Button) view.findViewById(R.id.btnSetOrderPickedUp);
+        btnSetOrderPickedUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Order_Set_Picked_Up fragment = Order_Set_Picked_Up.newInstance();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.replace(R.id.fragment_container, fragment).addToBackStack(null);

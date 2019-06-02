@@ -33,17 +33,17 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Order_Set_Ready extends Fragment {
+public class Order_Set_Picked_Up extends Fragment {
 
 
     private ListView lv;
     ArrayList<HashMap<String,String>> orderList;
 
-    private Order_Set_Ready.OnFragmentInteractionListener mListener;
+    private Order_Set_Picked_Up.OnFragmentInteractionListener mListener;
     private ProgressDialog pDialog;
 
     // json object response url
-    private String urlJsonObj = "https://eduardterlouw.com/techlab/get_all_pending_orders.php";
+    private String urlJsonObj = "https://eduardterlouw.com/techlab/get_all_ready_orders.php";
     private String TAG = NavDrawer.class.getSimpleName();
 
     private static final String TAG_ORDERID = "OrderID";
@@ -51,7 +51,7 @@ public class Order_Set_Ready extends Fragment {
     private static final String TAG_AMOUNT_TOTAL = "Total amount of items";
 
 
-    public Order_Set_Ready() {
+    public Order_Set_Picked_Up() {
         // Required empty public constructor
     }
 
@@ -59,11 +59,11 @@ public class Order_Set_Ready extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment Order_Set_Ready.
+     * @return A new instance of fragment Order_Set_Picked_Up.
      */
     // TODO: Rename and change types and number of parameters
-    public static Order_Set_Ready newInstance() {
-        Order_Set_Ready fragment = new Order_Set_Ready();
+    public static Order_Set_Picked_Up newInstance() {
+        Order_Set_Picked_Up fragment = new Order_Set_Picked_Up();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -91,7 +91,7 @@ public class Order_Set_Ready extends Fragment {
         pDialog.setMessage("Please wait...");
         pDialog.setCancelable(false);
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_order_ready, container, false);
+        View view = inflater.inflate(R.layout.fragment_order_picked_up, container, false);
         // Load all Orders into list
         lv = (ListView) view.findViewById(R.id.listResponse);
         getAllOrders();
@@ -99,7 +99,7 @@ public class Order_Set_Ready extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Order_Set_Ready_Single fragment =(Order_Set_Ready_Single) Order_Set_Ready_Single.newInstance();
+                Order_Set_Picked_Up_Single fragment =(Order_Set_Picked_Up_Single) Order_Set_Picked_Up_Single.newInstance();
                 Bundle order = new Bundle();
                 order.putString(TAG_ORDERID,((TextView) view.findViewById(R.id.OrderID)).getText().toString());
                 order.putString(TAG_EMAIL,((TextView) view.findViewById(R.id.user_email)).getText().toString());
