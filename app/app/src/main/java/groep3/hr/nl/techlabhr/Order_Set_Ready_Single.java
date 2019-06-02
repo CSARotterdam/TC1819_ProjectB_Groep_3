@@ -51,6 +51,7 @@ public class Order_Set_Ready_Single extends Fragment {
 
     private String selectURL = "https://eduardterlouw.com/techlab/select_from_pending_orders.php";
     private String updateURL = "https://eduardterlouw.com/techlab/update_pending_order.php";
+    private String updateURLDeny = "https://eduardterlouw.com/techlab/update_pending_order_deny.php";
     private String TAG = NavDrawer.class.getSimpleName();
     private static final String TAG_PID = "ProductID";
     private static final String TAG_NAME = "ProductName";
@@ -66,6 +67,7 @@ public class Order_Set_Ready_Single extends Fragment {
     private TextView userEmail;
     private ListView lv;
     private Button btnSetOrderReady;
+    private Button btnDenyOrder;
 
     private Order_Set_Ready_Single.OnFragmentInteractionListener mListener;
 
@@ -123,6 +125,18 @@ public class Order_Set_Ready_Single extends Fragment {
             public void onClick(View view) {
                 // Adding product to cart
                 setOrderReady();
+
+            }
+
+        });
+
+        btnDenyOrder = (Button) view.findViewById(R.id.btnSetOrderDeniedSingle);
+        btnDenyOrder.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                // Adding product to cart
+                setOrderDenied();
 
             }
 
@@ -213,6 +227,46 @@ public class Order_Set_Ready_Single extends Fragment {
         showpDialog();
         StringRequest sr = new StringRequest(Request.Method.POST,
                 updateURL,new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, response);
+                hidepDialog();
+                Toast.makeText(getActivity().getApplicationContext(), response, Toast.LENGTH_SHORT).show();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container,Uitgeleend.newInstance()).addToBackStack(null);
+                transaction.commit();
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                Toast.makeText(getActivity().getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_SHORT).show();
+                // hide the progress dialog
+                hidepDialog();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("OrderID",getArguments().getString(TAG_ORDERID));
+
+                return params;
+            }
+        };
+
+        // Adding request to request queue
+        SingletonQueue.getInstance().addToRequestQueue(sr);
+    }
+
+    private void setOrderDenied() {
+        showpDialog();
+        StringRequest sr = new StringRequest(Request.Method.POST,
+                updateURLDeny,new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {

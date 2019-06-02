@@ -42,4 +42,10 @@
         android:layout_height="wrap_content"
         android:text="@string/MarkOrderReady" />
 
+    <Button
+        android:id="@+id/btnSetOrderDeniedSingle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/wijs_order_af" />
+
 </LinearLayout>
