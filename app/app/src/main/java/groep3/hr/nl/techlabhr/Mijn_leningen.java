@@ -6,12 +6,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -66,6 +68,7 @@ public class Mijn_leningen extends Fragment {
     private ArrayList<HashMap<String,String>> completedList;
 
     private OnFragmentInteractionListener mListener;
+    private AdapterView.OnItemClickListener clickListener;
 
     public Mijn_leningen() {
         // Required empty public constructor
@@ -111,11 +114,29 @@ public class Mijn_leningen extends Fragment {
         pDialog.setMessage("Please wait...");
         pDialog.setCancelable(false);
 
+        clickListener = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Mijn_leningen_single fragment = (Mijn_leningen_single) Mijn_leningen_single.newInstance();
+                Bundle order = new Bundle();
+                order.putString(TAG_ORDERID, ((TextView) view.findViewById(R.id.detailID)).getText().toString());
+                fragment.setArguments(order);
+                Log.d(TAG, order.toString());
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, fragment).addToBackStack(null);
+                transaction.commit();
+            }
+        };
         listPending = view.findViewById(R.id.listPending);
+        listPending.setOnItemClickListener(clickListener);
         listReady = view.findViewById(R.id.listReady);
+        listReady.setOnItemClickListener(clickListener);
         listInProgress = view.findViewById(R.id.listInProgress);
+        listInProgress.setOnItemClickListener(clickListener);
         listDenied = view.findViewById(R.id.listDenied);
+        listDenied.setOnItemClickListener(clickListener);
         listCompleted = view.findViewById(R.id.listCompleted);
+        listCompleted.setOnItemClickListener(clickListener);
         getAllOrders();
 
         return view;
