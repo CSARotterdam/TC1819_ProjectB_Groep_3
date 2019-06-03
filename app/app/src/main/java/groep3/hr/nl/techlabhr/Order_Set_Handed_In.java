@@ -83,9 +83,9 @@ public class Order_Set_Handed_In extends Fragment {
         //// Set title and menu to appropriate fragment
         Toolbar toolbar= (Toolbar) getActivity().findViewById(R.id.toolbar);
         NavigationView nav = (NavigationView) getActivity().findViewById(R.id.nav_view);
-        MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_change_stock);
+        MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_uitgeleend);
         menuItem.setChecked(true);
-        toolbar.setTitle("All Running/Overdue Orders");
+        toolbar.setTitle("All Running Orders");
         //Initialize pDialog
         pDialog = new ProgressDialog(getActivity());
         pDialog.setMessage("Please wait...");

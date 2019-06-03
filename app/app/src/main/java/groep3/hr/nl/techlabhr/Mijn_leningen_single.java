@@ -99,7 +99,7 @@ public class Mijn_leningen_single extends Fragment {
         // Set title and menu to appropriate fragment
         Toolbar toolbar= (Toolbar) getActivity().findViewById(R.id.toolbar);
         NavigationView nav = (NavigationView) getActivity().findViewById(R.id.nav_view);
-        MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_inventaris);
+        MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_leningen);
         menuItem.setChecked(true);
         toolbar.setTitle("Mijn leningen");
 
@@ -168,7 +168,7 @@ public class Mijn_leningen_single extends Fragment {
                          * */
                         ListAdapter adapter = new SimpleAdapter(
                                 getActivity(), orderList,
-                                R.layout.order_list_item_single, new String[] { TAG_PID,
+                                R.layout.order_list_item_single, new String[] { TAG_PID,TAG_NAME,
                                 TAG_AMOUNT},
                                 new int[] { R.id.detailID,R.id.detailName, R.id.detailAmount});
 
