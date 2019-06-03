@@ -55,6 +55,7 @@ public class Categories extends Fragment {
     private static final String TAG_PID = "ProductID";
     private static final String TAG_MANUFACTURER = "ProductManufacturer";
     private static final String TAG_CATEGORY = "ProductCategory";
+    private static final String TAG_ICON = "";
     private static final String TAG_NAME = "ProductName";
     private static final String TAG_STOCK = "ProductStock";
     private static final String TAG_BROKEN = "ProductAmountBroken";
@@ -118,6 +119,7 @@ public class Categories extends Fragment {
                 Inventaris fragment =(Inventaris) Inventaris.newInstance();
                 Bundle cat = new Bundle();
                 cat.putString(TAG_CATEGORY,((TextView) view.findViewById(R.id.category_name)).getText().toString());
+
                 fragment.setArguments(cat);
                 Log.d(TAG,cat.toString());
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -154,7 +156,7 @@ public class Categories extends Fragment {
 
                             HashMap<String,String> map = new HashMap<String,String>();
                             map.put(TAG_CATEGORY,(String) Categories.get(i));
-
+                            map.put(TAG_ICON,Integer.toString(R.drawable.cat_icon));
                             catList.add(map);
                             Log.d(TAG,catList.toString());
 
@@ -168,8 +170,8 @@ public class Categories extends Fragment {
                                  * */
                                 ListAdapter adapter = new SimpleAdapter(
                                         getActivity(), catList,
-                                        R.layout.category_list_item, new String[] { TAG_CATEGORY},
-                                        new int[] { R.id.category_name });
+                                        R.layout.category_list_item, new String[] { TAG_ICON, TAG_CATEGORY},
+                                        new int[] { R.id.cat_icon, R.id.category_name });
 
                                 lv.setAdapter(adapter);
                             }

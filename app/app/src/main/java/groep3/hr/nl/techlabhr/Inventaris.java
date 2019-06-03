@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.design.widget.FloatingActionButton;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -71,6 +72,7 @@ public class Inventaris extends Fragment {
     private static final String TAG_CATEGORY = "ProductCategory";
     private static final String TAG_NAME = "ProductName";
     private static final String TAG_STOCK = "ProductStock";
+    private static final String TAG_ICON ="";
     private static final String TAG_BROKEN = "ProductAmountBroken";
 
     private static String TAG = NavDrawer.class.getSimpleName();
@@ -181,6 +183,7 @@ public class Inventaris extends Fragment {
                             map.put(TAG_NAME,productName);
                             map.put(TAG_STOCK,"In stock: " + Integer.toString(productStock));
                             productsList.add(map);
+                            map.put(TAG_ICON, Integer.toString(R.drawable.item_icon));
                             Log.d(TAG,productsList.toString());
 
 
@@ -194,8 +197,8 @@ public class Inventaris extends Fragment {
                                 ListAdapter adapter = new SimpleAdapter(
                                         getActivity(), productsList,
                                         R.layout.product_list_item, new String[] { TAG_PID,
-                                        TAG_NAME,TAG_STOCK},
-                                        new int[] { R.id.pid, R.id.product_name,R.id.product_stock });
+                                        TAG_NAME,TAG_STOCK,TAG_ICON},
+                                        new int[] { R.id.pid, R.id.product_name,R.id.product_stock, R.id.item_icon});
 
                                 lv.setAdapter(adapter);
                             }

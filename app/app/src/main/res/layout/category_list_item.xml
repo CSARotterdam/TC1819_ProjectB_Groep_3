@@ -4,7 +4,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
+    <ImageView
+        android:id="@+id/cat_icon"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:src="@drawable/cat_icon"
+        android:layout_gravity="center"
+        android:scaleType="fitXY"/>
 
     <!-- Name Label -->
     <TextView
@@ -13,7 +19,8 @@
         android:layout_height="wrap_content"
         android:paddingTop="6dip"
         android:textSize="17sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:gravity="center"/>
 
 
 

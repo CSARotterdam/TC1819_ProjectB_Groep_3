@@ -83,5 +83,6 @@
     <string name="add_to_cart">Add to Cart</string>
     <string name="amountbroken">AmountBroken</string>
     <string name="email">Email</string>
+    <string name="one">1</string>
 
 </resources>
