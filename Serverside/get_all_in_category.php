@@ -33,7 +33,8 @@ $response["Products"] = array();
 		$product["ProductCategory"] = $row['ProductCategory'];
 		$product["ProductName"] = $row['ProductName'];
 		$product["ProductStock"] = $row['ProductStock']; 
-		$product["ProductAmountBroken"] = $row['ProductAmountBroken']; 
+		$product["ProductAmountBroken"] = $row['ProductAmountBroken'];
+		$product["ProductAmountInProgress"] = $row['ProductAmountInProgress'];
 		array_push($response["Products"],$product);
    }
    

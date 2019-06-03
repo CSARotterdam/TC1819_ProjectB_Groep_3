@@ -84,4 +84,12 @@
     <string name="amountbroken">AmountBroken</string>
     <string name="email">Email</string>
 
+    <string name="sharedPreferenceKey">groep3.hr.nl.techlabhr.PREFFERENCE_FILE_KEY</string>
+    <string name="MarkOrderReady">Markeer order als ready for pickup</string>
+    <string name="MarkOrderHandedIn">Markeer order als ingeleverd</string>
+    <string name="markeer_order_als_opgehaald">Markeer order als opgehaald</string>
+    <string name="markeer_order_als_ingeleverd">Markeer Order als Ingeleverd</string>
+    <string name="markeer_order_als_afgegeven">Markeer Order als afgegeven</string>
+    <string name="wijs_order_af">Wijs Order Af</string>
+
 </resources>

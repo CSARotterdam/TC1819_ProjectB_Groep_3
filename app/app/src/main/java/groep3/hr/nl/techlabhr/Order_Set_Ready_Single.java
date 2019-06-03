@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +20,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,17 +31,17 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Product_Wijzigen_Single extends Fragment {
+public class Order_Set_Ready_Single extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -45,28 +49,29 @@ public class Product_Wijzigen_Single extends Fragment {
 
     // TODO: Rename and change types of parameters\
 
-    private String selectURL = "https://eduardterlouw.com/techlab/select_from_products.php";
-    private String updateURL = "https://eduardterlouw.com/techlab/update_product.php";
-    private String deleteURL = "https://eduardterlouw.com/techlab/delete_product.php";
+    private String selectURL = "https://eduardterlouw.com/techlab/select_from_pending_orders.php";
+    private String updateURL = "https://eduardterlouw.com/techlab/update_pending_order.php";
+    private String updateURLDeny = "https://eduardterlouw.com/techlab/update_pending_order_deny.php";
     private String TAG = NavDrawer.class.getSimpleName();
-    private String TAG_PID = "ProductID";
+    private static final String TAG_PID = "ProductID";
+    private static final String TAG_NAME = "ProductName";
+    private static final String TAG_AMOUNT = "ProductAmount";
+    private static final String TAG_ORDERID = "OrderID";
+    private static final String TAG_EMAIL = "Email";
 
 
     private ProgressDialog pDialog;
-    private TextView inputID;
-    private EditText inputManufacturer;
-    private Spinner spinner_category;
-    private ArrayAdapter<String> adapter;
-    private EditText inputName;
-    private EditText inputStock;
-    private EditText inputBroken;
+    ArrayList<HashMap<String,String>> orderList;
 
-    private Button btnSave;
-    private Button btnDelete;
+    private TextView OrderID;
+    private TextView userEmail;
+    private ListView lv;
+    private Button btnSetOrderReady;
+    private Button btnDenyOrder;
 
-    private Product_Wijzigen_Single.OnFragmentInteractionListener mListener;
+    private Order_Set_Ready_Single.OnFragmentInteractionListener mListener;
 
-    public Product_Wijzigen_Single() {
+    public Order_Set_Ready_Single() {
         // Required empty public constructor
     }
 
@@ -78,8 +83,8 @@ public class Product_Wijzigen_Single extends Fragment {
      * @return A new instance of fragment Placeholder.
      */
     // TODO: Rename and change types and number of parameters
-    public static Product_Wijzigen_Single newInstance() {
-        Product_Wijzigen_Single fragment = new Product_Wijzigen_Single();
+    public static Order_Set_Ready_Single newInstance() {
+        Order_Set_Ready_Single fragment = new Order_Set_Ready_Single();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -99,86 +104,47 @@ public class Product_Wijzigen_Single extends Fragment {
         // Set title and menu to appropriate fragment
         Toolbar toolbar= (Toolbar) getActivity().findViewById(R.id.toolbar);
         NavigationView nav = (NavigationView) getActivity().findViewById(R.id.nav_view);
-        MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_change_stock);
+        MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_uitgeleend);
         menuItem.setChecked(true);
-        toolbar.setTitle("Product Wijzigen");
+        toolbar.setTitle("Approve Order");
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_product_wijzigen_single, container, false);
+        View view = inflater.inflate(R.layout.fragment_order_ready_single, container, false);
 
-        inputID = (TextView) view.findViewById(R.id.inputID);
-        inputManufacturer = (EditText) view.findViewById(R.id.inputManufacturer);
-        inputName = (EditText) view.findViewById(R.id.inputName);
-        inputStock = (EditText) view.findViewById(R.id.inputStock);
-        inputBroken = (EditText) view.findViewById(R.id.inputBroken);
+        OrderID = (TextView) view.findViewById(R.id.OrderID_order_ready);
+        OrderID.setText(getArguments().getString(TAG_ORDERID));
+        userEmail = (TextView) view.findViewById(R.id.user_email_order_ready);
+        userEmail.setText(getArguments().getString(TAG_EMAIL));
+        lv = (ListView) view.findViewById(R.id.listResponse);
+        readSingleOrder();
 
-        spinner_category = (Spinner) view.findViewById(R.id.spinner_category);
-        String[] categories = new String[]{getString(R.string.cat_cables),
-                getString(R.string.cat_console),getString(R.string.cat_computer),
-                getString(R.string.cat_drone),getString(R.string.cat_game),
-                getString(R.string.cat_micro),getString(R.string.cat_rc),
-                getString(R.string.cat_smart),getString(R.string.cat_virtual),
-                getString(R.string.cat_internet)};
-        adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_dropdown_item, categories);
-        spinner_category.setAdapter(adapter);
-        spinner_category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id) {
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        btnSave = (Button) view.findViewById(R.id.btnSave);
-        btnDelete = (Button) view.findViewById(R.id.btnDelete);
-
-        btnSave.setOnClickListener(new View.OnClickListener() {
+        btnSetOrderReady = (Button) view.findViewById(R.id.btnSetOrderReadySingle);
+        btnSetOrderReady.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                // creating new product in background thread
-                updateProduct();
+                // Adding product to cart
+                setOrderReady();
+
             }
+
         });
 
-        btnDelete.setOnClickListener(new View.OnClickListener() {
+        btnDenyOrder = (Button) view.findViewById(R.id.btnSetOrderDeniedSingle);
+        btnDenyOrder.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                // creating new product in background thread
-                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which){
-                            case DialogInterface.BUTTON_POSITIVE:
-                                //Yes button clicked
-                                deleteProduct();
-                                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                                transaction.replace(R.id.fragment_container,Product_Wijzigen.newInstance()).addToBackStack(null);
-                                transaction.commit();
-                                break;
+                // Adding product to cart
+                setOrderDenied();
 
-                            case DialogInterface.BUTTON_NEGATIVE:
-                                //No button clicked
-                                FragmentTransaction transaction2 = getActivity().getSupportFragmentManager().beginTransaction();
-                                transaction2.replace(R.id.fragment_container,Product_Wijzigen.newInstance()).addToBackStack(null);
-                                transaction2.commit();
-                                break;
-                        }
-                    }
-                };
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage("Are you sure? This action cannot be undone").setPositiveButton("Yes", dialogClickListener)
-                        .setNegativeButton("No", dialogClickListener).show();
             }
+
         });
+
         pDialog = new ProgressDialog(getActivity());
         pDialog.setMessage("Please wait...");
         pDialog.setCancelable(false);
-        readSingleProduct();
         return view;
     }
 
@@ -198,25 +164,44 @@ public class Product_Wijzigen_Single extends Fragment {
      * interface which is invoked if any error is encountered while processing
      * the request
      */
-    private void readSingleProduct() {
+    private void readSingleOrder() {
         StringRequest sr = new StringRequest(Request.Method.POST,
                 selectURL, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, response);
+                orderList = new ArrayList<HashMap<String, String>>();
                 hidepDialog();
                 try {
-                    JSONObject product = new JSONObject(response);
-                    inputID.setText(product.getString("ProductID"));
-                    inputManufacturer.setText(product.getString("ProductManufacturer"));
-                    inputName.setText(product.getString("ProductName"));
-                    inputStock.setText(Integer.toString(product.getInt("ProductStock")));
-                    inputBroken.setText(product.getString("ProductAmountBroken"));
-                    spinner_category.setSelection(adapter.getPosition(product.getString("ProductCategory")));
+                    JSONObject responseObj = new JSONObject(response);
+                    JSONArray Orders = (JSONArray) responseObj.get("Orders");
+                    for(int i = 0;i < Orders.length();i++){
+                        JSONObject OrderItem = (JSONObject) Orders.get(i);
+                        HashMap<String,String> map = new HashMap<>();
+                        map.put(TAG_PID,OrderItem.getString("ProductID"));
+                        map.put(TAG_NAME,OrderItem.getString("ProductName"));
+                        map.put(TAG_AMOUNT,OrderItem.getString("ProductAmount"));
+                        orderList.add(map);
+                    }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        /**
+                         * Updating parsed JSON data into ListView
+                         * */
+                        ListAdapter adapter = new SimpleAdapter(
+                                getActivity(), orderList,
+                                R.layout.order_list_item_single, new String[] { TAG_PID,TAG_NAME,
+                                TAG_AMOUNT},
+                                new int[] { R.id.detailID,R.id.detailName, R.id.detailAmount});
+
+                        lv.setAdapter(adapter);
+                    }
+                });
 
             }
 
@@ -230,17 +215,15 @@ public class Product_Wijzigen_Single extends Fragment {
             protected Map<String, String> getParams()
             {
                 Map<String, String>  params = new HashMap<String, String>();
-                params.put(TAG_PID, getArguments().getString(TAG_PID));
+                params.put(TAG_ORDERID, getArguments().getString(TAG_ORDERID));
                 return params;
             }
         };
         // Adding request to request queue
         SingletonQueue.getInstance().addToRequestQueue(sr);
-
-
     }
 
-    private void updateProduct() {
+    private void setOrderReady() {
         showpDialog();
         StringRequest sr = new StringRequest(Request.Method.POST,
                 updateURL,new Response.Listener<String>() {
@@ -251,7 +234,7 @@ public class Product_Wijzigen_Single extends Fragment {
                 hidepDialog();
                 Toast.makeText(getActivity().getApplicationContext(), response, Toast.LENGTH_SHORT).show();
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container,Product_Wijzigen.newInstance()).addToBackStack(null);
+                transaction.replace(R.id.fragment_container,Uitgeleend.newInstance()).addToBackStack(null);
                 transaction.commit();
 
             }
@@ -270,17 +253,7 @@ public class Product_Wijzigen_Single extends Fragment {
             protected Map<String, String> getParams()
             {
                 Map<String, String>  params = new HashMap<String, String>();
-                    params.put("ProductID",getArguments().getString(TAG_PID));
-                if (inputManufacturer.getText().toString().length() > 0){
-                    params.put("ProductManufacturer", inputManufacturer.getText().toString());}
-                if (spinner_category.getSelectedItem().toString().length() > 0){
-                    params.put("ProductCategory", spinner_category.getSelectedItem().toString());}
-                if (inputName.getText().toString().length() > 0){
-                    params.put("ProductName", inputName.getText().toString());}
-                if (inputStock.getText().toString().length() > 0){
-                    params.put("ProductStock", inputStock.getText().toString());}
-                if (inputBroken.getText().toString().length() > 0){
-                    params.put("ProductAmountBroken", inputBroken.getText().toString());}
+                params.put("OrderID",getArguments().getString(TAG_ORDERID));
 
                 return params;
             }
@@ -289,10 +262,11 @@ public class Product_Wijzigen_Single extends Fragment {
         // Adding request to request queue
         SingletonQueue.getInstance().addToRequestQueue(sr);
     }
-    private void deleteProduct() {
+
+    private void setOrderDenied() {
         showpDialog();
         StringRequest sr = new StringRequest(Request.Method.POST,
-                deleteURL,new Response.Listener<String>() {
+                updateURLDeny,new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -300,7 +274,7 @@ public class Product_Wijzigen_Single extends Fragment {
                 hidepDialog();
                 Toast.makeText(getActivity().getApplicationContext(), response, Toast.LENGTH_SHORT).show();
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container,Product_Wijzigen.newInstance()).addToBackStack(null);
+                transaction.replace(R.id.fragment_container,Uitgeleend.newInstance()).addToBackStack(null);
                 transaction.commit();
 
             }
@@ -319,7 +293,7 @@ public class Product_Wijzigen_Single extends Fragment {
             protected Map<String, String> getParams()
             {
                 Map<String, String>  params = new HashMap<String, String>();
-                params.put("ProductID",getArguments().getString(TAG_PID));
+                params.put("OrderID",getArguments().getString(TAG_ORDERID));
 
                 return params;
             }

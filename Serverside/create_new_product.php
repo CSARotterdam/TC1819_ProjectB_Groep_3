@@ -16,14 +16,15 @@ isset($_POST["ProductName"])&& isset($_POST["ProductStock"])){
 	$Name = $_POST["ProductName"];
 	$Stock = $_POST["ProductStock"];
 	$AmountBroken = 0;
+	$AmountInProgress = 0;
 	
 
 	// connecting to db
 	$db = new PDO('sqlite:Test.db');
 	
 	$sql =<<<EOF
-      INSERT INTO Products (ProductID,ProductManufacturer,ProductCategory,ProductName,ProductStock,ProductAmountBroken)
-	  VALUES (:ProductID,:ProductManufacturer,:ProductCategory,:ProductName,:ProductStock,:ProductAmountBroken);
+      INSERT INTO Products (ProductID,ProductManufacturer,ProductCategory,ProductName,ProductStock,ProductAmountBroken,ProductAmountInProgress)
+	  VALUES (:ProductID,:ProductManufacturer,:ProductCategory,:ProductName,:ProductStock,:ProductAmountBroken,:ProductAmountInProgress);
 EOF;
 	$stmt = $db->prepare($sql);
 	$stmt->bindParam(':ProductID',$ID);
@@ -32,6 +33,7 @@ EOF;
 	$stmt->bindParam(':ProductName',$Name);
 	$stmt->bindParam(':ProductStock',$Stock);
 	$stmt->bindParam(':ProductAmountBroken',$AmountBroken);
+	$stmt->bindParam(':ProductAmountInProgress',$AmountInProgress);
 	
 	 $ret = $stmt->execute();
 	 if (!$ret){

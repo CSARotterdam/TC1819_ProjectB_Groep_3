@@ -20,6 +20,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +33,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,7 +41,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Product_Details extends Fragment {
+public class Order_Set_Handed_In_Single extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -45,32 +49,27 @@ public class Product_Details extends Fragment {
 
     // TODO: Rename and change types of parameters\
 
-    private String selectURL = "https://eduardterlouw.com/techlab/select_from_products.php";
+    private String selectURL = "https://eduardterlouw.com/techlab/select_from_running_orders.php";
+    private String updateURL = "https://eduardterlouw.com/techlab/update_running_order.php";
     private String TAG = NavDrawer.class.getSimpleName();
-    private static final String TAG_SUCCESS = "Success";
-    private static final String TAG_PRODUCTS = "Products";
     private static final String TAG_PID = "ProductID";
-    private static final String TAG_MANUFACTURER = "ProductManufacturer";
-    private static final String TAG_CATEGORY = "ProductCategory";
     private static final String TAG_NAME = "ProductName";
-    private static final String TAG_AMOUNT = "Amount";
-    private static final String TAG_STOCK = "ProductStock";
+    private static final String TAG_AMOUNT = "ProductAmount";
+    private static final String TAG_ORDERID = "OrderID";
+    private static final String TAG_EMAIL = "Email";
 
 
     private ProgressDialog pDialog;
-    private TextView detailID;
-    private TextView detailManufacturer;
-    private TextView detailCategory;
-    private TextView detailName;
-    private TextView detailStock;
-    private TextView detailBroken;
-    private EditText inputAmount;
+    ArrayList<HashMap<String,String>> orderList;
 
-    private Button btnCart;
+    private TextView OrderID;
+    private TextView userEmail;
+    private ListView lv;
+    private Button btnSetOrderHanded_In;
 
-    private Product_Details.OnFragmentInteractionListener mListener;
+    private Order_Set_Handed_In_Single.OnFragmentInteractionListener mListener;
 
-    public Product_Details() {
+    public Order_Set_Handed_In_Single() {
         // Required empty public constructor
     }
 
@@ -82,8 +81,8 @@ public class Product_Details extends Fragment {
      * @return A new instance of fragment Placeholder.
      */
     // TODO: Rename and change types and number of parameters
-    public static Product_Details newInstance() {
-        Product_Details fragment = new Product_Details();
+    public static Order_Set_Handed_In_Single newInstance() {
+        Order_Set_Handed_In_Single fragment = new Order_Set_Handed_In_Single();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -103,29 +102,27 @@ public class Product_Details extends Fragment {
         // Set title and menu to appropriate fragment
         Toolbar toolbar= (Toolbar) getActivity().findViewById(R.id.toolbar);
         NavigationView nav = (NavigationView) getActivity().findViewById(R.id.nav_view);
-        MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_inventaris);
+        MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_uitgeleend);
         menuItem.setChecked(true);
-        toolbar.setTitle("Inventaris");
+        toolbar.setTitle("Take In Order");
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_product_details, container, false);
+        View view = inflater.inflate(R.layout.fragment_order_handed_in_single, container, false);
 
-        detailID = (TextView) view.findViewById(R.id.detailID);
-        detailManufacturer = (TextView) view.findViewById(R.id.detailManufacturer);
-        detailName = (TextView) view.findViewById(R.id.detailName);
-        detailStock = (TextView) view.findViewById(R.id.detailStock);
-        detailBroken = (TextView) view.findViewById(R.id.detailBroken);
-        detailCategory = (TextView) view.findViewById(R.id.detailCategory);
-        inputAmount = (EditText) view.findViewById(R.id.inputAmount);
-        btnCart = (Button) view.findViewById(R.id.btnCart);
+        OrderID = (TextView) view.findViewById(R.id.OrderID_order_handed_in);
+        OrderID.setText(getArguments().getString(TAG_ORDERID));
+        userEmail = (TextView) view.findViewById(R.id.user_email_order_handed_in);
+        userEmail.setText(getArguments().getString(TAG_EMAIL));
+        lv = (ListView) view.findViewById(R.id.listResponse);
+        readSingleOrder();
 
-
-        btnCart.setOnClickListener(new View.OnClickListener() {
+        btnSetOrderHanded_In = (Button) view.findViewById(R.id.btnSetOrderHandedInSingle);
+        btnSetOrderHanded_In.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 // Adding product to cart
-                addToCart();
+                setOrderHanded_In();
 
             }
 
@@ -134,51 +131,7 @@ public class Product_Details extends Fragment {
         pDialog = new ProgressDialog(getActivity());
         pDialog.setMessage("Please wait...");
         pDialog.setCancelable(false);
-        readSingleProduct();
         return view;
-    }
-
-    private void addToCart() {
-        Boolean alreadyPresent = false;
-        int amount;
-
-        if (inputAmount.getText().length() == 0){
-            amount = 1;
-        }else{
-            amount = Integer.parseInt(inputAmount.getText().toString());
-        }
-        ArrayList<HashMap<String,String>> winkelmandje =((NavDrawer) getActivity()).winkelmandje;
-        for(int i = 0; i < winkelmandje.size();i++){
-            if(winkelmandje.get(i).containsValue(detailID.getText().toString())){
-                alreadyPresent = true;
-            }
-        }
-        if(!alreadyPresent) {
-            if(amount <= Integer.parseInt(detailStock.getText().toString())){
-                HashMap<String, String> map = new HashMap<String, String>();
-                map.put(TAG_PID, detailID.getText().toString());
-                map.put(TAG_MANUFACTURER, detailManufacturer.getText().toString());
-                map.put(TAG_CATEGORY, detailCategory.getText().toString());
-                map.put(TAG_NAME, detailName.getText().toString());
-                map.put(TAG_STOCK,detailStock.getText().toString());
-                map.put(TAG_AMOUNT, Integer.toString(amount));
-
-                winkelmandje.add(map);
-
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.fragment_container, Winkelmandje.newInstance()).addToBackStack(null);
-                transaction.commit();
-            }else{
-                Toast.makeText(getActivity().getApplicationContext(),
-                        "Desired amount of items exceeds current stock",
-                        Toast.LENGTH_LONG).show();
-            }
-        }else{
-            Toast.makeText(getActivity().getApplicationContext(),
-                    "Item already present in winkelmandje",
-                    Toast.LENGTH_LONG).show();
-        }
     }
 
     /*
@@ -197,28 +150,44 @@ public class Product_Details extends Fragment {
      * interface which is invoked if any error is encountered while processing
      * the request
      */
-    private void readSingleProduct() {
-        showpDialog();
+    private void readSingleOrder() {
         StringRequest sr = new StringRequest(Request.Method.POST,
                 selectURL, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, response);
+                orderList = new ArrayList<HashMap<String, String>>();
                 hidepDialog();
                 try {
-                    JSONObject product = new JSONObject(response);
-                    detailID.setText(product.getString("ProductID"));
-                    detailManufacturer.setText(product.getString("ProductManufacturer"));
-                    detailCategory.setText(product.getString("ProductCategory"));
-                    detailName.setText(product.getString("ProductName"));
-                    detailStock.setText(Integer.toString(product.getInt("ProductStock")
-                            - (product.getInt("ProductAmountBroken") + product.getInt("ProductAmountInProgress"))));
-                    detailBroken.setText(product.getString("ProductAmountBroken"));
+                    JSONObject responseObj = new JSONObject(response);
+                    JSONArray Orders = (JSONArray) responseObj.get("Orders");
+                    for(int i = 0;i < Orders.length();i++){
+                        JSONObject OrderItem = (JSONObject) Orders.get(i);
+                        HashMap<String,String> map = new HashMap<>();
+                        map.put(TAG_PID,OrderItem.getString("ProductID"));
+                        map.put(TAG_NAME,OrderItem.getString("ProductName"));
+                        map.put(TAG_AMOUNT,OrderItem.getString("ProductAmount"));
+                        orderList.add(map);
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        /**
+                         * Updating parsed JSON data into ListView
+                         * */
+                        ListAdapter adapter = new SimpleAdapter(
+                                getActivity(), orderList,
+                                R.layout.order_list_item_single, new String[] { TAG_PID,TAG_NAME,
+                                TAG_AMOUNT},
+                                new int[] { R.id.detailID,R.id.detailName, R.id.detailAmount});
+
+                        lv.setAdapter(adapter);
+                    }
+                });
 
             }
 
@@ -232,14 +201,52 @@ public class Product_Details extends Fragment {
             protected Map<String, String> getParams()
             {
                 Map<String, String>  params = new HashMap<String, String>();
-                params.put(TAG_PID, getArguments().getString(TAG_PID));
+                params.put(TAG_ORDERID, getArguments().getString(TAG_ORDERID));
                 return params;
             }
         };
         // Adding request to request queue
         SingletonQueue.getInstance().addToRequestQueue(sr);
+    }
 
+    private void setOrderHanded_In() {
+        showpDialog();
+        StringRequest sr = new StringRequest(Request.Method.POST,
+                updateURL,new Response.Listener<String>() {
 
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, response);
+                hidepDialog();
+                Toast.makeText(getActivity().getApplicationContext(), response, Toast.LENGTH_SHORT).show();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container,Uitgeleend.newInstance()).addToBackStack(null);
+                transaction.commit();
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                Toast.makeText(getActivity().getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_SHORT).show();
+                // hide the progress dialog
+                hidepDialog();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("OrderID",getArguments().getString(TAG_ORDERID));
+
+                return params;
+            }
+        };
+
+        // Adding request to request queue
+        SingletonQueue.getInstance().addToRequestQueue(sr);
     }
 
     private void showpDialog() {

@@ -18,9 +18,6 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:name="groep3.hr.nl.techlabhr.SingletonQueue">
         <activity
-            android:name=".MainActivity"
-            android:label="@string/title_activity_main" />
-        <activity
             android:name=".NavDrawer"
             android:label="@string/title_activity_nav_drawer"
             android:theme="@style/AppTheme.NoActionBar" />
