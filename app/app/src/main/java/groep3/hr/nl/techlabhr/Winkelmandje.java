@@ -130,7 +130,6 @@ public class Winkelmandje extends Fragment {
             }
         });
 
-        EditText et;
         for(int i = 0; i < ((NavDrawer) getActivity()).winkelmandje.size();i++){
             //TODO: add checks for editing amount of items from within winkelmandje
         }
@@ -183,8 +182,6 @@ public class Winkelmandje extends Fragment {
     /**public void onCheckboxClicked() {
         CheckBox checkBox = (CheckBox) find*/
 
-
-    }
     private void createNewOrder() {
         showpDialog();
         StringRequest sr = new StringRequest(Request.Method.POST,

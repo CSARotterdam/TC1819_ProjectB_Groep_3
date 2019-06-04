@@ -187,7 +187,7 @@ public class Inventaris extends Fragment {
                             HashMap<String,String> map = new HashMap<String,String>();
                             map.put(TAG_PID,productID);
                             map.put(TAG_NAME,productName);
-                            map.put(TAG_STOCK,"In stock: " + Integer.toString(productStock));
+                            map.put(TAG_STOCK,Integer.toString(productStock));
                             productsList.add(map);
                             map.put(TAG_ICON, Integer.toString(R.drawable.item_icon));
                             Log.d(TAG,productsList.toString());

@@ -38,7 +38,7 @@ public class NavDrawer extends AppCompatActivity {
     private static final String TAG_STOCK = "ProductStock";
 
     private TextView detailStock;
-    private int amount = 0;
+
 
 
 
@@ -77,21 +77,29 @@ public class NavDrawer extends AppCompatActivity {
 
     }
     public void increase_amount(View view){
-        amount++;
-        display(amount);
+        View row =(View) view.getParent().getParent();
+        int activeStock = 0;
+        for (int i = 0; i< winkelmandje.size();i++){
+            if (winkelmandje.get(i).containsValue(((TextView) row.findViewById(R.id.product_name)).getText().toString())){
+                activeStock = Integer.parseInt(winkelmandje.get(i).get(TAG_STOCK));
+            }
+        }
+        int amount = Integer.parseInt(((TextView)row.findViewById(R.id.product_amount)).getText().toString());
+        if (amount < activeStock) {
+            amount++;
+        }
+        ((TextView) row.findViewById(R.id.product_amount)).setText(""+amount);
     }
     public void decrease_amount(View view){
-        amount--;
-        if (amount<1){
+        View row = (View) view.getParent().getParent();
+        int amount = Integer.parseInt(((TextView)row.findViewById(R.id.product_amount)).getText().toString());
+        amount --;
+        if (amount < 1){
             amount=1;
         }
-        display(amount);
+        ((TextView) row.findViewById(R.id.product_amount)).setText(""+amount);
     }
-    public void display(int number){
-        TextView displayAmount = (TextView) findViewById(R.id.product_amount);
-        displayAmount.setText(""+number);
 
-    }
     public void InventoryCartHandler(View v){
         View btnLayout =(View) v.getParent();
         View row = (View) btnLayout.getParent();
@@ -106,6 +114,7 @@ public class NavDrawer extends AppCompatActivity {
             HashMap<String, String> map = new HashMap<String, String>();
             map.put(TAG_PID, ((TextView) row.findViewById(R.id.pid)).getText().toString());
             map.put(TAG_NAME, ((TextView) row.findViewById(R.id.product_name)).getText().toString());
+            map.put(TAG_STOCK, ((TextView) row.findViewById(R.id.product_stock)).getText().toString());
             map.put(TAG_AMOUNT, Integer.toString(amount));
 
             winkelmandje.add(map);
