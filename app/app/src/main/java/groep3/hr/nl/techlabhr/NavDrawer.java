@@ -88,7 +88,7 @@ public class NavDrawer extends AppCompatActivity {
         if (amount < activeStock) {
             amount++;
         }
-        ((TextView) row.findViewById(R.id.product_amount)).setText(""+amount);
+        ((TextView) row.findViewById(R.id.product_amount)).setText(Integer.toString(amount));
     }
     public void decrease_amount(View view){
         View row = (View) view.getParent().getParent();
@@ -97,7 +97,7 @@ public class NavDrawer extends AppCompatActivity {
         if (amount < 1){
             amount=1;
         }
-        ((TextView) row.findViewById(R.id.product_amount)).setText(""+amount);
+        ((TextView) row.findViewById(R.id.product_amount)).setText(Integer.toString(amount));
     }
 
     public void InventoryCartHandler(View v){
