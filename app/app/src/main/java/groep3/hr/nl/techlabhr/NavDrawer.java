@@ -14,6 +14,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +30,10 @@ public class NavDrawer extends AppCompatActivity {
     private NavigationView nvDrawer;
     private ActionBarDrawerToggle toggle;
     public ArrayList<HashMap<String,String>> winkelmandje = new ArrayList<>();
+
+    private static final String TAG_PID = "ProductID";
+    private static final String TAG_NAME = "ProductName";
+    private static final String TAG_AMOUNT = "Amount";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +69,34 @@ public class NavDrawer extends AppCompatActivity {
         transaction.commit();
 
     }
+    public void InventoryCartHandler(View v){
+        View btnLayout =(View) v.getParent();
+        View row = (View) btnLayout.getParent();
+        Boolean alreadyPresent = false;
+        int amount = 1;
+        for(int i = 0; i < winkelmandje.size();i++){
+            if(winkelmandje.get(i).containsValue(((TextView) row.findViewById(R.id.pid)).getText().toString())){
+                alreadyPresent = true;
+            }
+        }
+        if(!alreadyPresent) {
+            HashMap<String, String> map = new HashMap<String, String>();
+            map.put(TAG_PID, ((TextView) row.findViewById(R.id.pid)).getText().toString());
+            map.put(TAG_NAME, ((TextView) row.findViewById(R.id.product_name)).getText().toString());
+            map.put(TAG_AMOUNT, Integer.toString(amount));
 
+            winkelmandje.add(map);
+
+            FragmentManager fragmentManager = this.getSupportFragmentManager();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.fragment_container, Winkelmandje.newInstance()).addToBackStack(null);
+            transaction.commit();
+        }else{
+            Toast.makeText(this.getApplicationContext(),
+                    "Item already present in winkelmandje",
+                    Toast.LENGTH_LONG).show();
+        }
+    }
     public void configureDrawer(NavigationView nv){
 
             if (getIntent().getStringExtra("permission").equals("beheerder")) {

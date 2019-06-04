@@ -20,6 +20,12 @@
         android:textSize="17sp"
         android:textStyle="bold" />
 
+    <Button
+        android:id="@+id/plusBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/minus"/>
+
     <TextView
         android:id="@+id/product_amount"
         android:layout_width="50dp"
@@ -29,5 +35,14 @@
         android:textAlignment="textEnd"
         android:textSize="17sp"
         android:textStyle="bold" />
+
+    <ImageButton
+        android:id="@+id/minusBtn"
+        android:layout_width="25dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginEnd="18dp"
+        android:text="@string/plus"/>
+
 
 </RelativeLayout>
