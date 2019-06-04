@@ -1,5 +1,6 @@
 package groep3.hr.nl.techlabhr;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -33,11 +35,14 @@ import com.android.volley.toolbox.StringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
-public class Product_Details extends Fragment {
+public class Product_Details extends Fragment implements DatePickerDialog.OnDateSetListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -65,6 +70,9 @@ public class Product_Details extends Fragment {
     private TextView detailStock;
     private TextView detailBroken;
     private EditText inputAmount;
+    private EditText selectDate;
+
+
 
     private Button btnCart;
 
@@ -118,17 +126,12 @@ public class Product_Details extends Fragment {
         detailCategory = (TextView) view.findViewById(R.id.detailCategory);
         inputAmount = (EditText) view.findViewById(R.id.inputAmount);
         btnCart = (Button) view.findViewById(R.id.btnCart);
-
-
-        btnCart.setOnClickListener(new View.OnClickListener() {
-
+        selectDate = (EditText) view.findViewById(R.id.selectDateEditText);
+        selectDate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                // Adding product to cart
-                addToCart();
-
+            public void onClick(View v) {
+                showDatePickerDialog();
             }
-
         });
 
         pDialog = new ProgressDialog(getActivity());
@@ -137,6 +140,19 @@ public class Product_Details extends Fragment {
         readSingleProduct();
         return view;
     }
+
+    private void showDatePickerDialog(){
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                getActivity(),
+                this,
+                Calendar.getInstance().get(Calendar.YEAR),
+        Calendar.getInstance().get(Calendar.MONTH),
+        Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+        );
+        datePickerDialog.show();
+    }
+
+
 
     private void addToCart() {
         Boolean alreadyPresent = false;
@@ -274,6 +290,12 @@ public class Product_Details extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        String date = dayOfMonth + "-" + month + "-" +  year ;
+        selectDate.setText(date);
     }
 
     /**

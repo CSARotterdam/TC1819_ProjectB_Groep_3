@@ -91,5 +91,6 @@
     <string name="markeer_order_als_ingeleverd">Markeer Order als Ingeleverd</string>
     <string name="markeer_order_als_afgegeven">Markeer Order als afgegeven</string>
     <string name="wijs_order_af">Wijs Order Af</string>
+    <string name="selecteer_een_datum">Selecteer een datum</string>
 
 </resources>

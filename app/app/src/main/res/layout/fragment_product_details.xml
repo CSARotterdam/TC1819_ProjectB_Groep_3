@@ -130,11 +130,20 @@
             android:inputType="number"/>
 
         <!-- Button add to cart -->
-        <Button android:id="@+id/btnCart"
+        <Button
+            android:id="@+id/btnCart"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/add_to_cart"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="@string/add_to_cart" />
     </LinearLayout>
+
+    <EditText
+        android:id="@+id/selectDateEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/selecteer_een_datum" />
 
 </LinearLayout>
