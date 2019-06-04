@@ -19,12 +19,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.support.design.widget.FloatingActionButton;
+import android.widget.ImageButton;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -73,7 +75,11 @@ public class Inventaris extends Fragment {
     private static final String TAG_NAME = "ProductName";
     private static final String TAG_STOCK = "ProductStock";
     private static final String TAG_ICON ="";
+    private static final String TAG_AMOUNT = "Amount";
     private static final String TAG_BROKEN = "ProductAmountBroken";
+
+    private EditText inputAmount;
+    private ImageButton btnCart;
 
     private static String TAG = NavDrawer.class.getSimpleName();
 
