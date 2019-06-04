@@ -12,7 +12,7 @@ if (isset($_POST["email"])){
 	$OrderID = 0;
 	$ProductID = '';
 	$ProductAmount = 0;
-	$DateOfReady = "31-12-1999";
+	$DateOfReady = $_POST["dateOfReady"];
     $DateOfReturn = $_POST["dateOfReturn"];
     $ReadyBroadcasted = "False";
     $ReturnWarningBroadcasted = "False";

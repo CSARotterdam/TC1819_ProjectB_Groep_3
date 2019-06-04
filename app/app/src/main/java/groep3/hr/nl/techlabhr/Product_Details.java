@@ -60,6 +60,7 @@ public class Product_Details extends Fragment implements DatePickerDialog.OnDate
     private static final String TAG_NAME = "ProductName";
     private static final String TAG_AMOUNT = "Amount";
     private static final String TAG_STOCK = "ProductStock";
+    private static final String TAG_DATE = "StartDate";
 
 
     private ProgressDialog pDialog;
@@ -126,6 +127,8 @@ public class Product_Details extends Fragment implements DatePickerDialog.OnDate
         detailCategory = (TextView) view.findViewById(R.id.detailCategory);
         inputAmount = (EditText) view.findViewById(R.id.inputAmount);
         btnCart = (Button) view.findViewById(R.id.btnCart);
+        
+
         selectDate = (EditText) view.findViewById(R.id.selectDateEditText);
         selectDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,6 +153,12 @@ public class Product_Details extends Fragment implements DatePickerDialog.OnDate
         Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
         );
         datePickerDialog.show();
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        String date = dayOfMonth + "-" + month + "-" +  year ;
+        selectDate.setText(date);
     }
 
 
@@ -178,7 +187,7 @@ public class Product_Details extends Fragment implements DatePickerDialog.OnDate
                 map.put(TAG_NAME, detailName.getText().toString());
                 map.put(TAG_STOCK,detailStock.getText().toString());
                 map.put(TAG_AMOUNT, Integer.toString(amount));
-
+                map.put(TAG_DATE,selectDate.getText().toString());
                 winkelmandje.add(map);
 
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -292,11 +301,7 @@ public class Product_Details extends Fragment implements DatePickerDialog.OnDate
         mListener = null;
     }
 
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        String date = dayOfMonth + "-" + month + "-" +  year ;
-        selectDate.setText(date);
-    }
+
 
     /**
      * This interface must be implemented by activities that contain this

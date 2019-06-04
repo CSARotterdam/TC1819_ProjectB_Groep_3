@@ -30,7 +30,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,7 +58,7 @@ public class Winkelmandje extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private static final String orderURL = "https://eduardterlouw.com/techlab/create_new_order.php";
+    private static final String orderURL = "https://eduardterlouw.com/test/create_new_order.php";
 
     private static final String TAG = NavDrawer.class.getSimpleName();
     private static final String TAG_SUCCESS = "Success";
@@ -66,6 +70,7 @@ public class Winkelmandje extends Fragment {
     private static final String TAG_STOCK = "ProductStock";
     private static final String TAG_BROKEN = "ProductAmountBroken";
     private static final String TAG_AMOUNT = "Amount";
+    private static final String TAG_DATE = "StartDate";
 
     private ListView lv;
     private Button btnOrder;
@@ -208,11 +213,24 @@ public class Winkelmandje extends Fragment {
 
 
                 ArrayList<HashMap<String,String>> winkelmandje = ((NavDrawer) getActivity()).winkelmandje;
+
                 for (int i = 0;i < winkelmandje.size();i++){
                     params.put("Product" + i, winkelmandje.get(i).get(TAG_PID));
                     params.put("ProductAmount" + i, winkelmandje.get(i).get(TAG_AMOUNT));
-                    params.put("DateOfReturn" + i,"27-05-2019");
 
+
+                    String dateString = winkelmandje.get(i).get(TAG_DATE);
+                    int month = Integer.parseInt(dateString.split("-")[1]);
+                    int year = Integer.parseInt(dateString.split("-")[2]);
+                    int day = Integer.parseInt(dateString.split("-")[0]);
+                    Calendar cal = Calendar.getInstance();
+                    cal.set(year,month,day);
+                    cal.add(Calendar.DAY_OF_YEAR, 14);
+                    DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy");
+                    String DateOfReturn = dateFormat.format(cal.getTime());
+
+                    params.put("DateOfReturn" + i,DateOfReturn);
+                    params.put("DateOfReady" + i, winkelmandje.get(i).get(TAG_DATE));
 
                 }
 
