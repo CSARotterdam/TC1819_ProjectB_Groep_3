@@ -2,6 +2,7 @@ package groep3.hr.nl.techlabhr;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -20,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -72,6 +74,8 @@ public class Winkelmandje extends Fragment {
     private ListView lv;
     private Button btnOrder;
     private Button btnEmptyCart;
+    private CheckBox check;
+    private ImageButton delete;
     private OnFragmentInteractionListener mListener;
     private ProgressDialog pDialog;
 
@@ -147,16 +151,33 @@ public class Winkelmandje extends Fragment {
             }
         });
 
+        check = (CheckBox) view.findViewById(R.id.checkMe);
+        check.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                if (check.isChecked()){
+                    //Do something
+                }
+            }
+        });
         btnOrder = (Button) view.findViewById(R.id.btnOrder);
 
         btnOrder.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                createNewOrder();
+                if (!check.isChecked()){
+                    Toast.makeText(getActivity().getApplicationContext(),
+                            "You have to agree with the Terms and Conditions!",
+                    Toast.LENGTH_LONG).show();
+                }
+                else{
+                    createNewOrder();
+                }
             }
 
         });
+
         btnEmptyCart = (Button) view.findViewById(R.id.btnEmptyCart);
 
         btnEmptyCart.setOnClickListener(new View.OnClickListener() {
@@ -171,17 +192,14 @@ public class Winkelmandje extends Fragment {
                 transaction.replace(R.id.fragment_container, Winkelmandje.newInstance());
                 transaction.commit();
             }
-
         });
+
         pDialog = new ProgressDialog(getActivity());
         pDialog.setMessage("Please wait...");
         pDialog.setCancelable(false);
 
         return view;
     }
-    /**public void onCheckboxClicked() {
-        CheckBox checkBox = (CheckBox) find*/
-
     private void createNewOrder() {
         showpDialog();
         StringRequest sr = new StringRequest(Request.Method.POST,
