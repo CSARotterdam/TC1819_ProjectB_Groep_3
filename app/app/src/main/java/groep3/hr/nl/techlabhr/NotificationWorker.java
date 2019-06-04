@@ -39,8 +39,8 @@ import java.util.Locale;
 import java.util.Map;
 
 public class NotificationWorker extends Worker {
-    private String urlJsonObj = "https://eduardterlouw.com/test/check_notification.php";
-    private String urlQuery = "https://eduardterlouw.com/test/update_notification.php";
+    private String urlJsonObj = "https://eduardterlouw.com/techlab/check_notification.php";
+    private String urlQuery = "https://eduardterlouw.com/techlab/update_notification.php";
     private String CHANNEL_READY_ID = "Order_ready_channel";
     private String CHANNEL_RETURN_ID = "Order_return_channel";
 
@@ -119,7 +119,7 @@ public class NotificationWorker extends Worker {
 
     public void checkData(String PruductID,  String DateOfReturn, String ReadyBroadcasted, String ReturnWarningBroadcasted, String Status) {
 
-        if (Status.equals("ReadyForPickup")) {
+        if (Status.equals("readyForPickup")) {
             if (ReadyBroadcasted.equals("False")){
                 Log.e("Notification","should display now");
                 simple_Notification("Lening gereed", "Uw lening is gereed om opgehaald te worden!",CHANNEL_READY_ID);
