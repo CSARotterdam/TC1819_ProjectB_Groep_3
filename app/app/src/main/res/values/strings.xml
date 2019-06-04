@@ -87,5 +87,6 @@
     <string name="plus">+</string>
     <string name="minus">-</string>
     <string name="amount">Amount</string>
+    <string name="checkMe">I agree with the Terms and Conditions</string>
 
 </resources>
