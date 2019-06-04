@@ -252,7 +252,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             @Override
             public void onResponse(String response) {
-                Log.d(TAG, response);
                 hidepDialog();
                 try {
                     JSONObject user = new JSONObject(response);
