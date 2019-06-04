@@ -32,10 +32,12 @@ EOF;
 		}
 	
 	$products = array();
-	$productamounts = array();
-	$returndates = array();
+	$productAmounts = array();
+	$returnDates = array();
+	$readyDates = array();
 	$checkAmount = 'Amount';
 	$checkDateOfReturn = 'Return';
+	$checkDateOfReady = "Ready";
 
 
 
@@ -48,13 +50,18 @@ EOF;
 
 		$amount = strpos($key, $checkAmount, 6);
 		$return = strpos($key, $checkDateOfReturn,5);
+		$ready = strpos($key, $checkDateOfReady, 5);
 		if($amount){
 			//If “Amount” is present in the key, add the value to amount array
-			array_push($productamounts, $value);
+			array_push($productAmounts, $value);
 		}
 		else if($return){
 		    //if "Return" is present in the key, add the value to return array
-            array_push($returndates, $value);
+            array_push($returnDates, $value);
+        }
+
+		else if($ready){
+            array_push($readyDates, $value);
         }
 
 		else{
@@ -66,8 +73,9 @@ EOF;
 	//Loop through both arrays, updating ProductID and ProductAmount each iteration
 	for($i = 0;$i < count($products);$i++){
 		$ProductID = $products[$i];
-		$ProductAmount = $productamounts[$i];
-		$DateOfReturn = $returndates[$i];
+		$ProductAmount = $productAmounts[$i];
+		$DateOfReturn = $returnDates[$i];
+		$DateOfReady = $readyDates[$i];
 		
 		//Initialize SQL statement placing data into Database
 		$sql = <<<EOF

@@ -77,6 +77,7 @@ public class Product_Details extends Fragment implements DatePickerDialog.OnDate
 
     private Button btnCart;
 
+
     private Product_Details.OnFragmentInteractionListener mListener;
 
     public Product_Details() {
@@ -127,7 +128,16 @@ public class Product_Details extends Fragment implements DatePickerDialog.OnDate
         detailCategory = (TextView) view.findViewById(R.id.detailCategory);
         inputAmount = (EditText) view.findViewById(R.id.inputAmount);
         btnCart = (Button) view.findViewById(R.id.btnCart);
-        
+        btnCart.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                // Adding product to cart
+                addToCart();
+
+            }
+
+        });
 
         selectDate = (EditText) view.findViewById(R.id.selectDateEditText);
         selectDate.setOnClickListener(new View.OnClickListener() {

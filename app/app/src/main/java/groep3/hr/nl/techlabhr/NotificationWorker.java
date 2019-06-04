@@ -39,8 +39,8 @@ import java.util.Locale;
 import java.util.Map;
 
 public class NotificationWorker extends Worker {
-    private String urlJsonObj = "https://eduardterlouw.com/techlab/check_notification.php";
-    private String urlQuery = "https://eduardterlouw.com/techlab/update_notification.php";
+    private String urlJsonObj = "https://eduardterlouw.com/test/check_notification.php";
+    private String urlQuery = "https://eduardterlouw.com/test/update_notification.php";
     private String CHANNEL_READY_ID = "Order_ready_channel";
     private String CHANNEL_RETURN_ID = "Order_return_channel";
 
@@ -84,11 +84,12 @@ public class NotificationWorker extends Worker {
                             // response will be a json object
                             String productID = Order.getString("ProductID");
                             String DateOfReady = Order.getString("DateOfReady");
+                            String Status = Order.getString("Status");
                             String DateOfReturn = Order.getString("DateOfReturn");
                             String ReadyBroadCasted = Order.getString("ReadyBroadcasted");
                             String ReturnWarningBroadcasted = Order.getString("ReturnWarningBroadcasted");
                             Log.e("Info", productID + " " + DateOfReady);
-                            checkData(productID, DateOfReady, DateOfReturn, ReadyBroadCasted, ReturnWarningBroadcasted);
+                            checkData(productID, DateOfReturn, ReadyBroadCasted, ReturnWarningBroadcasted, Status);
                         }
                     }
                 } catch (JSONException e) {
@@ -116,11 +117,10 @@ public class NotificationWorker extends Worker {
         return Result.success();
     }
 
-    public void checkData(String PruductID, String DateOfReady, String DateOfReturn, String ReadyBroadcasted, String ReturnWarningBroadcasted) {
-        Log.d("Response","Checked");
-        Log.d("Response", DateOfReady + " " + ReadyBroadcasted);
-        if (ReadyBroadcasted.equals("False")) {
-            if (!DateOfReady.equals("31-12-1999")){
+    public void checkData(String PruductID,  String DateOfReturn, String ReadyBroadcasted, String ReturnWarningBroadcasted, String Status) {
+
+        if (Status.equals("ReadyForPickup")) {
+            if (ReadyBroadcasted.equals("False")){
                 Log.e("Notification","should display now");
                 simple_Notification("Lening gereed", "Uw lening is gereed om opgehaald te worden!",CHANNEL_READY_ID);
             }

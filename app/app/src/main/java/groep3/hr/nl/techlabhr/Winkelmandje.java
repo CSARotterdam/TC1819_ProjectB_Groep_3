@@ -223,10 +223,13 @@ public class Winkelmandje extends Fragment {
                     int month = Integer.parseInt(dateString.split("-")[1]);
                     int year = Integer.parseInt(dateString.split("-")[2]);
                     int day = Integer.parseInt(dateString.split("-")[0]);
+                    Log.d("day-month-year",day + " " + month +  " " + year);
                     Calendar cal = Calendar.getInstance();
-                    cal.set(year,month,day);
+                    cal.set(Calendar.MONTH,month);
+                    cal.set(Calendar.DAY_OF_MONTH, day);
+                    cal.set(Calendar.YEAR,year);
                     cal.add(Calendar.DAY_OF_YEAR, 14);
-                    DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy");
+                    DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
                     String DateOfReturn = dateFormat.format(cal.getTime());
 
                     params.put("DateOfReturn" + i,DateOfReturn);

@@ -29,6 +29,7 @@ EOF;
             $order["DateOfReturn"] = $row["DateOfReturn"];
             $order["ReadyBroadcasted"] = $row["ReadyBroadcasted"];
             $order["ReturnWarningBroadcasted"] = $row["ReturnWarningBroadcasted"];
+            $order["Status"] = $row["Status"];
             array_push($response["Orders"],$order);
     }
 
