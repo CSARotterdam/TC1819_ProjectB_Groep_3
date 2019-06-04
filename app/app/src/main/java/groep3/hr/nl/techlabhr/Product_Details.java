@@ -71,7 +71,7 @@ public class Product_Details extends Fragment implements DatePickerDialog.OnDate
     private TextView detailStock;
     private TextView detailBroken;
     private EditText inputAmount;
-    private EditText selectDate;
+    private Button selectDate;
 
 
 
@@ -139,7 +139,7 @@ public class Product_Details extends Fragment implements DatePickerDialog.OnDate
 
         });
 
-        selectDate = (EditText) view.findViewById(R.id.selectDateEditText);
+        selectDate = (Button) view.findViewById(R.id.selectDateButton);
         selectDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

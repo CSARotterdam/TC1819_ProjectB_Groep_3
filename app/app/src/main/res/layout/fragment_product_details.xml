@@ -125,12 +125,10 @@
         android:layout_height="wrap_content"
         android:inputType="number" />
 
-    <EditText
-        android:id="@+id/selectDateEditText"
+    <Button
+        android:id="@+id/selectDateButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
         android:text="@string/selecteer_een_datum" />
 
     <Button
