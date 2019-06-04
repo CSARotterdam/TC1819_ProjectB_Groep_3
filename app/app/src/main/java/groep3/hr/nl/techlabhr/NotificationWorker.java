@@ -88,8 +88,9 @@ public class NotificationWorker extends Worker {
                             String DateOfReturn = Order.getString("DateOfReturn");
                             String ReadyBroadCasted = Order.getString("ReadyBroadcasted");
                             String ReturnWarningBroadcasted = Order.getString("ReturnWarningBroadcasted");
+                            String CompletedBroadcasted = Order.getString("CompletedBroadcasted");
                             Log.e("Info", productID + " " + DateOfReady);
-                            checkData(productID, DateOfReturn, ReadyBroadCasted, ReturnWarningBroadcasted, Status);
+                            checkData(productID, DateOfReturn, ReadyBroadCasted, ReturnWarningBroadcasted,CompletedBroadcasted, Status);
                         }
                     }
                 } catch (JSONException e) {
@@ -117,7 +118,7 @@ public class NotificationWorker extends Worker {
         return Result.success();
     }
 
-    public void checkData(String PruductID,  String DateOfReturn, String ReadyBroadcasted, String ReturnWarningBroadcasted, String Status) {
+    public void checkData(String PruductID,  String DateOfReturn, String ReadyBroadcasted, String ReturnWarningBroadcasted, String CompletedBroadcasted, String Status) {
 
         if (Status.equals("readyForPickup")) {
             if (ReadyBroadcasted.equals("False")){
@@ -134,6 +135,12 @@ public class NotificationWorker extends Worker {
 
                 simple_Notification("Uw lening verloopt", "Uw lening verloopt vandaag, vergeet niet om het in te leveren!",CHANNEL_RETURN_ID);
                 update_notifications(date);
+            }
+        }
+
+        if(Status.equals("Completed")){
+            if(CompletedBroadcasted.equals("False")){
+                simple_Notification("Uw lening is beëindigd ", "Uw lening is succesvol ingenomen en beëndigd!",CHANNEL_RETURN_ID);
             }
         }
     }

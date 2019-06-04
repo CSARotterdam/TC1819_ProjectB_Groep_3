@@ -17,6 +17,7 @@ if (isset($_POST["email"])){
     $ReadyBroadcasted = "False";
     $ReturnWarningBroadcasted = "False";
     $Status = "pending";
+    $CompletedBroadcasted = "False";
 	
  
 	// connecting to db
@@ -79,8 +80,8 @@ EOF;
 		
 		//Initialize SQL statement placing data into Database
 		$sql = <<<EOF
-		INSERT INTO Orders(OrderID,Email,ProductID,ProductAmount, DateOfReady, DateOfReturn,ReadyBroadcasted,ReturnWarningBroadcasted, Status)
-		VALUES (:OrderID,:Email,:ProductID,:ProductAmount,:DateOfReady,:DateOfReturn,:ReadyBroadcasted,:ReturnWarningBroadcasted,:Status)
+		INSERT INTO Orders(OrderID,Email,ProductID,ProductAmount, DateOfReady, DateOfReturn,ReadyBroadcasted,ReturnWarningBroadcasted, Status, CompletedBroadcasted)
+		VALUES (:OrderID,:Email,:ProductID,:ProductAmount,:DateOfReady,:DateOfReturn,:ReadyBroadcasted,:ReturnWarningBroadcasted,:Status,:CompletedBroadcasted)
 EOF;
 		$stmt = $db->prepare($sql);
 		$stmt->bindParam(':OrderID',$OrderID);
@@ -92,6 +93,7 @@ EOF;
         $stmt->bindParam(':ReadyBroadcasted',$ReadyBroadcasted);
         $stmt->bindParam(':ReturnWarningBroadcasted',$ReturnWarningBroadcasted);
         $stmt->bindParam(':Status',$Status);
+        $stmt->bindParam(":CompletedBroadcasted", $CompletedBroadcasted);
 		//Execute SQL statement
 		$ret = $stmt->execute();
 		if (!$ret){
