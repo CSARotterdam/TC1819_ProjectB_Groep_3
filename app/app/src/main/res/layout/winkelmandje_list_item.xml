@@ -36,11 +36,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_minus"
-            android:onClick="decrease_amount" />
+            android:onClick="decrease_amount"
+            android:backgroundTint="@color/colorWhite"/>
 
         <TextView
             android:id="@+id/product_amount"
-            android:layout_width="25dp"
+            android:layout_width="10dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:paddingTop="6dip"
@@ -54,7 +55,15 @@
             android:layout_height="wrap_content"
             android:onClick="increase_amount"
             android:src="@drawable/ic_plus"
-            android:layout_marginEnd="18dp" />
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="@color/colorWhite"/>
+        <Button
+            android:id="@+id/removeItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remove"
+            android:textColor="@color/colorWhite"
+            android:backgroundTint="@color/colorRed"/>
 
     </LinearLayout>
 
