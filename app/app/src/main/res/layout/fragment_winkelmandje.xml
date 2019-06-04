@@ -15,24 +15,28 @@
     </ListView>
 
     <LinearLayout android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dip"
         android:orientation="horizontal"
-        style="?android:attr/buttonBarStyle">
+        style="?android:attr/buttonBarStyle"
+        android:layout_weight="1"
+        android:gravity="bottom">
         <!-- Button Create Product -->
         <Button android:id="@+id/btnOrder"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Place Order"
+            android:text="Checkout"
             android:layout_weight="1"
-            style="?android:attr/buttonBarButtonStyle"/>
+            android:textColor="@color/colorWhite"
+            android:backgroundTint="@color/colorAccent"/>
 
         <!-- Button Create Product -->
         <Button android:id="@+id/btnEmptyCart"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Empty Cart"
+            android:text="Cancel"
             android:layout_weight="1"
-            style="?android:attr/buttonBarButtonStyle"/>
+            android:textColor="@color/colorWhite"
+            android:backgroundTint="@color/colorBlack"/>
     </LinearLayout>
 
 </LinearLayout>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
     <!-- Product id (pid) - will be HIDDEN - used to pass to other activity -->
     <TextView
@@ -20,29 +20,42 @@
         android:textSize="17sp"
         android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/plusBtn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/minus"/>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal"
+        android:gravity="center|right" >
 
-    <TextView
-        android:id="@+id/product_amount"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:paddingTop="6dip"
-        android:textAlignment="textEnd"
-        android:textSize="17sp"
-        android:textStyle="bold" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/amount"/>
 
-    <ImageButton
-        android:id="@+id/minusBtn"
-        android:layout_width="25dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginEnd="18dp"
-        android:text="@string/plus"/>
+        <ImageButton
+            android:id="@+id/plusBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_plus" />
+
+        <TextView
+            android:id="@+id/product_amount"
+            android:layout_width="25dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingTop="6dip"
+            android:gravity="center"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/minusBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_minus"
+            android:layout_gravity="right"
+            android:layout_marginEnd="18dp" />
+    </LinearLayout>
 
 
-</RelativeLayout>
+
+</LinearLayout>
