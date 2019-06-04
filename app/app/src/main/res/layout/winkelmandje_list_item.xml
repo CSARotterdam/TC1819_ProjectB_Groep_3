@@ -32,10 +32,11 @@
             android:text="@string/amount"/>
 
         <ImageButton
-            android:id="@+id/plusBtn"
+            android:id="@+id/minusBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_plus" />
+            android:src="@drawable/ic_minus"
+            android:onClick="decrease_amount" />
 
         <TextView
             android:id="@+id/product_amount"
@@ -45,15 +46,16 @@
             android:paddingTop="6dip"
             android:gravity="center"
             android:textSize="17sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <ImageButton
-            android:id="@+id/minusBtn"
+            android:id="@+id/plusBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_minus"
-            android:layout_gravity="right"
+            android:onClick="increase_amount"
+            android:src="@drawable/ic_plus"
             android:layout_marginEnd="18dp" />
+
     </LinearLayout>
 
 

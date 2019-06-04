@@ -14,18 +14,24 @@
 
     </ListView>
 
-    <LinearLayout android:layout_width="fill_parent"
-        android:layout_height="0dip"
-        android:orientation="horizontal"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
         style="?android:attr/buttonBarStyle"
         android:layout_weight="1"
         android:gravity="bottom">
         <!-- Button Create Product -->
+        <CheckBox
+            android:id="@+id/checkMe"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/checkMe"/>
         <Button android:id="@+id/btnOrder"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Checkout"
-            android:layout_weight="1"
+            android:layout_weight="0"
             android:textColor="@color/colorWhite"
             android:backgroundTint="@color/colorAccent"/>
 
@@ -34,7 +40,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Cancel"
-            android:layout_weight="1"
+            android:layout_weight="0"
             android:textColor="@color/colorWhite"
             android:backgroundTint="@color/colorBlack"/>
     </LinearLayout>

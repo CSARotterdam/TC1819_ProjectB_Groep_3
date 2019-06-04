@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +35,12 @@ public class NavDrawer extends AppCompatActivity {
     private static final String TAG_PID = "ProductID";
     private static final String TAG_NAME = "ProductName";
     private static final String TAG_AMOUNT = "Amount";
+    private static final String TAG_STOCK = "ProductStock";
+
+    private TextView detailStock;
+    private int amount = 0;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +74,22 @@ public class NavDrawer extends AppCompatActivity {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.fragment_container, Categories.newInstance());
         transaction.commit();
+
+    }
+    public void increase_amount(View view){
+        amount++;
+        display(amount);
+    }
+    public void decrease_amount(View view){
+        amount--;
+        if (amount<1){
+            amount=1;
+        }
+        display(amount);
+    }
+    public void display(int number){
+        TextView displayAmount = (TextView) findViewById(R.id.product_amount);
+        displayAmount.setText(""+number);
 
     }
     public void InventoryCartHandler(View v){

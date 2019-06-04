@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -73,6 +74,7 @@ public class Winkelmandje extends Fragment {
     private Button btnEmptyCart;
     private OnFragmentInteractionListener mListener;
     private ProgressDialog pDialog;
+
 
     public Winkelmandje() {
         // Required empty public constructor
@@ -178,7 +180,11 @@ public class Winkelmandje extends Fragment {
 
         return view;
     }
+    /**public void onCheckboxClicked() {
+        CheckBox checkBox = (CheckBox) find*/
 
+
+    }
     private void createNewOrder() {
         showpDialog();
         StringRequest sr = new StringRequest(Request.Method.POST,
