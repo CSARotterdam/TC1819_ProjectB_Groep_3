@@ -21,8 +21,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class NavDrawer extends AppCompatActivity {
 
@@ -36,6 +41,7 @@ public class NavDrawer extends AppCompatActivity {
     private static final String TAG_NAME = "ProductName";
     private static final String TAG_AMOUNT = "Amount";
     private static final String TAG_STOCK = "ProductStock";
+    private static final String TAG_DATE = "StartDate";
 
     private TextView detailStock;
 
@@ -124,9 +130,13 @@ public class NavDrawer extends AppCompatActivity {
         }
         if(!alreadyPresent) {
             HashMap<String, String> map = new HashMap<String, String>();
+
             map.put(TAG_PID, ((TextView) row.findViewById(R.id.pid)).getText().toString());
             map.put(TAG_NAME, ((TextView) row.findViewById(R.id.product_name)).getText().toString());
             map.put(TAG_STOCK, ((TextView) row.findViewById(R.id.product_stock)).getText().toString());
+            Calendar cal = Calendar.getInstance();
+            DateFormat form = new SimpleDateFormat("dd-MM-yyyy");
+            map.put(TAG_DATE, form.format(cal.getTime()));
             map.put(TAG_AMOUNT, Integer.toString(amount));
 
             winkelmandje.add(map);
