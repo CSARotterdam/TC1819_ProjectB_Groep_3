@@ -12,6 +12,12 @@ if (isset($_POST["email"])){
 	$OrderID = 0;
 	$ProductID = '';
 	$ProductAmount = 0;
+	$DateOfReady = $_POST["dateOfReady"];
+    $DateOfReturn = $_POST["dateOfReturn"];
+    $ReadyBroadcasted = "False";
+    $ReturnWarningBroadcasted = "False";
+    $Status = "pending";
+    $CompletedBroadcasted = "False";
 	
  
 	// connecting to db
@@ -27,19 +33,39 @@ EOF;
 		}
 	
 	$products = array();
-	$productamounts = array();
-	$check = 'Amount';
+	$productAmounts = array();
+	$returnDates = array();
+	$readyDates = array();
+	$checkAmount = 'Amount';
+	$checkDateOfReturn = 'Return';
+	$checkDateOfReady = "Ready";
 
-	//loop through POST parameters, skip user, then check if “amount” is in the key
+
+
+
+    //loop through POST parameters, skip user, then check if “amount” is in the key
 	foreach($_POST as $key => $value){
 		if ($key == 'email'){
 			continue;
 		}
-		$Position = strpos($key, $check, 6);
-		if($Position){
+
+		$amount = strpos($key, $checkAmount, 6);
+		$return = strpos($key, $checkDateOfReturn,5);
+		$ready = strpos($key, $checkDateOfReady, 5);
+		if($amount){
 			//If “Amount” is present in the key, add the value to amount array
-			array_push($productamounts, $value);
-		}else{
+			array_push($productAmounts, $value);
+		}
+		else if($return){
+		    //if "Return" is present in the key, add the value to return array
+            array_push($returnDates, $value);
+        }
+
+		else if($ready){
+            array_push($readyDates, $value);
+        }
+
+		else{
 			//If “Amount” not present in the key, add the value to product array
 			array_push($products, $value);
 		}
@@ -48,19 +74,26 @@ EOF;
 	//Loop through both arrays, updating ProductID and ProductAmount each iteration
 	for($i = 0;$i < count($products);$i++){
 		$ProductID = $products[$i];
-		$ProductAmount = $productamounts[$i]; 
+		$ProductAmount = $productAmounts[$i];
+		$DateOfReturn = $returnDates[$i];
+		$DateOfReady = $readyDates[$i];
 		
 		//Initialize SQL statement placing data into Database
 		$sql = <<<EOF
-		INSERT INTO Orders(OrderID,Email,ProductID,ProductAmount)
-		VALUES (:OrderID,:Email,:ProductID,:ProductAmount);
+		INSERT INTO Orders(OrderID,Email,ProductID,ProductAmount, DateOfReady, DateOfReturn,ReadyBroadcasted,ReturnWarningBroadcasted, Status, CompletedBroadcasted)
+		VALUES (:OrderID,:Email,:ProductID,:ProductAmount,:DateOfReady,:DateOfReturn,:ReadyBroadcasted,:ReturnWarningBroadcasted,:Status,:CompletedBroadcasted)
 EOF;
 		$stmt = $db->prepare($sql);
 		$stmt->bindParam(':OrderID',$OrderID);
 		$stmt->bindParam(':Email',$Email);
 		$stmt->bindParam(':ProductID',$ProductID);
 		$stmt->bindParam(':ProductAmount',$ProductAmount);
-
+        $stmt->bindParam(':DateOfReady',$DateOfReady);
+        $stmt->bindParam(':DateOfReturn',$DateOfReturn);
+        $stmt->bindParam(':ReadyBroadcasted',$ReadyBroadcasted);
+        $stmt->bindParam(':ReturnWarningBroadcasted',$ReturnWarningBroadcasted);
+        $stmt->bindParam(':Status',$Status);
+        $stmt->bindParam(":CompletedBroadcasted", $CompletedBroadcasted);
 		//Execute SQL statement
 		$ret = $stmt->execute();
 		if (!$ret){

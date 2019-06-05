@@ -4,7 +4,7 @@
  */
  
 // array for JSON response
-$response;
+$response= null;
    
 //check for required fields
 if (isset($_POST["ProductID"]) && isset($_POST["ProductManufacturer"]) && isset($_POST["ProductCategory"]) &&

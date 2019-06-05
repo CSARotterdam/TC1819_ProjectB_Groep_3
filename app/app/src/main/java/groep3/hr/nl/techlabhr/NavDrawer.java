@@ -163,6 +163,9 @@ public class NavDrawer extends AppCompatActivity {
             case R.id.nav_change_stock:
                 fragmentClass = Inventaris_aanpassen.class;
                 break;
+            case R.id.nav_uitgeleend:
+                fragmentClass = Uitgeleend.class;
+                break;
             default:
                 fragmentClass = Placeholder.class;
         }

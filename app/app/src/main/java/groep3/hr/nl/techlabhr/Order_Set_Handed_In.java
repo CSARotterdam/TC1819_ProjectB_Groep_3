@@ -2,10 +2,7 @@ package groep3.hr.nl.techlabhr;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -17,8 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -29,9 +24,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,66 +32,38 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link Inventaris.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link Inventaris#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class Product_Wijzigen extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    // json object response url
-    private String urlJsonObj = "https://eduardterlouw.com/techlab/get_all_in_category.php";
-
-
-    private static final String TAG_SUCCESS = "Success";
-    private static final String TAG_PRODUCTS = "Products";
-    private static final String TAG_PID = "ProductID";
-    private static final String TAG_MANUFACTURER = "ProductManufacturer";
-    private static final String TAG_CATEGORY = "ProductCategory";
-    private static final String TAG_NAME = "ProductName";
-    private static final String TAG_STOCK = "ProductStock";
-    private static final String TAG_BROKEN = "ProductAmountBroken";
-
-    private static String TAG = NavDrawer.class.getSimpleName();
-
-
-    // Progress dialog for loading
-    private ProgressDialog pDialog;
+public class Order_Set_Handed_In extends Fragment {
 
 
     private ListView lv;
-    ArrayList<HashMap<String,String>> productsList;
-    // temporary string to show the parsed response
+    ArrayList<HashMap<String,String>> orderList;
+
+    private Order_Set_Handed_In.OnFragmentInteractionListener mListener;
+    private ProgressDialog pDialog;
+
+    // json object response url
+    private String urlJsonObj = "https://eduardterlouw.com/techlab/get_all_running_orders.php";
+    private String TAG = NavDrawer.class.getSimpleName();
+
+    private static final String TAG_ORDERID = "OrderID";
+    private static final String TAG_EMAIL = "Email";
+    private static final String TAG_AMOUNT_TOTAL = "Total amount of items";
 
 
-    private OnFragmentInteractionListener mListener;
-
-    public Product_Wijzigen() {
+    public Order_Set_Handed_In() {
         // Required empty public constructor
     }
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     * @return A new instance of fragment Inventaris.
+     *
+     * @return A new instance of fragment Order_Set_Handed_In.
      */
     // TODO: Rename and change types and number of parameters
-    public static Product_Wijzigen newInstance() {
-        Product_Wijzigen fragment = new Product_Wijzigen();
+    public static Order_Set_Handed_In newInstance() {
+        Order_Set_Handed_In fragment = new Order_Set_Handed_In();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -108,32 +73,38 @@ public class Product_Wijzigen extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //// Set title and menu to appropriate fragment
         Toolbar toolbar= (Toolbar) getActivity().findViewById(R.id.toolbar);
         NavigationView nav = (NavigationView) getActivity().findViewById(R.id.nav_view);
-        MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_inventaris);
+        MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_uitgeleend);
         menuItem.setChecked(true);
-        toolbar.setTitle("Inventaris wijzigen");
-
+        toolbar.setTitle("All Running Orders");
+        //Initialize pDialog
+        pDialog = new ProgressDialog(getActivity());
+        pDialog.setMessage("Please wait...");
+        pDialog.setCancelable(false);
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_product_wijzigen, container, false);
-
+        View view = inflater.inflate(R.layout.fragment_order_handed_in, container, false);
+        // Load all Orders into list
         lv = (ListView) view.findViewById(R.id.listResponse);
+        getAllOrders();
+
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Product_Wijzigen_Single fragment =(Product_Wijzigen_Single) Product_Wijzigen_Single.newInstance();
-                Bundle product = new Bundle();
-                product.putString(TAG_PID,((TextView) view.findViewById(R.id.pid)).getText().toString());
-                fragment.setArguments(product);
-                Log.d(TAG,product.toString());
+                Order_Set_Handed_In_Single fragment =(Order_Set_Handed_In_Single) Order_Set_Handed_In_Single.newInstance();
+                Bundle order = new Bundle();
+                order.putString(TAG_ORDERID,((TextView) view.findViewById(R.id.OrderID)).getText().toString());
+                order.putString(TAG_EMAIL,((TextView) view.findViewById(R.id.user_email)).getText().toString());
+                fragment.setArguments(order);
+                Log.d(TAG,order.toString());
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_container,fragment).addToBackStack(null);
                 transaction.commit();
@@ -141,51 +112,71 @@ public class Product_Wijzigen extends Fragment {
         });
 
 
-        pDialog = new ProgressDialog(getActivity());
-        pDialog.setMessage("Please wait...");
-        pDialog.setCancelable(false);
-        getAllProducts();
-
-
         return view;
     }
-    public void getAllProducts() {
-
+    public void getAllOrders() {
         showpDialog();
 
-        StringRequest stringReq = new StringRequest(Request.Method.POST,
-                urlJsonObj, new Response.Listener<String>() {
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                urlJsonObj, null, new Response.Listener<JSONObject>() {
 
             @Override
-            public void onResponse(String response) {
+            public void onResponse(JSONObject response) {
                 Log.d(TAG, response.toString());
-                productsList = new ArrayList<HashMap<String, String>>();
+                orderList = new ArrayList<HashMap<String, String>>();
                 try {
-                    JSONObject json = new JSONObject(response);
-                    if(json.getInt("Success")==1) {
-                        JSONArray Products =(JSONArray) json.get("Products");
-                        for (int i = 0; i < Products.length(); i++) {
+                    int OrderID = 0;
+                    String Email = "";
+                    if(response.getInt("Success")==1) {
+                        JSONArray Orders = (JSONArray) response.get("Orders");
+                        int OrderIDPrev = 0;
+                        String EmailPrev = "";
+                        int ProductAmountTotal = 0;
 
-                            JSONObject product = (JSONObject) Products.get(i);
+                        //Code to execute for each order item
+                        for (int i = 0; i < Orders.length(); i++) {
+
+                            JSONObject order = (JSONObject) Orders.get(i);
                             // Parsing json object response
                             // response will be a json object
-                            String productID = product.getString("ProductID");
-                            String productManufacturer = product.getString("ProductManufacturer");
-                            String productCategory = product.getString("ProductCategory");
-                            String productName = product.getString("ProductName");
-                            int productStock = product.getInt("ProductStock")
-                                    - (product.getInt("ProductAmountBroken") + product.getInt("ProductAmountInProgress"));
-                            int productAmountBroken = product.getInt("ProductAmountBroken");
+                            OrderID = order.getInt("OrderID");
+                            Email = order.getString("Email");
+                            int ProductAmount = order.getInt("ProductAmount");
 
-                            HashMap<String,String> map = new HashMap<String,String>();
-                            map.put(TAG_PID,productID);
-                            map.put(TAG_NAME,productName);
-                            map.put(TAG_STOCK,"In stock: " + Integer.toString(productStock));
-                            productsList.add(map);
-                            Log.d(TAG,productsList.toString());
+                            //Code that's executed when orderitem from new order is reached
+                            if (OrderID != OrderIDPrev){
+                                //Check if not first item
+                                if (OrderIDPrev != 0){
+                                    //Add previous item in response to orderlist, then overwrite control fields
+                                    HashMap<String,String> map = new HashMap<String,String>();
+                                    map.put(TAG_ORDERID,Integer.toString(OrderIDPrev));
+                                    map.put(TAG_EMAIL,EmailPrev);
+                                    map.put(TAG_AMOUNT_TOTAL,Integer.toString(ProductAmountTotal));
+                                    orderList.add(map);
 
-
+                                    OrderIDPrev = OrderID;
+                                    EmailPrev = Email;
+                                    ProductAmountTotal = ProductAmount;
+                                }else{
+                                    OrderIDPrev = OrderID;
+                                    EmailPrev = Email;
+                                    ProductAmountTotal = ProductAmount;
+                                }
+                            }else{
+                                OrderIDPrev = OrderID;
+                                EmailPrev = Email;
+                                ProductAmountTotal += ProductAmount;
+                            }
                         }
+                        //Add final item in response to orderlist
+                        //TODO: I am 99% sure there is a better way to do this, so find out how and implement that instead.
+                        HashMap<String,String> map = new HashMap<String,String>();
+                        map.put(TAG_ORDERID,Integer.toString(OrderID));
+                        map.put(TAG_EMAIL,Email);
+                        map.put(TAG_AMOUNT_TOTAL,Integer.toString(ProductAmountTotal));
+                        orderList.add(map);
+
+                        Log.d(TAG,orderList.toString());
                         hidepDialog();
                         getActivity().runOnUiThread(new Runnable() {
                             public void run() {
@@ -193,10 +184,10 @@ public class Product_Wijzigen extends Fragment {
                                  * Updating parsed JSON data into ListView
                                  * */
                                 ListAdapter adapter = new SimpleAdapter(
-                                        getActivity(), productsList,
-                                        R.layout.product_list_item, new String[] { TAG_PID,
-                                        TAG_NAME,TAG_STOCK},
-                                        new int[] { R.id.pid, R.id.product_name,R.id.product_stock });
+                                        getActivity(), orderList,
+                                        R.layout.order_list_item, new String[] { TAG_ORDERID,
+                                        TAG_EMAIL,TAG_AMOUNT_TOTAL},
+                                        new int[] { R.id.OrderID, R.id.user_email,R.id.product_amount_total });
 
                                 lv.setAdapter(adapter);
                             }
@@ -206,7 +197,7 @@ public class Product_Wijzigen extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Toast.makeText(getActivity().getApplicationContext(),
-                            "Error: " + e.getMessage(),
+                            "JSONError: " + e.getMessage(),
                             Toast.LENGTH_LONG).show();
                 }
                 hidepDialog();
@@ -221,18 +212,11 @@ public class Product_Wijzigen extends Fragment {
                 // hide the progress dialog
                 hidepDialog();
             }
-        }){
-            @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String, String>  params = new HashMap<String, String>();
-                params.put(TAG_CATEGORY, getArguments().getString(TAG_CATEGORY));
-                return params;
-            }
-        };
+        });
 
         // Adding request to request queue
-        SingletonQueue.getInstance().addToRequestQueue(stringReq);
+        SingletonQueue.getInstance().addToRequestQueue(jsonObjReq);
+
     }
 
     private void showpDialog() {
@@ -244,7 +228,6 @@ public class Product_Wijzigen extends Fragment {
         if (pDialog.isShowing())
             pDialog.dismiss();
     }
-
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -284,5 +267,4 @@ public class Product_Wijzigen extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
 }

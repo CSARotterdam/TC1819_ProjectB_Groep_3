@@ -119,22 +119,30 @@
         android:textSize="17dip"/>
 
     <!-- Horizontal layout for side to side buttons-->
+    <EditText
+        android:id="@+id/inputAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/selectDateButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/selecteer_een_datum" />
+
+    <Button
+        android:id="@+id/btnCart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:text="@string/add_to_cart" />
+
     <LinearLayout android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/inputAmount"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:inputType="number"/>
-
         <!-- Button add to cart -->
-        <Button android:id="@+id/btnCart"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/add_to_cart"
-            android:layout_weight="1"/>
     </LinearLayout>
 
 </LinearLayout>

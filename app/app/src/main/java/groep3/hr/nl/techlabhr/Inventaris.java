@@ -181,7 +181,8 @@ public class Inventaris extends Fragment {
                             String productManufacturer = product.getString("ProductManufacturer");
                             String productCategory = product.getString("ProductCategory");
                             String productName = product.getString("ProductName");
-                            int productStock = product.getInt("ProductStock");
+                            int productStock = product.getInt("ProductStock")
+                                    - (product.getInt("ProductAmountBroken") + product.getInt("ProductAmountInProgress"));
                             int productAmountBroken = product.getInt("ProductAmountBroken");
 
                             HashMap<String,String> map = new HashMap<String,String>();

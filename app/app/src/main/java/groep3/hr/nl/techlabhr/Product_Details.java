@@ -1,5 +1,6 @@
 package groep3.hr.nl.techlabhr;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,6 +23,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -36,11 +38,14 @@ import com.android.volley.toolbox.StringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
-public class Product_Details extends Fragment {
+public class Product_Details extends Fragment implements DatePickerDialog.OnDateSetListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -58,6 +63,7 @@ public class Product_Details extends Fragment {
     private static final String TAG_NAME = "ProductName";
     private static final String TAG_AMOUNT = "Amount";
     private static final String TAG_STOCK = "ProductStock";
+    private static final String TAG_DATE = "StartDate";
 
 
     private ProgressDialog pDialog;
@@ -68,8 +74,12 @@ public class Product_Details extends Fragment {
     private TextView detailStock;
     private TextView detailBroken;
     private EditText inputAmount;
+    private Button selectDate;
+
+
 
     private Button btnCart;
+
 
     private Product_Details.OnFragmentInteractionListener mListener;
 
@@ -122,8 +132,6 @@ public class Product_Details extends Fragment {
         detailCategory = (TextView) view.findViewById(R.id.detailCategory);
         inputAmount = (EditText) view.findViewById(R.id.inputAmount);
         btnCart = (Button) view.findViewById(R.id.btnCart);
-
-
         btnCart.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -136,12 +144,39 @@ public class Product_Details extends Fragment {
 
         });
 
+        selectDate = (Button) view.findViewById(R.id.selectDateButton);
+        selectDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog();
+            }
+        });
+
         pDialog = new ProgressDialog(getActivity());
         pDialog.setMessage("Please wait...");
         pDialog.setCancelable(false);
         readSingleProduct();
         return view;
     }
+
+    private void showDatePickerDialog(){
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                getActivity(),
+                this,
+                Calendar.getInstance().get(Calendar.YEAR),
+        Calendar.getInstance().get(Calendar.MONTH),
+        Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+        );
+        datePickerDialog.show();
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        String date = dayOfMonth + "-" + (month+1) + "-" +  year ;
+        selectDate.setText(date);
+    }
+
+
 
     private void addToCart() {
         Boolean alreadyPresent = false;
@@ -167,7 +202,7 @@ public class Product_Details extends Fragment {
                 map.put(TAG_NAME, detailName.getText().toString());
                 map.put(TAG_STOCK,detailStock.getText().toString());
                 map.put(TAG_AMOUNT, Integer.toString(amount));
-
+                map.put(TAG_DATE,selectDate.getText().toString());
                 winkelmandje.add(map);
 
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -217,7 +252,8 @@ public class Product_Details extends Fragment {
                     detailManufacturer.setText(product.getString("ProductManufacturer"));
                     detailCategory.setText(product.getString("ProductCategory"));
                     detailName.setText(product.getString("ProductName"));
-                    detailStock.setText(product.getString("ProductStock"));
+                    detailStock.setText(Integer.toString(product.getInt("ProductStock")
+                            - (product.getInt("ProductAmountBroken") + product.getInt("ProductAmountInProgress"))));
                     detailBroken.setText(product.getString("ProductAmountBroken"));
 
                 } catch (JSONException e) {
@@ -279,6 +315,8 @@ public class Product_Details extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+
 
     /**
      * This interface must be implemented by activities that contain this
