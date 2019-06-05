@@ -6,12 +6,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -81,6 +86,7 @@ public class Product_Toevoegen extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
 
@@ -130,7 +136,13 @@ public class Product_Toevoegen extends Fragment {
             @Override
             public void onClick(View view) {
                 // creating new product in background thread
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.fragment_container, Inventaris_aanpassen.newInstance()).addToBackStack(null);
+                transaction.commit();
+                hideKeyboard();
                 createNewProduct();
+
             }
         });
         pDialog = new ProgressDialog(getActivity());
@@ -138,7 +150,14 @@ public class Product_Toevoegen extends Fragment {
         pDialog.setCancelable(false);
         return view;
     }
-
+    private void hideKeyboard(){
+        if(getActivity()!=null){
+            InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (manager != null){
+                manager.hideSoftInputFromWindow(getActivity().findViewById(android.R.id.content).getWindowToken(), 0);
+            }
+        }
+    }
     private void createNewProduct() {
         showpDialog();
         StringRequest sr = new StringRequest(Request.Method.POST,

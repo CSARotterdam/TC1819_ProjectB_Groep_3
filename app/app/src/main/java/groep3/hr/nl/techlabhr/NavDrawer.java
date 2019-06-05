@@ -12,8 +12,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +31,16 @@ public class NavDrawer extends AppCompatActivity {
     private NavigationView nvDrawer;
     private ActionBarDrawerToggle toggle;
     public ArrayList<HashMap<String,String>> winkelmandje = new ArrayList<>();
+
+    private static final String TAG_PID = "ProductID";
+    private static final String TAG_NAME = "ProductName";
+    private static final String TAG_AMOUNT = "Amount";
+    private static final String TAG_STOCK = "ProductStock";
+
+    private TextView detailStock;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +76,59 @@ public class NavDrawer extends AppCompatActivity {
         transaction.commit();
 
     }
+    public void increase_amount(View view){
+        View row =(View) view.getParent().getParent();
+        int activeStock = 0;
+        for (int i = 0; i< winkelmandje.size();i++){
+            if (winkelmandje.get(i).containsValue(((TextView) row.findViewById(R.id.product_name)).getText().toString())){
+                activeStock = Integer.parseInt(winkelmandje.get(i).get(TAG_STOCK));
+            }
+        }
+        int amount = Integer.parseInt(((TextView)row.findViewById(R.id.product_amount)).getText().toString());
+        if (amount < activeStock) {
+            amount++;
+        }
+        ((TextView) row.findViewById(R.id.product_amount)).setText(Integer.toString(amount));
+    }
+    public void decrease_amount(View view){
+        View row = (View) view.getParent().getParent();
+        int amount = Integer.parseInt(((TextView)row.findViewById(R.id.product_amount)).getText().toString());
+        amount --;
+        if (amount < 1){
+            amount=1;
+        }
+        ((TextView) row.findViewById(R.id.product_amount)).setText(Integer.toString(amount));
+    }
 
+    public void InventoryCartHandler(View v){
+        View btnLayout =(View) v.getParent();
+        View row = (View) btnLayout.getParent();
+        Boolean alreadyPresent = false;
+        int amount = 1;
+        for(int i = 0; i < winkelmandje.size();i++){
+            if(winkelmandje.get(i).containsValue(((TextView) row.findViewById(R.id.pid)).getText().toString())){
+                alreadyPresent = true;
+            }
+        }
+        if(!alreadyPresent) {
+            HashMap<String, String> map = new HashMap<String, String>();
+            map.put(TAG_PID, ((TextView) row.findViewById(R.id.pid)).getText().toString());
+            map.put(TAG_NAME, ((TextView) row.findViewById(R.id.product_name)).getText().toString());
+            map.put(TAG_STOCK, ((TextView) row.findViewById(R.id.product_stock)).getText().toString());
+            map.put(TAG_AMOUNT, Integer.toString(amount));
+
+            winkelmandje.add(map);
+
+            FragmentManager fragmentManager = this.getSupportFragmentManager();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.fragment_container, Winkelmandje.newInstance()).addToBackStack(null);
+            transaction.commit();
+        }else{
+            Toast.makeText(this.getApplicationContext(),
+                    "Item already present in winkelmandje",
+                    Toast.LENGTH_LONG).show();
+        }
+    }
     public void configureDrawer(NavigationView nv){
 
             if (getIntent().getStringExtra("permission").equals("beheerder")) {

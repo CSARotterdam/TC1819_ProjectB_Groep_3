@@ -2,6 +2,7 @@ package groep3.hr.nl.techlabhr;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -15,9 +16,12 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -30,7 +34,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,12 +74,16 @@ public class Winkelmandje extends Fragment {
     private static final String TAG_STOCK = "ProductStock";
     private static final String TAG_BROKEN = "ProductAmountBroken";
     private static final String TAG_AMOUNT = "Amount";
+    private static final String TAG_DATE = "StartDate";
 
     private ListView lv;
     private Button btnOrder;
     private Button btnEmptyCart;
+    private CheckBox check;
+    private ImageButton delete;
     private OnFragmentInteractionListener mListener;
     private ProgressDialog pDialog;
+
 
     public Winkelmandje() {
         // Required empty public constructor
@@ -93,6 +105,7 @@ public class Winkelmandje extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        //getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
@@ -126,7 +139,6 @@ public class Winkelmandje extends Fragment {
             }
         });
 
-        EditText et;
         for(int i = 0; i < ((NavDrawer) getActivity()).winkelmandje.size();i++){
             //TODO: add checks for editing amount of items from within winkelmandje
         }
@@ -144,16 +156,33 @@ public class Winkelmandje extends Fragment {
             }
         });
 
+        check = (CheckBox) view.findViewById(R.id.checkMe);
+        check.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                if (check.isChecked()){
+                    //Do something
+                }
+            }
+        });
         btnOrder = (Button) view.findViewById(R.id.btnOrder);
 
         btnOrder.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                createNewOrder();
+                if (!check.isChecked()){
+                    Toast.makeText(getActivity().getApplicationContext(),
+                            "You have to agree with the Terms and Conditions!",
+                    Toast.LENGTH_LONG).show();
+                }
+                else{
+                    createNewOrder();
+                }
             }
 
         });
+
         btnEmptyCart = (Button) view.findViewById(R.id.btnEmptyCart);
 
         btnEmptyCart.setOnClickListener(new View.OnClickListener() {
@@ -168,15 +197,14 @@ public class Winkelmandje extends Fragment {
                 transaction.replace(R.id.fragment_container, Winkelmandje.newInstance());
                 transaction.commit();
             }
-
         });
+
         pDialog = new ProgressDialog(getActivity());
         pDialog.setMessage("Please wait...");
         pDialog.setCancelable(false);
 
         return view;
     }
-
     private void createNewOrder() {
         showpDialog();
         StringRequest sr = new StringRequest(Request.Method.POST,
@@ -208,11 +236,27 @@ public class Winkelmandje extends Fragment {
 
 
                 ArrayList<HashMap<String,String>> winkelmandje = ((NavDrawer) getActivity()).winkelmandje;
+
                 for (int i = 0;i < winkelmandje.size();i++){
                     params.put("Product" + i, winkelmandje.get(i).get(TAG_PID));
                     params.put("ProductAmount" + i, winkelmandje.get(i).get(TAG_AMOUNT));
-                    params.put("DateOfReturn" + i,"27-05-2019");
 
+
+                    String dateString = winkelmandje.get(i).get(TAG_DATE);
+                    int month = Integer.parseInt(dateString.split("-")[1]);
+                    int year = Integer.parseInt(dateString.split("-")[2]);
+                    int day = Integer.parseInt(dateString.split("-")[0]);
+                    Log.d("day-month-year",day + " " + month +  " " + year);
+                    Calendar cal = Calendar.getInstance();
+                    cal.set(Calendar.MONTH,month);
+                    cal.set(Calendar.DAY_OF_MONTH, day);
+                    cal.set(Calendar.YEAR,year);
+                    cal.add(Calendar.DAY_OF_YEAR, 14);
+                    DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                    String DateOfReturn = dateFormat.format(cal.getTime());
+
+                    params.put("DateOfReturn" + i,DateOfReturn);
+                    params.put("DateOfReady" + i, winkelmandje.get(i).get(TAG_DATE));
 
                 }
 

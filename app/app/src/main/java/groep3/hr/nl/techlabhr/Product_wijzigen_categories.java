@@ -2,13 +2,11 @@ package groep3.hr.nl.techlabhr;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -17,22 +15,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ImageButton;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 
@@ -42,18 +34,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link Inventaris.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link Inventaris#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class Inventaris extends Fragment {
+public class Product_wijzigen_categories extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -64,7 +46,7 @@ public class Inventaris extends Fragment {
     private String mParam2;
 
     // json object response url
-    private String urlJsonObj = "https://eduardterlouw.com/techlab/get_all_in_category.php";
+    private String urlJsonObj = "https://eduardterlouw.com/techlab/get_all_categories.php";
 
 
     private static final String TAG_SUCCESS = "Success";
@@ -74,12 +56,7 @@ public class Inventaris extends Fragment {
     private static final String TAG_CATEGORY = "ProductCategory";
     private static final String TAG_NAME = "ProductName";
     private static final String TAG_STOCK = "ProductStock";
-    private static final String TAG_ICON ="";
-    private static final String TAG_AMOUNT = "Amount";
     private static final String TAG_BROKEN = "ProductAmountBroken";
-
-    private EditText inputAmount;
-    private ImageButton btnCart;
 
     private static String TAG = NavDrawer.class.getSimpleName();
 
@@ -89,13 +66,13 @@ public class Inventaris extends Fragment {
 
 
     private ListView lv;
-    ArrayList<HashMap<String,String>> productsList;
+    ArrayList<HashMap<String,String>> catList;
     // temporary string to show the parsed response
 
 
-    private OnFragmentInteractionListener mListener;
+    private Inventaris.OnFragmentInteractionListener mListener;
 
-    public Inventaris() {
+    public Product_wijzigen_categories() {
         // Required empty public constructor
     }
 
@@ -105,8 +82,8 @@ public class Inventaris extends Fragment {
      * @return A new instance of fragment Inventaris.
      */
     // TODO: Rename and change types and number of parameters
-    public static Inventaris newInstance() {
-        Inventaris fragment = new Inventaris();
+    public static Product_wijzigen_categories newInstance() {
+        Product_wijzigen_categories fragment = new Product_wijzigen_categories();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -128,20 +105,20 @@ public class Inventaris extends Fragment {
         NavigationView nav = (NavigationView) getActivity().findViewById(R.id.nav_view);
         MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_inventaris);
         menuItem.setChecked(true);
-        toolbar.setTitle("Inventaris");
+        toolbar.setTitle("Categories");
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_inventaris, container, false);
+        View view = inflater.inflate(R.layout.fragment_product_wijzigen_categories, container, false);
 
         lv = (ListView) view.findViewById(R.id.listResponse);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Product_Details fragment =(Product_Details) Product_Details.newInstance();
-                Bundle product = new Bundle();
-                product.putString(TAG_PID,((TextView) view.findViewById(R.id.pid)).getText().toString());
-                fragment.setArguments(product);
-                Log.d(TAG,product.toString());
+                Product_Wijzigen fragment =(Product_Wijzigen) Product_Wijzigen.newInstance();
+                Bundle cat = new Bundle();
+                cat.putString(TAG_CATEGORY,((TextView) view.findViewById(R.id.category_name)).getText().toString());
+                fragment.setArguments(cat);
+                Log.d(TAG,cat.toString());
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_container,fragment).addToBackStack(null);
                 transaction.commit();
@@ -152,46 +129,33 @@ public class Inventaris extends Fragment {
         pDialog = new ProgressDialog(getActivity());
         pDialog.setMessage("Please wait...");
         pDialog.setCancelable(false);
-        getAllProducts();
+        getAllCategories();
 
 
         return view;
     }
-    public void getAllProducts() {
+    public void getAllCategories() {
 
         showpDialog();
 
-        StringRequest stringReq = new StringRequest(Request.Method.POST,
-                urlJsonObj, new Response.Listener<String>() {
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                urlJsonObj, null, new Response.Listener<JSONObject>() {
 
             @Override
-            public void onResponse(String response) {
+            public void onResponse(JSONObject response) {
                 Log.d(TAG, response.toString());
-                productsList = new ArrayList<HashMap<String, String>>();
-                try {
-                    JSONObject json = new JSONObject(response);
-                    if(json.getInt("Success")==1) {
-                        JSONArray Products =(JSONArray) json.get("Products");
-                        for (int i = 0; i < Products.length(); i++) {
 
-                            JSONObject product = (JSONObject) Products.get(i);
-                            // Parsing json object response
-                            // response will be a json object
-                            String productID = product.getString("ProductID");
-                            String productManufacturer = product.getString("ProductManufacturer");
-                            String productCategory = product.getString("ProductCategory");
-                            String productName = product.getString("ProductName");
-                            int productStock = product.getInt("ProductStock")
-                                    - (product.getInt("ProductAmountBroken") + product.getInt("ProductAmountInProgress"));
-                            int productAmountBroken = product.getInt("ProductAmountBroken");
+                catList = new ArrayList<HashMap<String, String>>();
+                try {
+                    if(response.getInt("Success")==1) {
+                        JSONArray Categories =(JSONArray) response.get("Categories");
+                        for (int i = 0; i < Categories.length(); i++) {
 
                             HashMap<String,String> map = new HashMap<String,String>();
-                            map.put(TAG_PID,productID);
-                            map.put(TAG_NAME,productName);
-                            map.put(TAG_STOCK,Integer.toString(productStock));
-                            productsList.add(map);
-                            map.put(TAG_ICON, Integer.toString(R.drawable.item_icon));
-                            Log.d(TAG,productsList.toString());
+                            map.put(TAG_CATEGORY,(String) Categories.get(i));
+
+                            catList.add(map);
+                            Log.d(TAG,catList.toString());
 
 
                         }
@@ -202,10 +166,9 @@ public class Inventaris extends Fragment {
                                  * Updating parsed JSON data into ListView
                                  * */
                                 ListAdapter adapter = new SimpleAdapter(
-                                        getActivity(), productsList,
-                                        R.layout.product_list_item, new String[] { TAG_PID,
-                                        TAG_NAME,TAG_STOCK,TAG_ICON},
-                                        new int[] { R.id.pid, R.id.product_name,R.id.product_stock, R.id.item_icon});
+                                        getActivity(), catList,
+                                        R.layout.category_list_item, new String[] { TAG_CATEGORY},
+                                        new int[] { R.id.category_name });
 
                                 lv.setAdapter(adapter);
                             }
@@ -230,18 +193,10 @@ public class Inventaris extends Fragment {
                 // hide the progress dialog
                 hidepDialog();
             }
-        }){
-            @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String, String>  params = new HashMap<String, String>();
-                params.put(TAG_CATEGORY, getArguments().getString(TAG_CATEGORY));
-                return params;
-            }
-        };
+        });
 
         // Adding request to request queue
-        SingletonQueue.getInstance().addToRequestQueue(stringReq);
+        SingletonQueue.getInstance().addToRequestQueue(jsonObjReq);
     }
 
     private void showpDialog() {

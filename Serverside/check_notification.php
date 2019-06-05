@@ -29,6 +29,8 @@ EOF;
             $order["DateOfReturn"] = $row["DateOfReturn"];
             $order["ReadyBroadcasted"] = $row["ReadyBroadcasted"];
             $order["ReturnWarningBroadcasted"] = $row["ReturnWarningBroadcasted"];
+            $order["CompletedBroadcasted"] = $row["CompletedBroadcasted"];
+            $order["Status"] = $row["Status"];
             array_push($response["Orders"],$order);
     }
 
@@ -44,6 +46,20 @@ if (!$ret){
 		$response["Update"] = $db->lastErrorMsg();
 }else{
 		$response["Update"] = "ReadyBroadcasted successfully updated";
+}
+
+$sql3 = <<<EOF
+			UPDATE Orders SET "CompletedBroadcasted"="True" WHERE Email = :Email AND Status = "Completed"
+EOF;
+
+$stmt = $db->prepare($sql3);
+$stmt->bindParam(':Email',$Email);
+
+$ret = $stmt->execute();
+if (!$ret){
+    $response["UpdateCompleted"] = $db->lastErrorMsg();
+}else{
+    $response["UpdateCompleted"] = "ReadyBroadcasted successfully updated";
 }
 
 

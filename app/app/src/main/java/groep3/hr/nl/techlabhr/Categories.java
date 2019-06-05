@@ -14,11 +14,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.GridView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -53,6 +55,7 @@ public class Categories extends Fragment {
     private static final String TAG_PID = "ProductID";
     private static final String TAG_MANUFACTURER = "ProductManufacturer";
     private static final String TAG_CATEGORY = "ProductCategory";
+    private static final String TAG_ICON = "";
     private static final String TAG_NAME = "ProductName";
     private static final String TAG_STOCK = "ProductStock";
     private static final String TAG_BROKEN = "ProductAmountBroken";
@@ -64,7 +67,7 @@ public class Categories extends Fragment {
     private ProgressDialog pDialog;
 
 
-    private ListView lv;
+    private GridView lv;
     ArrayList<HashMap<String,String>> catList;
     // temporary string to show the parsed response
 
@@ -109,13 +112,14 @@ public class Categories extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_categories, container, false);
 
-        lv = (ListView) view.findViewById(R.id.listResponse);
+        lv = (GridView) view.findViewById(R.id.listResponse);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Inventaris fragment =(Inventaris) Inventaris.newInstance();
                 Bundle cat = new Bundle();
                 cat.putString(TAG_CATEGORY,((TextView) view.findViewById(R.id.category_name)).getText().toString());
+
                 fragment.setArguments(cat);
                 Log.d(TAG,cat.toString());
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -152,7 +156,7 @@ public class Categories extends Fragment {
 
                             HashMap<String,String> map = new HashMap<String,String>();
                             map.put(TAG_CATEGORY,(String) Categories.get(i));
-
+                            map.put(TAG_ICON,Integer.toString(R.drawable.cat_icon));
                             catList.add(map);
                             Log.d(TAG,catList.toString());
 
@@ -166,8 +170,8 @@ public class Categories extends Fragment {
                                  * */
                                 ListAdapter adapter = new SimpleAdapter(
                                         getActivity(), catList,
-                                        R.layout.category_list_item, new String[] { TAG_CATEGORY},
-                                        new int[] { R.id.category_name });
+                                        R.layout.category_list_item, new String[] { TAG_ICON, TAG_CATEGORY},
+                                        new int[] { R.id.cat_icon, R.id.category_name });
 
                                 lv.setAdapter(adapter);
                             }

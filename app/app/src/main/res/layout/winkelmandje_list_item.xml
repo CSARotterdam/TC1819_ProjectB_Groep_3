@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
     <!-- Product id (pid) - will be HIDDEN - used to pass to other activity -->
     <TextView
@@ -20,14 +20,53 @@
         android:textSize="17sp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/product_amount"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:paddingTop="6dip"
-        android:textAlignment="textEnd"
-        android:textSize="17sp"
-        android:textStyle="bold" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal"
+        android:gravity="center|right" >
 
-</RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/amount"/>
+
+        <ImageButton
+            android:id="@+id/minusBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_minus"
+            android:onClick="decrease_amount"
+            android:backgroundTint="@color/colorWhite"/>
+
+        <TextView
+            android:id="@+id/product_amount"
+            android:layout_width="10dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingTop="6dip"
+            android:gravity="center"
+            android:textSize="17sp"
+            android:textStyle="bold"/>
+
+        <ImageButton
+            android:id="@+id/plusBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="increase_amount"
+            android:src="@drawable/ic_plus"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="@color/colorWhite"/>
+        <Button
+            android:id="@+id/removeItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remove"
+            android:textColor="@color/colorWhite"
+            android:backgroundTint="@color/colorRed"/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
