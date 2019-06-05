@@ -76,6 +76,18 @@ public class NavDrawer extends AppCompatActivity {
         transaction.commit();
 
     }
+    public void RemoveWinkelmandjeItem(View v){
+        View row = (View) v.getParent().getParent();
+        for (int i = 0;i<winkelmandje.size();i++){
+            if(winkelmandje.get(i).containsValue(((TextView) row.findViewById(R.id.product_name)).getText().toString())){
+                winkelmandje.remove(i);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.fragment_container, Winkelmandje.newInstance());
+                transaction.commit();
+            }
+        }
+    }
     public void increase_amount(View view){
         View row =(View) view.getParent().getParent();
         int activeStock = 0;
