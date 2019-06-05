@@ -97,16 +97,27 @@ public class NavDrawer extends AppCompatActivity {
     public void increase_amount(View view){
         View row =(View) view.getParent().getParent();
         int activeStock = 0;
+
         for (int i = 0; i< winkelmandje.size();i++){
             if (winkelmandje.get(i).containsValue(((TextView) row.findViewById(R.id.product_name)).getText().toString())){
                 activeStock = Integer.parseInt(winkelmandje.get(i).get(TAG_STOCK));
+
             }
         }
         int amount = Integer.parseInt(((TextView)row.findViewById(R.id.product_amount)).getText().toString());
         if (amount < activeStock) {
             amount++;
+            for (int i = 0; i< winkelmandje.size();i++){
+                if (winkelmandje.get(i).containsValue(((TextView) row.findViewById(R.id.product_name)).getText().toString())){
+                    winkelmandje.get(i).put(TAG_AMOUNT, Integer.toString(amount));
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    transaction.replace(R.id.fragment_container, Winkelmandje.newInstance());
+                    transaction.commit();
+                }
+            }
         }
-        ((TextView) row.findViewById(R.id.product_amount)).setText(Integer.toString(amount));
+
     }
     public void decrease_amount(View view){
         View row = (View) view.getParent().getParent();
@@ -115,7 +126,15 @@ public class NavDrawer extends AppCompatActivity {
         if (amount < 1){
             amount=1;
         }
-        ((TextView) row.findViewById(R.id.product_amount)).setText(Integer.toString(amount));
+        for (int i = 0; i< winkelmandje.size();i++){
+            if (winkelmandje.get(i).containsValue(((TextView) row.findViewById(R.id.product_name)).getText().toString())){
+                winkelmandje.get(i).put(TAG_AMOUNT, Integer.toString(amount));
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.fragment_container, Winkelmandje.newInstance());
+                transaction.commit();
+            }
+        }
     }
 
     public void InventoryCartHandler(View v){
