@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -36,12 +38,12 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link Mijn_leningen.OnFragmentInteractionListener} interface
+ * {@link Profile.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link Mijn_leningen#newInstance} factory method to
+ * Use the {@link Profile#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Mijn_leningen extends Fragment {
+public class Profile extends Fragment {
 
     private static final String orderURL = "https://eduardterlouw.com/techlab/get_all_orders_by_user.php";
 
@@ -54,23 +56,15 @@ public class Mijn_leningen extends Fragment {
     private static final String TAG_STATUS = "Status";
     private static final String TAG_EMAIL = "Email";
 
-    private ListView listPending;
-    private ListView listReady;
-    private ListView listInProgress;
-    private ListView listDenied;
-    private ListView listCompleted;
-
+    private ListView listOrders;
+    private ArrayList<HashMap<String,String>> OrderList;
     private ProgressDialog pDialog;
-    private ArrayList<HashMap<String,String>> pendingList;
-    private ArrayList<HashMap<String,String>> readyList;
-    private ArrayList<HashMap<String,String>> inProgressList;
-    private ArrayList<HashMap<String,String>> deniedList;
-    private ArrayList<HashMap<String,String>> completedList;
+
+    private Button mijnLeningenBtn;
 
     private OnFragmentInteractionListener mListener;
-    private AdapterView.OnItemClickListener clickListener;
 
-    public Mijn_leningen() {
+    public Profile() {
         // Required empty public constructor
     }
 
@@ -78,11 +72,11 @@ public class Mijn_leningen extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment Mijn_leningen.
+     * @return A new instance of fragment Profile.
      */
     // TODO: Rename and change types and number of parameters
-    public static Mijn_leningen newInstance() {
-        Mijn_leningen fragment = new Mijn_leningen();
+    public static Profile newInstance() {
+        Profile fragment = new Profile();
         Bundle args = new Bundle();
 
         fragment.setArguments(args);
@@ -102,41 +96,31 @@ public class Mijn_leningen extends Fragment {
                              Bundle savedInstanceState) {
         Toolbar toolbar= (Toolbar) getActivity().findViewById(R.id.toolbar);
         NavigationView nav = (NavigationView) getActivity().findViewById(R.id.nav_view);
-        MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_leningen);
-        menuItem.setChecked(true);
-        toolbar.setTitle("Mijn Leningen");
+        for(int i = 0;i<nav.getMenu().size();i++) {
+            MenuItem menuItem = (MenuItem) nav.getMenu().getItem(i);
+            menuItem.setChecked(false);
+        }
+        toolbar.setTitle("Mijn Profiel");
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_mijn_leningen, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
         //Initialize progressDialog
         pDialog = new ProgressDialog(getActivity());
         pDialog.setMessage("Please wait...");
         pDialog.setCancelable(false);
-
-        clickListener = new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Mijn_leningen_single fragment = (Mijn_leningen_single) Mijn_leningen_single.newInstance();
-                Bundle order = new Bundle();
-                order.putString(TAG_ORDERID, ((TextView) view.findViewById(R.id.detailID)).getText().toString());
-                fragment.setArguments(order);
-                Log.d(TAG, order.toString());
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container, fragment).addToBackStack(null);
-                transaction.commit();
-            }
-        };
-        listPending = view.findViewById(R.id.listPending);
-        listPending.setOnItemClickListener(clickListener);
-        listReady = view.findViewById(R.id.listReady);
-        listReady.setOnItemClickListener(clickListener);
-        listInProgress = view.findViewById(R.id.listInProgress);
-        listInProgress.setOnItemClickListener(clickListener);
-        listDenied = view.findViewById(R.id.listDenied);
-        listDenied.setOnItemClickListener(clickListener);
-        listCompleted = view.findViewById(R.id.listCompleted);
-        listCompleted.setOnItemClickListener(clickListener);
+        //Initialize Order list
+        listOrders = view.findViewById(R.id.listResponse);
         getAllOrders();
 
+        mijnLeningenBtn = view.findViewById(R.id.mijnLeningenBtn);
+        mijnLeningenBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.fragment_container, Mijn_leningen.newInstance()).addToBackStack(null);
+                transaction.commit();
+            }
+        });
         return view;
     }
 
@@ -148,46 +132,18 @@ public class Mijn_leningen extends Fragment {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, response);
-                String OrderIDPrev = "";
-                //Initializing lists
-                pendingList = new ArrayList<HashMap<String, String>>();
-                readyList = new ArrayList<HashMap<String, String>>();
-                inProgressList = new ArrayList<HashMap<String, String>>();
-                deniedList = new ArrayList<HashMap<String, String>>();
-                completedList = new ArrayList<HashMap<String, String>>();
                 hidepDialog();
+                OrderList = new ArrayList<HashMap<String, String>>();
                 try {
                     //Parsing JSON response
                     JSONObject responseObj = new JSONObject(response);
                     JSONArray Orders = (JSONArray) responseObj.get("Orders");
                     for(int i = 0;i < Orders.length();i++){
                         JSONObject OrderItem = (JSONObject) Orders.get(i);
-                        if(!(OrderItem.getString("OrderID").equals(OrderIDPrev))) {
-                            HashMap<String, String> map = new HashMap<>();
-                            map.put(TAG_ORDERID, OrderItem.getString("OrderID"));
-                            map.put(TAG_PID, OrderItem.getString("ProductID"));
-                            map.put(TAG_AMOUNT, OrderItem.getString("ProductAmount"));
-                            map.put(TAG_RETURN, OrderItem.getString("DateOfReturn"));
-                            map.put(TAG_STATUS, OrderItem.getString("Status"));
-                            switch(OrderItem.getString("Status")){
-                                case "pending":
-                                    pendingList.add(map);
-                                    break;
-                                case "readyForPickup":
-                                    readyList.add(map);
-                                    break;
-                                case "InProgress":
-                                    inProgressList.add(map);
-                                    break;
-                                case "Denied":
-                                    deniedList.add(map);
-                                    break;
-                                case "Completed":
-                                    completedList.add(map);
-                                    break;
-                            }
-                            OrderIDPrev = OrderItem.getString("OrderID");
-                        }
+                        HashMap<String, String> map = new HashMap<>();
+                        map.put(TAG_ORDERID, OrderItem.getString("OrderID"));
+                        map.put(TAG_RETURN, OrderItem.getString("DateOfReturn"));
+                        OrderList.add(map);
                     }
 
                 } catch (JSONException e) {
@@ -195,35 +151,11 @@ public class Mijn_leningen extends Fragment {
                 }
                 getActivity().runOnUiThread(new Runnable() {
                     public void run() {
-                        /**
-                         * Updating parsed JSON data into ListView
-                         * */
-                        ListAdapter pendingA = new SimpleAdapter(
-                                getActivity(), pendingList,
+                        ListAdapter adapter = new SimpleAdapter(
+                                getActivity(), OrderList,
                                 R.layout.mijn_leningen_list_item, new String[] {TAG_ORDERID,TAG_RETURN},
                                 new int[] { R.id.detailID,R.id.detailDate});
-                        ListAdapter readyA = new SimpleAdapter(
-                                getActivity(), readyList,
-                                R.layout.mijn_leningen_list_item, new String[] {TAG_ORDERID,TAG_RETURN},
-                                new int[] { R.id.detailID,R.id.detailDate});
-                        ListAdapter inProgressA = new SimpleAdapter(
-                                getActivity(), inProgressList,
-                                R.layout.mijn_leningen_list_item, new String[] {TAG_ORDERID,TAG_RETURN},
-                                new int[] { R.id.detailID,R.id.detailDate});
-                        ListAdapter deniedA = new SimpleAdapter(
-                                getActivity(), deniedList,
-                                R.layout.mijn_leningen_list_item, new String[] {TAG_ORDERID,TAG_RETURN},
-                                new int[] { R.id.detailID,R.id.detailDate});
-                        ListAdapter completedA = new SimpleAdapter(
-                                getActivity(), completedList,
-                                R.layout.mijn_leningen_list_item, new String[] {TAG_ORDERID,TAG_RETURN},
-                                new int[] { R.id.detailID,R.id.detailDate});
-
-                        listPending.setAdapter(pendingA);
-                        listReady.setAdapter(readyA);
-                        listInProgress.setAdapter(inProgressA);
-                        listDenied.setAdapter(deniedA);
-                        listCompleted.setAdapter(completedA);
+                        listOrders.setAdapter(adapter);
                     }
                 });
 

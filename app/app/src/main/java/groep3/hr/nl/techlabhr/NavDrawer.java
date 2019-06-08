@@ -253,6 +253,12 @@ public class NavDrawer extends AppCompatActivity {
         }
         switch (item.getItemId()) {
             //noinspection SimplifiableIfStatement
+            case R.id.action_profile:
+                FragmentManager fragmentManagerPro = getSupportFragmentManager();
+                FragmentTransaction transactionPro = fragmentManagerPro.beginTransaction();
+                transactionPro.replace(R.id.fragment_container, Profile.newInstance()).addToBackStack(null);
+                transactionPro.commit();
+
             case R.id.action_settings:
                 return true;
 

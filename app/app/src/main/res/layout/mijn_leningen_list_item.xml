@@ -22,7 +22,7 @@
         android:layout_marginBottom="15dip"
         android:singleLine="true" />
 
-    <!-- ID Label -->
+    <!-- Date Label -->
     <TextView android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Date of Return"
@@ -32,7 +32,7 @@
         android:textSize="17sp"
         />
 
-    <!-- Input ID -->
+    <!-- Input Date -->
     <TextView android:id="@+id/detailDate"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
