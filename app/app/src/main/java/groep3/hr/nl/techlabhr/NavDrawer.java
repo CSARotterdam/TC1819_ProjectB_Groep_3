@@ -256,6 +256,12 @@ public class NavDrawer extends AppCompatActivity {
             case R.id.action_settings:
                 return true;
 
+            case R.id.action_log_out:
+                Intent intent = new Intent(NavDrawer.this,LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+
             case R.id.action_winkelmandje:
                 Fragment fragment = null;
                 try {
