@@ -61,7 +61,7 @@ public class Product_Wijzigen extends Fragment {
     private String mParam2;
 
     // json object response url
-    private String urlJsonObj = "https://eduardterlouw.com/techlab/get_all_in_category.php";
+    private String urlJsonObj = "http://eduardterlouw.com/techlab/get_all_in_category.php";
 
 
     private static final String TAG_SUCCESS = "Success";

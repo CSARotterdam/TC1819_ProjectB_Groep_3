@@ -43,7 +43,7 @@ public class Order_Set_Picked_Up extends Fragment {
     private ProgressDialog pDialog;
 
     // json object response url
-    private String urlJsonObj = "https://eduardterlouw.com/techlab/get_all_ready_orders.php";
+    private String urlJsonObj = "http://eduardterlouw.com/techlab/get_all_ready_orders.php";
     private String TAG = NavDrawer.class.getSimpleName();
 
     private static final String TAG_ORDERID = "OrderID";
