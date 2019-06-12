@@ -98,6 +98,6 @@
     <string name="wijs_order_af">Wijs Order Af</string>
     <string name="selecteer_een_datum">Selecteer een datum</string>
     <string name="log_out" tools:ignore="ExtraTranslation">Log out</string>
-    <string name="profile">Profile</string>
+    <string name="profile" tools:ignore="ExtraTranslation">Profile</string>
 
 </resources>
