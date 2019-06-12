@@ -188,7 +188,7 @@ public class Inventaris extends Fragment {
                                     - (product.getInt("ProductAmountBroken") + product.getInt("ProductAmountInProgress")));
                             int productAmountBroken = product.getInt("ProductAmountBroken");
                             String encodedImage = product.getString("ProductImage");
-                            
+
                             //Default icon
                             Bitmap icon = BitmapFactory.decodeResource(getResources(),R.drawable.item_icon);
                             if (encodedImage.length() > 0){
