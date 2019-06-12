@@ -43,7 +43,7 @@ import java.util.Map;
  */
 public class Mijn_leningen extends Fragment {
 
-    private static final String orderURL = "https://eduardterlouw.com/techlab/get_all_orders_by_user.php";
+    private static final String orderURL = "http://eduardterlouw.com/techlab/get_all_orders_by_user.php";
 
     private String TAG = NavDrawer.class.getSimpleName();
     private static final String TAG_PID = "ProductID";

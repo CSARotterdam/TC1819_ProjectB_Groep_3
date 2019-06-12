@@ -2,12 +2,30 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1fe59e07-727b-462a-bf17-b7ce50f31261" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Profile.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/app/src/main/res/layout/fragment_profile.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/NavDrawer.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/NavDrawer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app/src/main/res/layout/mijn_leningen_list_item.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/src/main/res/layout/mijn_leningen_list_item.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app/src/main/res/menu/nav_drawer.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/src/main/res/menu/nav_drawer.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Serverside/Test.db" beforeDir="false" afterPath="$PROJECT_DIR$/Serverside/Test.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Categories.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Categories.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Inventaris.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Inventaris.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/LoginActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/LoginActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Mijn_leningen.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Mijn_leningen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Mijn_leningen_single.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Mijn_leningen_single.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/NotificationWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/NotificationWorker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Order_Set_Handed_In.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Order_Set_Handed_In.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Order_Set_Handed_In_Single.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Order_Set_Handed_In_Single.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Order_Set_Picked_Up.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Order_Set_Picked_Up.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Order_Set_Picked_Up_Single.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Order_Set_Picked_Up_Single.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Order_Set_Ready.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Order_Set_Ready.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Order_Set_Ready_Single.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Order_Set_Ready_Single.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Permissions.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Permissions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Permissions_Single.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Permissions_Single.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Product_Details.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Product_Details.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Product_Toevoegen.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Product_Toevoegen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Product_Wijzigen.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Product_Wijzigen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Product_Wijzigen_Single.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Product_Wijzigen_Single.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Product_wijzigen_categories.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Product_wijzigen_categories.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Profile.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Profile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/RegisterActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/RegisterActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Winkelmandje.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/src/main/java/groep3/hr/nl/techlabhr/Winkelmandje.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app/src/main/res/xml/network_security_config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app/src/main/res/xml/network_security_config.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -21,7 +39,17 @@
     </execution>
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Serverside/create_new_order.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="633">
+              <caret line="91" column="41" lean-forward="true" selection-start-line="91" selection-start-column="41" selection-end-line="91" selection-end-column="41" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -91,17 +119,18 @@
       <option name="presentableId" value="Default" />
       <updated>1556823290157</updated>
       <workItem from="1560019402832" duration="66000" />
+      <workItem from="1560338050086" duration="761000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="66000" />
+    <option name="totallyTimeSpent" value="827000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.3379531" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.34168443" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Image Layers" order="3" />
       <window_info id="Designer" order="4" />
@@ -109,19 +138,19 @@
       <window_info id="Capture Tool" order="6" />
       <window_info id="Favorites" order="7" side_tool="true" />
       <window_info id="Build Variants" order="8" side_tool="true" />
-      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Database Changes" />
       <window_info anchor="bottom" id="Version Control" order="0" />
       <window_info anchor="bottom" id="TODO" order="1" />
       <window_info anchor="bottom" id="Terminal" order="2" />
-      <window_info active="true" anchor="bottom" id="Event Log" order="3" side_tool="true" visible="true" weight="0.32827735" />
+      <window_info anchor="bottom" id="Event Log" order="3" side_tool="true" visible="true" weight="0.32827735" />
       <window_info anchor="bottom" id="Logcat" order="4" />
       <window_info anchor="bottom" id="Android Profiler" order="5" show_stripe_button="false" />
-      <window_info anchor="right" id="Database" />
+      <window_info anchor="bottom" id="Docker" order="6" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" order="7" />
       <window_info anchor="right" id="Capture Analysis" order="0" />
       <window_info anchor="right" id="Theme Preview" order="1" />
       <window_info anchor="right" id="Palette&#9;" order="2" />
       <window_info anchor="right" id="Device File Explorer" order="3" side_tool="true" />
+      <window_info anchor="right" id="Database" order="4" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -132,6 +161,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
           <caret line="16" column="101" selection-start-line="16" selection-start-column="101" selection-end-line="16" selection-end-column="101" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Serverside/create_new_order.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="633">
+          <caret line="91" column="41" lean-forward="true" selection-start-line="91" selection-start-column="41" selection-end-line="91" selection-end-column="41" />
         </state>
       </provider>
     </entry>

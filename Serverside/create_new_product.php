@@ -9,7 +9,11 @@ $response;
 //check for required fields
 if (isset($_POST["ProductID"])&& isset($_POST["ProductManufacturer"]) && isset($_POST["ProductCategory"]) &&
 isset($_POST["ProductName"])&& isset($_POST["ProductStock"])){
-	
+
+	$Image = "";
+	if (isset($_POST["ProductImage"])){
+		$Image = $_POST["ProductImage"];
+	}
 	$ID = $_POST["ProductID"];
 	$Manufacturer = $_POST["ProductManufacturer"];
 	$Category = $_POST["ProductCategory"];
@@ -23,8 +27,8 @@ isset($_POST["ProductName"])&& isset($_POST["ProductStock"])){
 	$db = new PDO('sqlite:Test.db');
 	
 	$sql =<<<EOF
-      INSERT INTO Products (ProductID,ProductManufacturer,ProductCategory,ProductName,ProductStock,ProductAmountBroken,ProductAmountInProgress)
-	  VALUES (:ProductID,:ProductManufacturer,:ProductCategory,:ProductName,:ProductStock,:ProductAmountBroken,:ProductAmountInProgress);
+      INSERT INTO Products (ProductID,ProductManufacturer,ProductCategory,ProductName,ProductStock,ProductAmountBroken,ProductAmountInProgress,ProductImage)
+	  VALUES (:ProductID,:ProductManufacturer,:ProductCategory,:ProductName,:ProductStock,:ProductAmountBroken,:ProductAmountInProgress,:ProductImage);
 EOF;
 	$stmt = $db->prepare($sql);
 	$stmt->bindParam(':ProductID',$ID);
@@ -34,6 +38,7 @@ EOF;
 	$stmt->bindParam(':ProductStock',$Stock);
 	$stmt->bindParam(':ProductAmountBroken',$AmountBroken);
 	$stmt->bindParam(':ProductAmountInProgress',$AmountInProgress);
+	$stmt->bindParam(":ProductImage",$Image);
 	
 	 $ret = $stmt->execute();
 	 if (!$ret){

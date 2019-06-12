@@ -59,7 +59,7 @@ public class Product_Toevoegen extends Fragment {
 
     // TODO: Rename and change types of parameters\
 
-    private String url = "https://eduardterlouw.com/techlab/create_new_product.php";
+    private String url = "http://eduardterlouw.com/techlab/create_new_product.php";
     private String TAG = NavDrawer.class.getSimpleName();
     private int PICK_IMAGE_REQUEST = 1;
     private String Base64ImageString = "";
