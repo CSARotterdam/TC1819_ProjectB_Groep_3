@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -89,7 +92,7 @@ public class Inventaris extends Fragment {
 
 
     private ListView lv;
-    ArrayList<HashMap<String,String>> productsList;
+    ArrayList<Product> productsList;
     // temporary string to show the parsed response
 
 
@@ -167,7 +170,7 @@ public class Inventaris extends Fragment {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, response.toString());
-                productsList = new ArrayList<HashMap<String, String>>();
+                productsList = new ArrayList<Product>();
                 try {
                     JSONObject json = new JSONObject(response);
                     if(json.getInt("Success")==1) {
@@ -181,16 +184,19 @@ public class Inventaris extends Fragment {
                             String productManufacturer = product.getString("ProductManufacturer");
                             String productCategory = product.getString("ProductCategory");
                             String productName = product.getString("ProductName");
-                            int productStock = product.getInt("ProductStock")
-                                    - (product.getInt("ProductAmountBroken") + product.getInt("ProductAmountInProgress"));
+                            String productStock = Integer.toString(product.getInt("ProductStock")
+                                    - (product.getInt("ProductAmountBroken") + product.getInt("ProductAmountInProgress")));
                             int productAmountBroken = product.getInt("ProductAmountBroken");
-
-                            HashMap<String,String> map = new HashMap<String,String>();
-                            map.put(TAG_PID,productID);
-                            map.put(TAG_NAME,productName);
-                            map.put(TAG_STOCK,Integer.toString(productStock));
-                            productsList.add(map);
-                            map.put(TAG_ICON, Integer.toString(R.drawable.item_icon));
+                            String encodedImage = product.getString("ProductImage");
+                            
+                            //Default icon
+                            Bitmap icon = BitmapFactory.decodeResource(getResources(),R.drawable.item_icon);
+                            if (encodedImage.length() > 0){
+                                byte[]decodedString = Base64.decode(encodedImage,Base64.DEFAULT);
+                                icon = BitmapFactory.decodeByteArray(decodedString,0,decodedString.length);
+                            }
+                            Product productItem = new Product(productID,productName,productStock,icon);
+                            productsList.add(productItem);
                             Log.d(TAG,productsList.toString());
 
 
@@ -201,12 +207,7 @@ public class Inventaris extends Fragment {
                                 /**
                                  * Updating parsed JSON data into ListView
                                  * */
-                                ListAdapter adapter = new SimpleAdapter(
-                                        getActivity(), productsList,
-                                        R.layout.product_list_item, new String[] { TAG_PID,
-                                        TAG_NAME,TAG_STOCK,TAG_ICON},
-                                        new int[] { R.id.pid, R.id.product_name,R.id.product_stock, R.id.item_icon});
-
+                                ListAdapter adapter = new ProductAdapter(getContext(),productsList);
                                 lv.setAdapter(adapter);
                             }
                         });
