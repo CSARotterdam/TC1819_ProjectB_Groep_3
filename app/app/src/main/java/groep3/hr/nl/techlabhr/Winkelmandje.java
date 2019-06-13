@@ -255,7 +255,7 @@ public class Winkelmandje extends Fragment {
                     DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
                     String DateOfReturn = dateFormat.format(cal.getTime());
 
-                    
+
                     params.put("DateOfReturn" + i,DateOfReturn);
                     params.put("DateOfReady" + i, winkelmandje.get(i).get(TAG_DATE));
 

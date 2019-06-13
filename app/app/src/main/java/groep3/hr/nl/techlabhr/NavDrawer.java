@@ -207,6 +207,9 @@ public class NavDrawer extends AppCompatActivity {
             case R.id.nav_uitgeleend:
                 fragmentClass = Uitgeleend.class;
                 break;
+            case R.id.nav_broken:
+                fragmentClass = brokenFragment.class;
+                break;
             default:
                 fragmentClass = Placeholder.class;
         }
