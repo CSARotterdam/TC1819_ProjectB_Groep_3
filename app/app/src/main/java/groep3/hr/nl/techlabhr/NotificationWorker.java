@@ -39,8 +39,8 @@ import java.util.Locale;
 import java.util.Map;
 
 public class NotificationWorker extends Worker {
-    private String urlJsonObj = "https://eduardterlouw.com/techlab/check_notification.php";
-    private String urlQuery = "https://eduardterlouw.com/techlab/update_notification.php";
+    private String urlJsonObj = "https://eduardterlouw.nl/techlab/check_notification.php";
+    private String urlQuery = "https://eduardterlouw.nl/techlab/update_notification.php";
     private String CHANNEL_READY_ID = "Order_ready_channel";
     private String CHANNEL_RETURN_ID = "Order_return_channel";
 
@@ -89,8 +89,9 @@ public class NotificationWorker extends Worker {
                             String ReadyBroadCasted = Order.getString("ReadyBroadcasted");
                             String ReturnWarningBroadcasted = Order.getString("ReturnWarningBroadcasted");
                             String CompletedBroadcasted = Order.getString("CompletedBroadcasted");
+                            String OverdueDate = Order.getString("OverdueDate");
                             Log.e("Info", productID + " " + DateOfReady);
-                            checkData(productID, DateOfReturn, ReadyBroadCasted, ReturnWarningBroadcasted,CompletedBroadcasted, Status);
+                            checkData(productID, DateOfReturn, ReadyBroadCasted, ReturnWarningBroadcasted,CompletedBroadcasted, Status,OverdueDate);
                         }
                     }
                 } catch (JSONException e) {
@@ -118,31 +119,58 @@ public class NotificationWorker extends Worker {
         return Result.success();
     }
 
-    public void checkData(String PruductID,  String DateOfReturn, String ReadyBroadcasted, String ReturnWarningBroadcasted, String CompletedBroadcasted, String Status) {
+    public void checkData(String PruductID,  String DateOfReturn, String ReadyBroadcasted, String ReturnWarningBroadcasted, String CompletedBroadcasted, String Status, String OverdueDate) {
 
-        if (Status.equals("readyForPickup")) {
-            if (ReadyBroadcasted.equals("False")){
+        boolean updateNotifications = false;
+        if (Status.equals("readyForPickup") & (ReadyBroadcasted.equals("False"))){
                 Log.e("Notification","should display now");
                 simple_Notification("Lening gereed", "Uw lening is gereed om opgehaald te worden!",CHANNEL_READY_ID);
-            }
+
         }
 
         String date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         Log.d("data", date + " " + DateOfReturn);
-        if(date.equals(DateOfReturn)){
-            Log.d("data", "equals");
-            if(ReturnWarningBroadcasted.equals("False")){
-
+        if(date.equals(DateOfReturn) & ReturnWarningBroadcasted.equals("False")){
                 simple_Notification("Uw lening verloopt", "Uw lening verloopt vandaag, vergeet niet om het in te leveren!",CHANNEL_RETURN_ID);
-                update_notifications(date);
-            }
+                updateNotifications = true;
         }
 
-        if(Status.equals("Completed")){
-            if(CompletedBroadcasted.equals("False")){
+        if(Status.equals("Completed") & CompletedBroadcasted.equals("False")){
                 simple_Notification("Uw lening is beëindigd ", "Uw lening is succesvol ingenomen en beëndigd!",CHANNEL_RETURN_ID);
-            }
         }
+
+
+        Log.d("checking overdue",OverdueDate);
+        if(!OverdueDate.equals(date)) {
+            Log.d("checking overdue","True");
+            int yearReturn = Integer.parseInt(DateOfReturn.split("-")[2]);
+            int monthReturn = Integer.parseInt(DateOfReturn.split("-")[1]);
+            int dayReturn = Integer.parseInt(DateOfReturn.split("-")[0]);
+            int year = Integer.parseInt(date.split("-")[2]);
+            int month = Integer.parseInt(date.split("-")[1]);
+            int day = Integer.parseInt(date.split("-")[0]);
+            Log.d("checking overdue","year:" + year+ " month:" + month + " day:" + day);
+            Log.d("checking overdue","yearr:" + yearReturn + " monthr:" + monthReturn + " dayr:" + dayReturn);
+
+            if (yearReturn < year) {
+                simple_Notification("U moet uw lening inleveren", "U bent te laat met het inlevern van uw lening", CHANNEL_RETURN_ID);
+                Log.d("checking overdue","notification given");
+            } else if (yearReturn == year && monthReturn < month) {
+                simple_Notification("U moet uw lening inleveren", "U bent te laat met het inlevern van uw lening", CHANNEL_RETURN_ID);
+                Log.d("checking overdue","notification given");
+            } else if (yearReturn == year && monthReturn == month && dayReturn < day) {
+                simple_Notification("U moet uw lening inleveren", "U bent te laat met het inlevern van uw lening", CHANNEL_RETURN_ID);
+                Log.d("checking overdue","notification given");
+            }
+
+            updateNotifications = true;
+        }
+
+        if(updateNotifications){
+            update_notifications(date);
+        }
+
+
     }
 
 

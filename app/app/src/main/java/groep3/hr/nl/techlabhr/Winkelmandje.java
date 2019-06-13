@@ -62,7 +62,7 @@ public class Winkelmandje extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private static final String orderURL = "https://eduardterlouw.com/techlab/create_new_order.php";
+    private static final String orderURL = "https://eduardterlouw.nl/techlab/create_new_order.php";
 
     private static final String TAG = NavDrawer.class.getSimpleName();
     private static final String TAG_SUCCESS = "Success";
@@ -255,6 +255,7 @@ public class Winkelmandje extends Fragment {
                     DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
                     String DateOfReturn = dateFormat.format(cal.getTime());
 
+                    
                     params.put("DateOfReturn" + i,DateOfReturn);
                     params.put("DateOfReady" + i, winkelmandje.get(i).get(TAG_DATE));
 

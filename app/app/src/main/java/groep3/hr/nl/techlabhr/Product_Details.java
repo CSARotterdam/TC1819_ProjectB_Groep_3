@@ -53,7 +53,7 @@ public class Product_Details extends Fragment implements DatePickerDialog.OnDate
 
     // TODO: Rename and change types of parameters\
 
-    private String selectURL = "https://eduardterlouw.com/techlab/select_from_products.php";
+    private String selectURL = "https://eduardterlouw.nl/techlab/select_from_products.php";
     private String TAG = NavDrawer.class.getSimpleName();
     private static final String TAG_SUCCESS = "Success";
     private static final String TAG_PRODUCTS = "Products";

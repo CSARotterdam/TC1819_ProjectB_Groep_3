@@ -40,8 +40,8 @@ import java.util.Map;
 public class RegisterActivity extends AppCompatActivity {
 
     private final String TAG = RegisterActivity.class.getSimpleName();
-    private final String urlAllEmail = "https://eduardterlouw.com/techlab/get_all_email.php";
-    private final String urlNewUser = "https://eduardterlouw.com/techlab/create_new_user.php";
+    private final String urlAllEmail = "https://eduardterlouw.nl/techlab/get_all_email.php";
+    private final String urlNewUser = "https://eduardterlouw.nl/techlab/create_new_user.php";
     //    private UserRegisterTask URTask;
     //UI reference
     private Button registerButton;

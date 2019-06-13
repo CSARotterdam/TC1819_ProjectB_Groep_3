@@ -35,8 +35,8 @@ import java.util.Map;
 
 public class Permissions_Single extends Fragment {
 
-    private String selectURL = "https://eduardterlouw.com/techlab/select_from_users.php";
-    private String updateURL = "https://eduardterlouw.com/techlab/update_user.php";
+    private String selectURL = "https://eduardterlouw.nl/techlab/select_from_users.php";
+    private String updateURL = "https://eduardterlouw.nl/techlab/update_user.php";
     private String TAG = NavDrawer.class.getSimpleName();
     private String TAG_EMAIL = "Email";
     private String TAG_PERMISSION = "Permission";

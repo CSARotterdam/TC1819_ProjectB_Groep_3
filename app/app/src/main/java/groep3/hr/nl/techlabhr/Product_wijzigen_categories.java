@@ -46,7 +46,7 @@ public class Product_wijzigen_categories extends Fragment {
     private String mParam2;
 
     // json object response url
-    private String urlJsonObj = "https://eduardterlouw.com/techlab/get_all_categories.php";
+    private String urlJsonObj = "https://eduardterlouw.nl/techlab/get_all_categories.php";
 
 
     private static final String TAG_SUCCESS = "Success";

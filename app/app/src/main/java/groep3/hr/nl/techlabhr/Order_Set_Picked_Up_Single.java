@@ -49,8 +49,8 @@ public class Order_Set_Picked_Up_Single extends Fragment {
 
     // TODO: Rename and change types of parameters\
 
-    private String selectURL = "https://eduardterlouw.com/techlab/select_from_ready_orders.php";
-    private String updateURL = "https://eduardterlouw.com/techlab/update_ready_order.php";
+    private String selectURL = "https://eduardterlouw.nl/techlab/select_from_ready_orders.php";
+    private String updateURL = "https://eduardterlouw.nl/techlab/update_ready_order.php";
     private String TAG = NavDrawer.class.getSimpleName();
     private static final String TAG_PID = "ProductID";
     private static final String TAG_NAME = "ProductName";
