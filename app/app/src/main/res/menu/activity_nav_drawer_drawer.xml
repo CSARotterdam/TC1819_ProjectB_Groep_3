@@ -41,7 +41,7 @@
                 android:id="@+id/nav_broken"
                 android:icon="@drawable/ic_broken"
                 android:title="Beschadigingen" />
-            
+
         </group>
 
         <group
