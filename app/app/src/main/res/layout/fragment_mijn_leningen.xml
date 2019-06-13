@@ -12,6 +12,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/textPending"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Pending"
@@ -24,6 +25,7 @@
         </ListView>
 
         <TextView
+            android:id="@+id/textReady"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Ready for pickup"
@@ -36,6 +38,7 @@
         </ListView>
 
         <TextView
+            android:id="@+id/textInProgress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="In Progress"
@@ -48,6 +51,7 @@
         </ListView>
 
         <TextView
+            android:id="@+id/textDenied"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Denied"
@@ -60,6 +64,7 @@
         </ListView>
 
         <TextView
+            android:id="@+id/textCompleted"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Completed"

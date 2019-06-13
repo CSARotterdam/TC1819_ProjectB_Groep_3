@@ -60,6 +60,12 @@ public class Mijn_leningen extends Fragment {
     private ListView listDenied;
     private ListView listCompleted;
 
+    private TextView textPending;
+    private TextView textReady;
+    private TextView textInProgress;
+    private TextView textDenied;
+    private TextView textCompleted;
+
     private ProgressDialog pDialog;
     private ArrayList<HashMap<String,String>> pendingList;
     private ArrayList<HashMap<String,String>> readyList;
@@ -112,6 +118,7 @@ public class Mijn_leningen extends Fragment {
         pDialog.setMessage("Please wait...");
         pDialog.setCancelable(false);
 
+
         clickListener = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -135,6 +142,14 @@ public class Mijn_leningen extends Fragment {
         listDenied.setOnItemClickListener(clickListener);
         listCompleted = view.findViewById(R.id.listCompleted);
         listCompleted.setOnItemClickListener(clickListener);
+
+        textPending = view.findViewById(R.id.textPending);
+        textReady = view.findViewById(R.id.textReady);
+        textInProgress = view.findViewById(R.id.textInProgress);
+        textDenied = view.findViewById(R.id.textDenied);
+        textCompleted = view.findViewById(R.id.textCompleted);
+
+
         getAllOrders();
 
         return view;
@@ -224,6 +239,12 @@ public class Mijn_leningen extends Fragment {
                         listInProgress.setAdapter(inProgressA);
                         listDenied.setAdapter(deniedA);
                         listCompleted.setAdapter(completedA);
+                        textPending.setVisibility(listPending.getAdapter().getCount() == 0 ? View.GONE : View.VISIBLE);
+                        textReady.setVisibility(listReady.getAdapter().getCount(]) == 0 ? View.GONE : View.VISIBLE);
+                        textInProgress.setVisibility(listInProgress.getAdapter().getCount() == 0 ? View.GONE : View.VISIBLE);
+                        textDenied.setVisibility(listDenied.getAdapter().getCount() == 0 ? View.GONE : View.VISIBLE);
+                        textCompleted.setVisibility(listCompleted.getAdapter().getCount() == 0 ? View.GONE : View.VISIBLE);
+
                     }
                 });
 
