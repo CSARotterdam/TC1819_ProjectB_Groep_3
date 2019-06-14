@@ -128,7 +128,7 @@ public class Mijn_leningen extends Fragment {
                 fragment.setArguments(order);
                 Log.d(TAG, order.toString());
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container, fragment).addToBackStack(null);
+                transaction.replace(R.id.extraDetails, fragment).addToBackStack(null);
                 transaction.commit();
             }
         };

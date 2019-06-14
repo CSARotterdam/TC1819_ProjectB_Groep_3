@@ -112,7 +112,7 @@ public class Permissions extends Fragment {
                 fragment.setArguments(user);
                 Log.d(TAG,user.toString());
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container,fragment).addToBackStack(null);
+                transaction.replace(R.id.spinnerUsers,fragment).addToBackStack(null);
                 transaction.commit();
             }
         });

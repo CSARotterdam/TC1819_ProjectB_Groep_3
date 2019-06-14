@@ -112,6 +112,7 @@ public class Mijn_leningen_single extends Fragment {
 
         OrderID = (TextView) view.findViewById(R.id.OrderID);
         OrderID.setText(getArguments().getString(TAG_ORDERID));
+        OrderID.setVisibility(View.GONE);
 
         lv = (ListView) view.findViewById(R.id.listResponse);
         readSingleOrder();
