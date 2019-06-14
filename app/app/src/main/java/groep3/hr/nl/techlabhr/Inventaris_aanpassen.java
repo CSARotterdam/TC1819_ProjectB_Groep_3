@@ -74,7 +74,7 @@ public class Inventaris_aanpassen extends Fragment {
             public void onClick(View v) {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.fragment_container, Product_Toevoegen.newInstance()).addToBackStack(null);
+                transaction.replace(R.id.productToevoegen, Product_Toevoegen.newInstance()).addToBackStack(null);
                 transaction.commit();
             }
         });

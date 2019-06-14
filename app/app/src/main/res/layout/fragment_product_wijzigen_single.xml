@@ -137,6 +137,8 @@
                 <Button android:id="@+id/btnSave"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/colorWhite"
+                    android:background="@color/colorAccent"
                     android:text="Save Changes"
                     android:layout_weight="1"
                     style="?android:attr/buttonBarButtonStyle"/>
@@ -145,6 +147,8 @@
                 <Button android:id="@+id/btnDelete"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/colorWhite"
+                    android:background="@color/colorAccent"
                     android:text="Delete"
                     android:layout_weight="1"
                     style="?android:attr/buttonBarButtonStyle"/>

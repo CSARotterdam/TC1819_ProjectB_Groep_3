@@ -15,11 +15,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.GridLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.GridView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -65,7 +67,7 @@ public class Product_wijzigen_categories extends Fragment {
     private ProgressDialog pDialog;
 
 
-    private ListView lv;
+    private GridView lv;
     ArrayList<HashMap<String,String>> catList;
     // temporary string to show the parsed response
 
@@ -110,7 +112,7 @@ public class Product_wijzigen_categories extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_product_wijzigen_categories, container, false);
 
-        lv = (ListView) view.findViewById(R.id.listResponse);
+        lv = (GridView) view.findViewById(R.id.listResponse);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
