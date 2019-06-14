@@ -28,10 +28,15 @@
         android:layout_height="wrap_content"
         android:textColor="@color/colorWhite"
         android:backgroundTint="@color/cardview_dark_background"
-        android:text="@string/MarkOrderHandedIn"
-        />
+        android:text="@string/MarkOrderHandedIn"/>
 
 
+    <FrameLayout
+        android:id="@+id/framelayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
 
 
 </LinearLayout>

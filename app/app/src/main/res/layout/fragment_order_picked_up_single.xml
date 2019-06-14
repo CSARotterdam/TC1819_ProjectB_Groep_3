@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:text="OrderID"/>
+        android:text="OrderID: "/>
 
     <TextView
         android:id="@+id/OrderID_order_picked_up"
@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:text="User"/>
+        android:text="User: "/>
 
     <TextView
         android:id="@+id/user_email_order_picked_up"
@@ -31,15 +31,24 @@
     <ListView
         android:id="@+id/listResponse"
         android:layout_width="match_parent"
-        android:layout_height="300dp">
+        android:layout_height="400dp">
 
     </ListView>
-
-    <!-- Button set Ready -->
-    <Button
-        android:id="@+id/btnSetOrderPickedUpSingle"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/markeer_order_als_afgegeven" />
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        style="?android:attr/buttonBarStyle"
+        android:layout_weight="1"
+        android:gravity="bottom">
+        <!-- Button set Ready -->
+        <Button
+            android:id="@+id/btnSetOrderPickedUpSingle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:backgroundTint="@color/colorAccent"
+            android:text="@string/markeer_order_als_afgegeven" />
+    </LinearLayout>
 
 </LinearLayout>
