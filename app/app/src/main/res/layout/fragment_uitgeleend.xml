@@ -9,12 +9,16 @@
         android:id="@+id/btnSetOrderReady"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/colorWhite"
+        android:backgroundTint="@color/colorAccent"
         android:text="@string/MarkOrderReady" />
 
     <Button
         android:id="@+id/btnSetOrderPickedUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/colorWhite"
+        android:backgroundTint="@color/design_default_color_primary_dark"
         android:text="@string/markeer_order_als_opgehaald"
         />
 
@@ -22,6 +26,8 @@
         android:id="@+id/btnSetOrderHandedIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/colorWhite"
+        android:backgroundTint="@color/cardview_dark_background"
         android:text="@string/MarkOrderHandedIn"
         />
 
