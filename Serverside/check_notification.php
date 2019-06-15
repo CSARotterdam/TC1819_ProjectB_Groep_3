@@ -31,6 +31,7 @@ EOF;
             $order["ReturnWarningBroadcasted"] = $row["ReturnWarningBroadcasted"];
             $order["CompletedBroadcasted"] = $row["CompletedBroadcasted"];
             $order["Status"] = $row["Status"];
+            $order["OverdueDate"] = $row["OverdueDate"];
             array_push($response["Orders"],$order);
     }
 

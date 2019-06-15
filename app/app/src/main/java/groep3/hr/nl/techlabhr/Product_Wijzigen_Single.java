@@ -56,9 +56,9 @@ public class Product_Wijzigen_Single extends Fragment {
 
     // TODO: Rename and change types of parameters\
 
-    private String selectURL = "http://eduardterlouw.com/techlab/select_from_products.php";
-    private String updateURL = "http://eduardterlouw.com/techlab/update_product.php";
-    private String deleteURL = "http://eduardterlouw.com/techlab/delete_product.php";
+    private String selectURL = "https://eduardterlouw.nl/techlab/select_from_products.php";
+    private String updateURL = "https://eduardterlouw.nl/techlab/update_product.php";
+    private String deleteURL = "https://eduardterlouw.nl/techlab/delete_product.php";
     private String TAG = NavDrawer.class.getSimpleName();
     private String TAG_PID = "ProductID";
     private int PICK_IMAGE_REQUEST = 1;

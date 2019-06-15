@@ -1,7 +1,8 @@
 <?php
 
 $response = array();
-$response["Update"] = "";
+$response["UpdateReady"] = "";
+$response["UpdateOverdue"] = "";
 $response["Success"] = 0;
 $Email = "";
 $Date = "";
@@ -30,11 +31,31 @@ EOF;
   }
   $response["Success"] = 1;
 
+  $sql2 =<<<EOF
+      UPDATE Orders 
+	  SET 	OverdueDate = :Date
+	  WHERE Email = :Email
+	  
+EOF;
+
+  $stmt = $db->prepare($sql2);
+  $stmt->bindParam(':Email',$Email);
+  $stmt->bindParam(':Date',$Date);
+
+  $ret = $stmt->execute();
+  if (!$ret){
+    $response["UpdateOverdue"] = $db->lastErrorMsg();
+  }else{
+    $response["UpdateOverdue"] = "ReadyBroadcasted successfully updated";
+  }
+  $response["Success"] = 1;
+
 
 }
 
 else{
-  $response["Update"] = "One or more fields missing";
+  $response["UpdateReady"] = "One or more fields missing";
+  $response["UpdateOverdue"] = "One or more fields missing";
   $response["Success"] = 0;
 }
 echo json_encode($response);

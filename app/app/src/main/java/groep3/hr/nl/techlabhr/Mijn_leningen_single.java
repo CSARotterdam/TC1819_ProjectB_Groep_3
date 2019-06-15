@@ -49,7 +49,7 @@ public class Mijn_leningen_single extends Fragment {
 
     // TODO: Rename and change types of parameters\
 
-    private String selectURL = "http://eduardterlouw.com/techlab/select_from_orders.php";
+    private String selectURL = "https://eduardterlouw.nl/techlab/select_from_orders.php";
     private String TAG = NavDrawer.class.getSimpleName();
     private static final String TAG_PID = "ProductID";
     private static final String TAG_NAME = "ProductName";

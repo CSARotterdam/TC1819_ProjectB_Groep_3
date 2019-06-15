@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="vertical"
+    tools:context=".Inventaris">
+
+    <ListView
+        android:id="@+id/listBrokenItems"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </ListView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        style="?android:attr/buttonBarStyle"
+        android:layout_weight="1"
+        android:gravity="bottom">
+        <!-- Button Create Product -->
+
+        <CheckBox
+            android:id="@+id/check"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/checkMe"/>
+
+
+        <Button
+            android:id="@+id/buttonAddBroken"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:backgroundTint="@color/colorAccent"
+            android:text="Add broken item"
+            android:textColor="@color/colorWhite" />
+
+        <!-- Button Create Product -->
+    </LinearLayout>
+
+</LinearLayout>

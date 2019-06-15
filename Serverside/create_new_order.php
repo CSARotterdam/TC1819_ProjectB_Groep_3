@@ -80,8 +80,8 @@ EOF;
 		
 		//Initialize SQL statement placing data into Database
 		$sql = <<<EOF
-		INSERT INTO Orders(OrderID,Email,ProductID,ProductAmount, DateOfReady, DateOfReturn,ReadyBroadcasted,ReturnWarningBroadcasted, Status, CompletedBroadcasted)
-		VALUES (:OrderID,:Email,:ProductID,:ProductAmount,:DateOfReady,:DateOfReturn,:ReadyBroadcasted,:ReturnWarningBroadcasted,:Status,:CompletedBroadcasted)
+		INSERT INTO Orders(OrderID,Email,ProductID,ProductAmount, DateOfReady, DateOfReturn,ReadyBroadcasted,ReturnWarningBroadcasted, Status, CompletedBroadcasted, OverdueDate)
+		VALUES (:OrderID,:Email,:ProductID,:ProductAmount,:DateOfReady,:DateOfReturn,:ReadyBroadcasted,:ReturnWarningBroadcasted,:Status,:CompletedBroadcasted, :DateOfReturn)
 EOF;
 		$stmt = $db->prepare($sql);
 		$stmt->bindParam(':OrderID',$OrderID);
