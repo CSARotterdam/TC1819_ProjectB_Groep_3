@@ -1,15 +1,38 @@
 package groep3.hr.nl.techlabhr;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -29,6 +52,19 @@ public class brokenFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private static final String TAG_PID = "ProductID";
+    private static final String TAG_NAME = "ProductName";
+    private static final String TAG_BROKEN = "ProductAmountBroken";
+
+    private static String TAG = NavDrawer.class.getSimpleName();
+
+
+    private ListView lv;
+    ArrayList<HashMap<String,String>> productsList;
+
+    private ProgressDialog pDialog;
+    private String urlJsonObj = "https://eduardterlouw.nl/techlab/get_all_broken.php";
 
     private OnFragmentInteractionListener mListener;
 
@@ -71,7 +107,23 @@ public class brokenFragment extends Fragment {
         MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_broken);
         menuItem.setChecked(true);
         toolbar.setTitle("Beschadigingen");
+
+
+
+        lv = (ListView) getActivity().findViewById(R.id.listBrokenItems);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
         // Inflate the layout for this fragment
+
+        pDialog = new ProgressDialog(getActivity());
+        pDialog.setMessage("Please wait...");
+        pDialog.setCancelable(false);
+        getAllBroken();
+
         return inflater.inflate(R.layout.fragment_broken, container, false);
     }
 
@@ -99,6 +151,87 @@ public class brokenFragment extends Fragment {
         mListener = null;
     }
 
+
+    private void getAllBroken(){
+        showpDialog();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                urlJsonObj, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, response.toString());
+                productsList = new ArrayList<HashMap<String, String>>();
+                try {
+                    JSONObject json = new JSONObject(response);
+                    if(json.getInt("Success")==1) {
+                        JSONArray Products =(JSONArray) json.get("Products");
+                        for (int i = 0; i < Products.length(); i++) {
+
+                            JSONObject product = (JSONObject) Products.get(i);
+                            // Parsing json object response
+                            // response will be a json object
+                            String productID = product.getString("ProductID");
+                            String productName = product.getString("ProductName");
+                            int productAmountBroken = product.getInt("ProductAmountBroken");
+
+                            HashMap<String,String> map = new HashMap<String,String>();
+                            map.put(TAG_PID,productID);
+                            map.put(TAG_NAME,productName);
+
+                            productsList.add(map);
+                            map.put(TAG_ICON, Integer.toString(R.drawable.item_icon));
+                            Log.d(TAG,productsList.toString());
+
+
+                        }
+                        hidepDialog();
+                        getActivity().runOnUiThread(new Runnable() {
+                            public void run() {
+                                /**
+                                 * Updating parsed JSON data into ListView
+                                 * */
+                                ListAdapter adapter = new SimpleAdapter(
+                                        getActivity(), productsList,
+                                        R.layout.procuct_broken_list_item, new String[] { TAG_PID,
+                                        TAG_NAME,TAG_STOCK,TAG_ICON},
+                                        new int[] { R.id.pid, R.id.product_name,R.id.product_stock, R.id.item_icon});
+
+                                lv.setAdapter(adapter);
+                            }
+                        });
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getActivity().getApplicationContext(),
+                            "Error: " + e.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                }
+                hidepDialog();
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                Toast.makeText(getActivity().getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_SHORT).show();
+                // hide the progress dialog
+                hidepDialog();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put(TAG_CATEGORY, getArguments().getString(TAG_CATEGORY));
+                return params;
+            }
+        };
+
+        // Adding request to request queue
+        SingletonQueue.getInstance().addToRequestQueue(stringReq);
+    }
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -109,8 +242,20 @@ public class brokenFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
+
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private void showpDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
+
+    private void hidepDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
     }
 }
