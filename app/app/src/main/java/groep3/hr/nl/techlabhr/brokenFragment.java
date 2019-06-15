@@ -179,7 +179,7 @@ public class brokenFragment extends Fragment {
                             map.put(TAG_NAME,productName);
 
                             productsList.add(map);
-                            map.put(TAG_ICON, Integer.toString(R.drawable.item_icon));
+//                            map.put(TAG_ICON, Integer.toString(R.drawable.item_icon));
                             Log.d(TAG,productsList.toString());
 
 
@@ -187,16 +187,16 @@ public class brokenFragment extends Fragment {
                         hidepDialog();
                         getActivity().runOnUiThread(new Runnable() {
                             public void run() {
-                                /**
-                                 * Updating parsed JSON data into ListView
-                                 * */
-                                ListAdapter adapter = new SimpleAdapter(
-                                        getActivity(), productsList,
-                                        R.layout.procuct_broken_list_item, new String[] { TAG_PID,
-                                        TAG_NAME,TAG_STOCK,TAG_ICON},
-                                        new int[] { R.id.pid, R.id.product_name,R.id.product_stock, R.id.item_icon});
-
-                                lv.setAdapter(adapter);
+//                                /**
+//                                 * Updating parsed JSON data into ListView
+//                                 * */
+//                                ListAdapter adapter = new SimpleAdapter(
+//                                        getActivity(), productsList,
+//                                        R.layout.procuct_broken_list_item, new String[] { TAG_PID,
+//                                        TAG_NAME,TAG_STOCK,TAG_ICON},
+//                                        new int[] { R.id.pid, R.id.product_name,R.id.product_stock, R.id.item_icon});
+//
+//                                lv.setAdapter(adapter);
                             }
                         });
 
@@ -224,13 +224,13 @@ public class brokenFragment extends Fragment {
             protected Map<String, String> getParams()
             {
                 Map<String, String>  params = new HashMap<String, String>();
-                params.put(TAG_CATEGORY, getArguments().getString(TAG_CATEGORY));
+//                params.put(TAG_CATEGORY, getArguments().getString(TAG_CATEGORY));
                 return params;
             }
         };
 
         // Adding request to request queue
-        SingletonQueue.getInstance().addToRequestQueue(stringReq);
+//        SingletonQueue.getInstance().addToRequestQueue(stringReq);
     }
     /**
      * This interface must be implemented by activities that contain this
