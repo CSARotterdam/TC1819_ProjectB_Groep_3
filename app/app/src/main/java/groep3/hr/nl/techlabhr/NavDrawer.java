@@ -207,6 +207,9 @@ public class NavDrawer extends AppCompatActivity {
             case R.id.nav_uitgeleend:
                 fragmentClass = Uitgeleend.class;
                 break;
+            case R.id.nav_leerlingen:
+                fragmentClass = Leerlingen.class;
+                break;
             case R.id.nav_broken:
                 fragmentClass = brokenFragment.class;
                 break;

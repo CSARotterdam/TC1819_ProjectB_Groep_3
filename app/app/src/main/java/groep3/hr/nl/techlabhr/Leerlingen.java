@@ -44,7 +44,7 @@ public class Leerlingen extends Fragment {
     private String mParam2;
 
     // json object response url
-    private String urlJsonObj = "https://eduardterlouw.com/techlab/get_all_email_and_perm.php";
+    private String urlJsonObj = "https://eduardterlouw.nl/techlab/get_all_email_and_perm.php";
 
     private static final String TAG_EMAIL = "Email";
     private static final String TAG_PERMISSION = "Permission";

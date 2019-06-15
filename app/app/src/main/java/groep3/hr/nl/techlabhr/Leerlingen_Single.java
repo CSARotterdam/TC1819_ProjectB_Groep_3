@@ -45,7 +45,7 @@ import java.util.Map;
  */
 public class Leerlingen_Single extends Fragment {
 
-    private static final String orderURL = "https://eduardterlouw.com/techlab/get_all_orders_by_user.php";
+    private static final String orderURL = "https://eduardterlouw.nl/techlab/get_all_orders_by_user.php";
 
     private String TAG = NavDrawer.class.getSimpleName();
     private static final String TAG_PID = "ProductID";
