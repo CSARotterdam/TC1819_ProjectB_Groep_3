@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -111,9 +112,9 @@ public class Product_Broken_Details extends Fragment {
                              Bundle savedInstanceState) {
         Toolbar toolbar= (Toolbar) getActivity().findViewById(R.id.toolbar);
         NavigationView nav = (NavigationView) getActivity().findViewById(R.id.nav_view);
-        MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_inventaris);
+        MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_broken);
         menuItem.setChecked(true);
-        toolbar.setTitle("Inventaris");
+        toolbar.setTitle("Beschadigingen");
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_product__broken__details, container, false);
@@ -158,6 +159,14 @@ public class Product_Broken_Details extends Fragment {
                         Toast.makeText(getActivity().getApplicationContext(),
                                 "Amount broken updated successfully",
                                 Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        Toast.makeText(getActivity().getApplicationContext(),
+                                "Amount broken updated successfully",
+                                Toast.LENGTH_LONG).show();
+                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.fragment_container,brokenFragment.newInstance()).addToBackStack(null);
+                        transaction.commit();
                     }
 
                 } catch (JSONException e) {
