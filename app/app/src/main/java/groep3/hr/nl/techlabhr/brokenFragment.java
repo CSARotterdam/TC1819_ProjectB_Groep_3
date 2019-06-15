@@ -117,7 +117,14 @@ public class brokenFragment extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                Product_Broken_Details fragment = (Product_Broken_Details) Product_Broken_Details.newInstance();
+                Bundle product = new Bundle();
+                product.putString(TAG_PID,((TextView) view.findViewById(R.id.pid)).getText().toString());
+                fragment.setArguments(product);
+                Log.d(TAG,product.toString());
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container,fragment).addToBackStack(null);
+                transaction.commit();
             }
         });
         // Inflate the layout for this fragment
