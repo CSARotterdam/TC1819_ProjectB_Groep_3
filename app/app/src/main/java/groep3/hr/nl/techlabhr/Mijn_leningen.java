@@ -239,10 +239,15 @@ public class Mijn_leningen extends Fragment {
                         listInProgress.setAdapter(inProgressA);
                         listDenied.setAdapter(deniedA);
                         listCompleted.setAdapter(completedA);
+                        listPending.setVisibility(listPending.getAdapter().getCount() == 0 ? View.GONE : View.VISIBLE);
                         textPending.setVisibility(listPending.getAdapter().getCount() == 0 ? View.GONE : View.VISIBLE);
+                        listReady.setVisibility(listReady.getAdapter().getCount() == 0 ? View.GONE : View.VISIBLE);
                         textReady.setVisibility(listReady.getAdapter().getCount() == 0 ? View.GONE : View.VISIBLE);
+                        listInProgress.setVisibility(listInProgress.getAdapter().getCount() == 0 ? View.GONE : View.VISIBLE);
                         textInProgress.setVisibility(listInProgress.getAdapter().getCount() == 0 ? View.GONE : View.VISIBLE);
+                        listDenied.setVisibility(listDenied.getAdapter().getCount() == 0 ? View.GONE : View.VISIBLE);
                         textDenied.setVisibility(listDenied.getAdapter().getCount() == 0 ? View.GONE : View.VISIBLE);
+                        listCompleted.setVisibility(listCompleted.getAdapter().getCount() == 0 ? View.GONE : View.VISIBLE);
                         textCompleted.setVisibility(listCompleted.getAdapter().getCount() == 0 ? View.GONE : View.VISIBLE);
 
                     }
