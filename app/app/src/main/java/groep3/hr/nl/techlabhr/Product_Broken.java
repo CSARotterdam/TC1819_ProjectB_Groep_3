@@ -24,7 +24,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,8 +32,18 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
-public class Leerlingen extends Fragment {
+
+/**
+ * A simple {@link Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * {@link Inventaris.OnFragmentInteractionListener} interface
+ * to handle interaction events.
+ * Use the {@link Inventaris#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class Product_Broken extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -44,11 +54,17 @@ public class Leerlingen extends Fragment {
     private String mParam2;
 
     // json object response url
-    private String urlJsonObj = "https://eduardterlouw.nl/techlab/get_all_email_and_perm.php";
+    private String urlJsonObj = "https://eduardterlouw.nl/techlab/get_all_in_category.php";
 
-    private static final String TAG_EMAIL = "Email";
-    private static final String TAG_PERMISSION = "Permission";
 
+    private static final String TAG_SUCCESS = "Success";
+    private static final String TAG_PRODUCTS = "Products";
+    private static final String TAG_PID = "ProductID";
+    private static final String TAG_MANUFACTURER = "ProductManufacturer";
+    private static final String TAG_CATEGORY = "ProductCategory";
+    private static final String TAG_NAME = "ProductName";
+    private static final String TAG_STOCK = "ProductStock";
+    private static final String TAG_BROKEN = "ProductAmountBroken";
 
     private static String TAG = NavDrawer.class.getSimpleName();
 
@@ -58,13 +74,13 @@ public class Leerlingen extends Fragment {
 
 
     private ListView lv;
-    ArrayList<HashMap<String,String>> emailList;
+    ArrayList<HashMap<String,String>> productsList;
     // temporary string to show the parsed response
 
 
-    private Inventaris.OnFragmentInteractionListener mListener;
+    private OnFragmentInteractionListener mListener;
 
-    public Leerlingen() {
+    public Product_Broken() {
         // Required empty public constructor
     }
 
@@ -74,8 +90,8 @@ public class Leerlingen extends Fragment {
      * @return A new instance of fragment Inventaris.
      */
     // TODO: Rename and change types and number of parameters
-    public static Leerlingen newInstance() {
-        Leerlingen fragment = new Leerlingen();
+    public static Product_Broken newInstance() {
+        Product_Broken fragment = new Product_Broken();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -95,22 +111,22 @@ public class Leerlingen extends Fragment {
                              Bundle savedInstanceState) {
         Toolbar toolbar= (Toolbar) getActivity().findViewById(R.id.toolbar);
         NavigationView nav = (NavigationView) getActivity().findViewById(R.id.nav_view);
-        MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_leerlingen);
+        MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_inventaris);
         menuItem.setChecked(true);
-        toolbar.setTitle("Leerlingen");
+        toolbar.setTitle("Inventaris wijzigen");
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_leerlingen, container, false);
+        View view = inflater.inflate(R.layout.fragment_product_wijzigen, container, false);
 
         lv = (ListView) view.findViewById(R.id.listResponse);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Leerlingen_Single fragment =(Leerlingen_Single) Leerlingen_Single.newInstance();
-                Bundle user = new Bundle();
-                user.putString(TAG_EMAIL,((TextView) view.findViewById(R.id.user_Email)).getText().toString());
-                fragment.setArguments(user);
-                Log.d(TAG,user.toString());
+                Product_Broken_Details fragment =(Product_Broken_Details) Product_Broken_Details.newInstance();
+                Bundle product = new Bundle();
+                product.putString(TAG_PID,((TextView) view.findViewById(R.id.pid)).getText().toString());
+                fragment.setArguments(product);
+                Log.d(TAG,product.toString());
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_container,fragment).addToBackStack(null);
                 transaction.commit();
@@ -121,35 +137,48 @@ public class Leerlingen extends Fragment {
         pDialog = new ProgressDialog(getActivity());
         pDialog.setMessage("Please wait...");
         pDialog.setCancelable(false);
-        getAllEmail();
+        getAllProducts();
 
 
         return view;
     }
-    public void getAllEmail() {
+    public void getAllProducts() {
 
         showpDialog();
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                urlJsonObj, null, new Response.Listener<JSONObject>() {
+        StringRequest stringReq = new StringRequest(Request.Method.POST,
+                urlJsonObj, new Response.Listener<String>() {
 
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(String response) {
                 Log.d(TAG, response.toString());
-
-                emailList = new ArrayList<HashMap<String, String>>();
+                productsList = new ArrayList<HashMap<String, String>>();
                 try {
-                    if(response.getInt("Success")==1) {
-                        JSONArray EmailPermlist =(JSONArray) response.get("Email");
-                        for (int i = 0; i < EmailPermlist.length(); i++) {
-                            JSONObject EmailPerm = (JSONObject) EmailPermlist.get(i);
-                            HashMap<String,String> map = new HashMap<String,String>();
-                            map.put(TAG_EMAIL,(String) EmailPerm.get(TAG_EMAIL));
-                            map.put(TAG_PERMISSION,(String) EmailPerm.get(TAG_PERMISSION));
+                    JSONObject json = new JSONObject(response);
+                    if(json.getInt("Success")==1) {
+                        JSONArray Products =(JSONArray) json.get("Products");
+                        for (int i = 0; i < Products.length(); i++) {
 
-                            emailList.add(map);
+                            JSONObject product = (JSONObject) Products.get(i);
+                            // Parsing json object response
+                            // response will be a json object
+                            String productID = product.getString("ProductID");
+                            String productManufacturer = product.getString("ProductManufacturer");
+                            String productCategory = product.getString("ProductCategory");
+                            String productName = product.getString("ProductName");
+                            int productStock = product.getInt("ProductStock")
+                                    - (product.getInt("ProductAmountBroken") + product.getInt("ProductAmountInProgress"));
+                            int productAmountBroken = product.getInt("ProductAmountBroken");
+
+                            HashMap<String,String> map = new HashMap<String,String>();
+                            map.put(TAG_PID,productID);
+                            map.put(TAG_NAME,productName);
+                            map.put(TAG_STOCK,"In stock: " + Integer.toString(productStock));
+                            productsList.add(map);
+                            Log.d(TAG,productsList.toString());
+
+
                         }
-                        Log.d(TAG, emailList.toString());
                         hidepDialog();
                         getActivity().runOnUiThread(new Runnable() {
                             public void run() {
@@ -157,9 +186,10 @@ public class Leerlingen extends Fragment {
                                  * Updating parsed JSON data into ListView
                                  * */
                                 ListAdapter adapter = new SimpleAdapter(
-                                        getActivity(), emailList,
-                                        R.layout.user_list_item, new String[] {TAG_EMAIL,TAG_PERMISSION},
-                                        new int[] { R.id.user_Email, R.id.user_Permission});
+                                        getActivity(), productsList,
+                                        R.layout.product_list_item, new String[] { TAG_PID,
+                                        TAG_NAME,TAG_STOCK},
+                                        new int[] { R.id.pid, R.id.product_name,R.id.product_stock });
 
                                 lv.setAdapter(adapter);
                             }
@@ -184,10 +214,18 @@ public class Leerlingen extends Fragment {
                 // hide the progress dialog
                 hidepDialog();
             }
-        });
+        }){
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put(TAG_CATEGORY, getArguments().getString(TAG_CATEGORY));
+                return params;
+            }
+        };
 
         // Adding request to request queue
-        SingletonQueue.getInstance().addToRequestQueue(jsonObjReq);
+        SingletonQueue.getInstance().addToRequestQueue(stringReq);
     }
 
     private void showpDialog() {

@@ -14,8 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,7 +33,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Leerlingen extends Fragment {
+public class Product_Broken_categories extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -44,11 +44,17 @@ public class Leerlingen extends Fragment {
     private String mParam2;
 
     // json object response url
-    private String urlJsonObj = "https://eduardterlouw.nl/techlab/get_all_email_and_perm.php";
+    private String urlJsonObj = "https://eduardterlouw.nl/techlab/get_all_categories.php";
 
-    private static final String TAG_EMAIL = "Email";
-    private static final String TAG_PERMISSION = "Permission";
 
+    private static final String TAG_SUCCESS = "Success";
+    private static final String TAG_PRODUCTS = "Products";
+    private static final String TAG_PID = "ProductID";
+    private static final String TAG_MANUFACTURER = "ProductManufacturer";
+    private static final String TAG_CATEGORY = "ProductCategory";
+    private static final String TAG_NAME = "ProductName";
+    private static final String TAG_STOCK = "ProductStock";
+    private static final String TAG_BROKEN = "ProductAmountBroken";
 
     private static String TAG = NavDrawer.class.getSimpleName();
 
@@ -57,14 +63,14 @@ public class Leerlingen extends Fragment {
     private ProgressDialog pDialog;
 
 
-    private ListView lv;
-    ArrayList<HashMap<String,String>> emailList;
+    private GridView lv;
+    ArrayList<HashMap<String,String>> catList;
     // temporary string to show the parsed response
 
 
     private Inventaris.OnFragmentInteractionListener mListener;
 
-    public Leerlingen() {
+    public Product_Broken_categories() {
         // Required empty public constructor
     }
 
@@ -74,8 +80,8 @@ public class Leerlingen extends Fragment {
      * @return A new instance of fragment Inventaris.
      */
     // TODO: Rename and change types and number of parameters
-    public static Leerlingen newInstance() {
-        Leerlingen fragment = new Leerlingen();
+    public static Product_Broken_categories newInstance() {
+        Product_Broken_categories fragment = new Product_Broken_categories();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -84,6 +90,7 @@ public class Leerlingen extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG,"Created the right activity");
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -95,22 +102,22 @@ public class Leerlingen extends Fragment {
                              Bundle savedInstanceState) {
         Toolbar toolbar= (Toolbar) getActivity().findViewById(R.id.toolbar);
         NavigationView nav = (NavigationView) getActivity().findViewById(R.id.nav_view);
-        MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_leerlingen);
+        MenuItem menuItem = (MenuItem) nav.getMenu().findItem(R.id.nav_broken);
         menuItem.setChecked(true);
-        toolbar.setTitle("Leerlingen");
+        toolbar.setTitle("Beschadigingen");
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_leerlingen, container, false);
+        View view = inflater.inflate(R.layout.fragment_product_broken_categories, container, false);
 
-        lv = (ListView) view.findViewById(R.id.listResponse);
+        lv = (GridView) view.findViewById(R.id.listResponse);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Leerlingen_Single fragment =(Leerlingen_Single) Leerlingen_Single.newInstance();
-                Bundle user = new Bundle();
-                user.putString(TAG_EMAIL,((TextView) view.findViewById(R.id.user_Email)).getText().toString());
-                fragment.setArguments(user);
-                Log.d(TAG,user.toString());
+                Product_Broken fragment =(Product_Broken) Product_Broken.newInstance();
+                Bundle cat = new Bundle();
+                cat.putString(TAG_CATEGORY,((TextView) view.findViewById(R.id.category_name)).getText().toString());
+                fragment.setArguments(cat);
+                Log.d(TAG,cat.toString());
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_container,fragment).addToBackStack(null);
                 transaction.commit();
@@ -121,12 +128,12 @@ public class Leerlingen extends Fragment {
         pDialog = new ProgressDialog(getActivity());
         pDialog.setMessage("Please wait...");
         pDialog.setCancelable(false);
-        getAllEmail();
+        getAllCategories();
 
 
         return view;
     }
-    public void getAllEmail() {
+    public void getAllCategories() {
 
         showpDialog();
 
@@ -137,19 +144,20 @@ public class Leerlingen extends Fragment {
             public void onResponse(JSONObject response) {
                 Log.d(TAG, response.toString());
 
-                emailList = new ArrayList<HashMap<String, String>>();
+                catList = new ArrayList<HashMap<String, String>>();
                 try {
                     if(response.getInt("Success")==1) {
-                        JSONArray EmailPermlist =(JSONArray) response.get("Email");
-                        for (int i = 0; i < EmailPermlist.length(); i++) {
-                            JSONObject EmailPerm = (JSONObject) EmailPermlist.get(i);
-                            HashMap<String,String> map = new HashMap<String,String>();
-                            map.put(TAG_EMAIL,(String) EmailPerm.get(TAG_EMAIL));
-                            map.put(TAG_PERMISSION,(String) EmailPerm.get(TAG_PERMISSION));
+                        JSONArray Categories =(JSONArray) response.get("Categories");
+                        for (int i = 0; i < Categories.length(); i++) {
 
-                            emailList.add(map);
+                            HashMap<String,String> map = new HashMap<String,String>();
+                            map.put(TAG_CATEGORY,(String) Categories.get(i));
+
+                            catList.add(map);
+                            Log.d(TAG,catList.toString());
+
+
                         }
-                        Log.d(TAG, emailList.toString());
                         hidepDialog();
                         getActivity().runOnUiThread(new Runnable() {
                             public void run() {
@@ -157,9 +165,9 @@ public class Leerlingen extends Fragment {
                                  * Updating parsed JSON data into ListView
                                  * */
                                 ListAdapter adapter = new SimpleAdapter(
-                                        getActivity(), emailList,
-                                        R.layout.user_list_item, new String[] {TAG_EMAIL,TAG_PERMISSION},
-                                        new int[] { R.id.user_Email, R.id.user_Permission});
+                                        getActivity(), catList,
+                                        R.layout.category_list_item, new String[] { TAG_CATEGORY},
+                                        new int[] { R.id.category_name });
 
                                 lv.setAdapter(adapter);
                             }

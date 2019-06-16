@@ -2,18 +2,23 @@ package groep3.hr.nl.techlabhr;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -61,7 +66,8 @@ public class brokenFragment extends Fragment {
 
 
     private ListView lv;
-    ArrayList<HashMap<String,String>> productsList;
+    private Button btnAddBroken;
+    ArrayList<Product> productsList;
 
     private ProgressDialog pDialog;
     private String urlJsonObj = "https://eduardterlouw.nl/techlab/get_all_broken.php";
@@ -81,11 +87,10 @@ public class brokenFragment extends Fragment {
      * @return A new instance of fragment brokenFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static brokenFragment newInstance(String param1, String param2) {
+    public static brokenFragment newInstance() {
         brokenFragment fragment = new brokenFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -108,13 +113,31 @@ public class brokenFragment extends Fragment {
         menuItem.setChecked(true);
         toolbar.setTitle("Beschadigingen");
 
+        View view = inflater.inflate(R.layout.fragment_broken, container, false);
 
+        btnAddBroken = (Button) view.findViewById(R.id.buttonAddBroken);
+        btnAddBroken.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.fragment_container, Product_Broken_categories.newInstance()).addToBackStack(null);
+                transaction.commit();
+            }
+        });
 
-        lv = (ListView) getActivity().findViewById(R.id.listBrokenItems);
+        lv = view.findViewById(R.id.listBrokenItems);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                Product_Broken_Details fragment = (Product_Broken_Details) Product_Broken_Details.newInstance();
+                Bundle product = new Bundle();
+                product.putString(TAG_PID,((TextView) view.findViewById(R.id.pid)).getText().toString());
+                fragment.setArguments(product);
+                Log.d(TAG,product.toString());
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container,fragment).addToBackStack(null);
+                transaction.commit();
             }
         });
         // Inflate the layout for this fragment
@@ -124,7 +147,7 @@ public class brokenFragment extends Fragment {
         pDialog.setCancelable(false);
         getAllBroken();
 
-        return inflater.inflate(R.layout.fragment_broken, container, false);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -160,7 +183,7 @@ public class brokenFragment extends Fragment {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, response.toString());
-                productsList = new ArrayList<HashMap<String, String>>();
+                productsList = new ArrayList<Product>();
                 try {
                     JSONObject json = new JSONObject(response);
                     if(json.getInt("Success")==1) {
@@ -168,35 +191,36 @@ public class brokenFragment extends Fragment {
                         for (int i = 0; i < Products.length(); i++) {
 
                             JSONObject product = (JSONObject) Products.get(i);
-                            // Parsing json object response
-                            // response will be a json object
+//                             Parsing json object response
+//                             response will be a json object
                             String productID = product.getString("ProductID");
+//                            String productManufacturer = product.getString("ProductManufacturer");
+//                            String productCategory = product.getString("ProductCategory");
                             String productName = product.getString("ProductName");
-                            int productAmountBroken = product.getInt("ProductAmountBroken");
-
-                            HashMap<String,String> map = new HashMap<String,String>();
-                            map.put(TAG_PID,productID);
-                            map.put(TAG_NAME,productName);
-
-                            productsList.add(map);
-//                            map.put(TAG_ICON, Integer.toString(R.drawable.item_icon));
-                            Log.d(TAG,productsList.toString());
-
-
+                            String productStock = Integer.toString(product.getInt("ProductStock")
+                                    - (product.getInt("ProductAmountBroken") + product.getInt("ProductAmountInProgress")));
+                            String productAmountBroken = Integer.toString(product.getInt("ProductAmountBroken"));
+                            String encodedImage = product.getString("ProductImage");
+                            Log.d(TAG, Integer.toString(encodedImage.length()));
+                            //Default icon
+                            Bitmap icon = BitmapFactory.decodeResource(getResources(),R.drawable.item_icon);
+                            if (encodedImage.length() > 0){
+                                byte[]decodedString = Base64.decode(encodedImage,Base64.DEFAULT);
+                                icon = BitmapFactory.decodeByteArray(decodedString,0,decodedString.length);
+                            }
+                            Product productItem = new Product(productID,productName,productStock,icon,productAmountBroken);
+                            productsList.add(productItem);
+//
                         }
+
                         hidepDialog();
                         getActivity().runOnUiThread(new Runnable() {
                             public void run() {
-//                                /**
-//                                 * Updating parsed JSON data into ListView
-//                                 * */
-//                                ListAdapter adapter = new SimpleAdapter(
-//                                        getActivity(), productsList,
-//                                        R.layout.procuct_broken_list_item, new String[] { TAG_PID,
-//                                        TAG_NAME,TAG_STOCK,TAG_ICON},
-//                                        new int[] { R.id.pid, R.id.product_name,R.id.product_stock, R.id.item_icon});
-//
-//                                lv.setAdapter(adapter);
+                                /**
+                                 * Updating parsed JSON data into ListView
+                                 * */
+                                ListAdapter adapter = new ProductBrokenAdapter(getContext(),productsList);
+                                lv.setAdapter(adapter);
                             }
                         });
 
@@ -230,7 +254,7 @@ public class brokenFragment extends Fragment {
         };
 
         // Adding request to request queue
-//        SingletonQueue.getInstance().addToRequestQueue(stringReq);
+        SingletonQueue.getInstance().addToRequestQueue(stringRequest);
     }
     /**
      * This interface must be implemented by activities that contain this
