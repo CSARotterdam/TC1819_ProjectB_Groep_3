@@ -4,6 +4,21 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <TextView android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Amount Broken"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:paddingTop="10dip"
+        android:textSize="17dip"/>
+
+    <!-- Horizontal layout for side to side buttons-->
+    <EditText
+        android:id="@+id/inputAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number" />
+
     <!-- ID Label -->
     <TextView android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -77,7 +92,7 @@
     <!-- Stock Label -->
     <TextView android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/stock"
+        android:text="Active Stock"
         android:paddingLeft="10dip"
         android:paddingRight="10dip"
         android:paddingTop="10dip"
@@ -85,6 +100,22 @@
 
     <!-- Input Stock -->
     <TextView android:id="@+id/detailStock"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dip"
+        android:layout_marginBottom="15dip"
+        android:singleLine="true" />
+
+    <TextView android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Total Stock"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:paddingTop="10dip"
+        android:textSize="17dip"/>
+
+    <!-- Input Stock -->
+    <TextView android:id="@+id/detailTotal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dip"
@@ -109,21 +140,6 @@
         android:layout_marginBottom="15dip"
         android:singleLine="true"
         android:visibility="gone"/>
-
-    <TextView android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Amount Broken"
-        android:paddingLeft="10dip"
-        android:paddingRight="10dip"
-        android:paddingTop="10dip"
-        android:textSize="17dip"/>
-
-    <!-- Horizontal layout for side to side buttons-->
-    <EditText
-        android:id="@+id/inputAmount"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="number" />
 
     <Button
         android:id="@+id/btnBroken"

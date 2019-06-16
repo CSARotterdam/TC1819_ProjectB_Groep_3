@@ -69,6 +69,7 @@ public class Product_Broken_Details extends Fragment {
     private TextView detailCategory;
     private TextView detailName;
     private TextView detailStock;
+    private TextView detailTotal;
     private EditText detailBroken;
     private EditText inputAmount;
 
@@ -123,6 +124,7 @@ public class Product_Broken_Details extends Fragment {
         detailManufacturer = (TextView) view.findViewById(R.id.detailManufacturer);
         detailName = (TextView) view.findViewById(R.id.detailName);
         detailStock = (TextView) view.findViewById(R.id.detailStock);
+        detailTotal = (TextView) view.findViewById(R.id.detailTotal);
         detailBroken = (EditText) view.findViewById(R.id.inputAmount);
         detailCategory = (TextView) view.findViewById(R.id.detailCategory);
         inputAmount = (EditText) view.findViewById(R.id.inputAmount);
@@ -165,7 +167,7 @@ public class Product_Broken_Details extends Fragment {
                                 "Amount broken updated successfully",
                                 Toast.LENGTH_LONG).show();
                         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.fragment_container,brokenFragment.newInstance()).addToBackStack(null);
+                        transaction.replace(R.id.fragment_container,brokenFragment.newInstance());
                         transaction.commit();
                     }
 
@@ -186,7 +188,11 @@ public class Product_Broken_Details extends Fragment {
             {
                 Map<String, String>  params = new HashMap<String, String>();
                 params.put(TAG_PID, detailID.getText().toString());
+                if (Integer.parseInt(inputAmount.getText().toString()) > Integer.parseInt(detailTotal.getText().toString())) {
+                    inputAmount.setText(detailTotal.getText().toString());
+                }
                 params.put("ProductAmountBroken", inputAmount.getText().toString());
+
                 return params;
             }
         };
@@ -213,6 +219,7 @@ public class Product_Broken_Details extends Fragment {
                     detailName.setText(product.getString("ProductName"));
                     detailStock.setText(Integer.toString(product.getInt("ProductStock")
                             - (product.getInt("ProductAmountBroken") + product.getInt("ProductAmountInProgress"))));
+                    detailTotal.setText(product.getString("ProductStock"));
                     detailBroken.setText(product.getString("ProductAmountBroken"));
 
                 } catch (JSONException e) {
