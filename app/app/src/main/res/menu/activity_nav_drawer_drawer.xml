@@ -41,16 +41,7 @@
                 android:id="@+id/nav_broken"
                 android:icon="@drawable/ic_broken"
                 android:title="Beschadigingen" />
-
-            <item
-                android:id="@+id/nav_stock"
-                android:icon="@drawable/ic_inventaris"
-                android:title="Voorraden" />
-
-            <item
-                android:id="@+id/nav_stats"
-                android:icon="@drawable/ic_stats"
-                android:title="Statistieken" />
+            
         </group>
 
         <group

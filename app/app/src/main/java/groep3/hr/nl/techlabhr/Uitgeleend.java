@@ -76,7 +76,7 @@ public class Uitgeleend extends Fragment {
                 Order_Set_Ready fragment = Order_Set_Ready.newInstance();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.fragment_container, fragment).addToBackStack(null);
+                transaction.replace(R.id.framelayout, fragment).addToBackStack(null);
                 transaction.commit();
             }
         });
@@ -88,7 +88,7 @@ public class Uitgeleend extends Fragment {
                 Order_Set_Picked_Up fragment = Order_Set_Picked_Up.newInstance();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.fragment_container, fragment).addToBackStack(null);
+                transaction.replace(R.id.framelayout, fragment).addToBackStack(null);
                 transaction.commit();
             }
         });
@@ -100,7 +100,7 @@ public class Uitgeleend extends Fragment {
                 Order_Set_Handed_In fragment = Order_Set_Handed_In.newInstance();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.fragment_container, fragment).addToBackStack(null);
+                transaction.replace(R.id.framelayout, fragment).addToBackStack(null);
                 transaction.commit();
             }
         });

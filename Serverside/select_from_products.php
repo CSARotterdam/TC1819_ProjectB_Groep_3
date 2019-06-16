@@ -32,6 +32,7 @@ EOF;
 			$response["ProductStock"] = $row['ProductStock']; 
 			$response["ProductAmountBroken"] = $row['ProductAmountBroken'];
 			$response["ProductAmountInProgress"] = $row['ProductAmountInProgress'];
+			$response["ProductImage"] = $row['ProductImage'];
 	   }
 	   $response["Success"] = 1;
 	   

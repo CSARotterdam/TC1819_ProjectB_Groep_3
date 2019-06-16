@@ -34,12 +34,21 @@
         android:layout_height="300dp">
 
     </ListView>
-
-    <!-- Button set Ready -->
-    <Button
-        android:id="@+id/btnSetOrderHandedInSingle"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/markeer_order_als_ingeleverd" />
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        style="?android:attr/buttonBarStyle"
+        android:layout_weight="1"
+        android:gravity="bottom">
+        <!-- Button set Ready -->
+        <Button
+            android:id="@+id/btnSetOrderHandedInSingle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:backgroundTint="@color/colorAccent"
+            android:text="@string/markeer_order_als_ingeleverd" />
+    </LinearLayout>
 
 </LinearLayout>

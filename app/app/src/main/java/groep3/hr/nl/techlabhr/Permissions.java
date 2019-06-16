@@ -44,7 +44,7 @@ public class Permissions extends Fragment {
     private String mParam2;
 
     // json object response url
-    private String urlJsonObj = "https://eduardterlouw.com/techlab/get_all_email_and_perm.php";
+    private String urlJsonObj = "https://eduardterlouw.nl/techlab/get_all_email_and_perm.php";
 
     private static final String TAG_EMAIL = "Email";
     private static final String TAG_PERMISSION = "Permission";
@@ -112,7 +112,7 @@ public class Permissions extends Fragment {
                 fragment.setArguments(user);
                 Log.d(TAG,user.toString());
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container,fragment).addToBackStack(null);
+                transaction.replace(R.id.spinnerUsers,fragment).addToBackStack(null);
                 transaction.commit();
             }
         });

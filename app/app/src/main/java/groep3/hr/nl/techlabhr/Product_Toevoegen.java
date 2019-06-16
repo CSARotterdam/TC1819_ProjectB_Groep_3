@@ -2,13 +2,17 @@ package groep3.hr.nl.techlabhr;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -21,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -30,8 +35,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -50,8 +59,10 @@ public class Product_Toevoegen extends Fragment {
 
     // TODO: Rename and change types of parameters\
 
-    private String url = "https://eduardterlouw.com/techlab/create_new_product.php";
+    private String url = "https://eduardterlouw.nl/techlab/create_new_product.php";
     private String TAG = NavDrawer.class.getSimpleName();
+    private int PICK_IMAGE_REQUEST = 1;
+    private String Base64ImageString = "";
 
 
     private ProgressDialog pDialog;
@@ -61,6 +72,7 @@ public class Product_Toevoegen extends Fragment {
     private EditText inputName;
     private EditText inputStock;
 
+    private ImageButton pickImageBtn;
     private Button btnCreateProduct;
 
     private OnFragmentInteractionListener mListener;
@@ -105,6 +117,14 @@ public class Product_Toevoegen extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_product_toevoegen, container, false);
 
+        pickImageBtn = (ImageButton) view.findViewById(R.id.pickImageBtn);
+        pickImageBtn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                showFileChooser();
+            }
+        });
         inputID = (EditText) view.findViewById(R.id.inputID);
         inputManufacturer = (EditText) view.findViewById(R.id.inputManufacturer);
         inputName = (EditText) view.findViewById(R.id.inputName);
@@ -158,6 +178,44 @@ public class Product_Toevoegen extends Fragment {
             }
         }
     }
+    private void showFileChooser() {
+        Intent pickImageIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        pickImageIntent.setType("image/*");
+        pickImageIntent.putExtra("aspectX", 1);
+        pickImageIntent.putExtra("aspectY", 1);
+        pickImageIntent.putExtra("scale", true);
+        pickImageIntent.putExtra("outputFormat",
+                Bitmap.CompressFormat.JPEG.toString());
+        startActivityForResult(pickImageIntent, PICK_IMAGE_REQUEST);
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri filePath = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePath);
+                Bitmap lastBitmap = null;
+                lastBitmap = bitmap;
+                //encoding image to string
+                Base64ImageString = getStringImage(lastBitmap);
+                Log.d("image",Base64ImageString);
+                pickImageBtn.setImageBitmap(bitmap);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public String getStringImage(Bitmap bmp) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+        byte[] imageBytes = baos.toByteArray();
+        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        return encodedImage;
+
+    }
     private void createNewProduct() {
         showpDialog();
         StringRequest sr = new StringRequest(Request.Method.POST,
@@ -195,7 +253,9 @@ public class Product_Toevoegen extends Fragment {
                 params.put("ProductName", inputName.getText().toString());}
                 if (inputStock.getText().toString().length() > 0){
                 params.put("ProductStock", inputStock.getText().toString());}
-
+                if (Base64ImageString.length() > 0){
+                params.put("ProductImage", Base64ImageString);
+                }
                 return params;
             }
         };

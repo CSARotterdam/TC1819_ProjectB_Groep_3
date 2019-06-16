@@ -3,13 +3,19 @@ package groep3.hr.nl.techlabhr;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -19,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,8 +41,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import static android.app.Activity.RESULT_OK;
 
 public class Product_Wijzigen_Single extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -45,11 +56,12 @@ public class Product_Wijzigen_Single extends Fragment {
 
     // TODO: Rename and change types of parameters\
 
-    private String selectURL = "https://eduardterlouw.com/techlab/select_from_products.php";
-    private String updateURL = "https://eduardterlouw.com/techlab/update_product.php";
-    private String deleteURL = "https://eduardterlouw.com/techlab/delete_product.php";
+    private String selectURL = "https://eduardterlouw.nl/techlab/select_from_products.php";
+    private String updateURL = "https://eduardterlouw.nl/techlab/update_product.php";
+    private String deleteURL = "https://eduardterlouw.nl/techlab/delete_product.php";
     private String TAG = NavDrawer.class.getSimpleName();
     private String TAG_PID = "ProductID";
+    private int PICK_IMAGE_REQUEST = 1;
 
 
     private ProgressDialog pDialog;
@@ -61,6 +73,8 @@ public class Product_Wijzigen_Single extends Fragment {
     private EditText inputStock;
     private EditText inputBroken;
 
+    private String Base64ImageString;
+    private ImageButton btnImage;
     private Button btnSave;
     private Button btnDelete;
 
@@ -131,9 +145,18 @@ public class Product_Wijzigen_Single extends Fragment {
 
             }
         });
+        btnImage = (ImageButton) view.findViewById(R.id.pickImageBtn);
         btnSave = (Button) view.findViewById(R.id.btnSave);
         btnDelete = (Button) view.findViewById(R.id.btnDelete);
 
+        btnImage.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                // creating new product in background thread
+                showFileChooser();
+            }
+        });
         btnSave.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -182,6 +205,45 @@ public class Product_Wijzigen_Single extends Fragment {
         return view;
     }
 
+    private void showFileChooser() {
+        Intent pickImageIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        pickImageIntent.setType("image/*");
+        pickImageIntent.putExtra("aspectX", 1);
+        pickImageIntent.putExtra("aspectY", 1);
+        pickImageIntent.putExtra("scale", true);
+        pickImageIntent.putExtra("outputFormat",
+                Bitmap.CompressFormat.JPEG.toString());
+        startActivityForResult(pickImageIntent, PICK_IMAGE_REQUEST);
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri filePath = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePath);
+                Bitmap lastBitmap = null;
+                lastBitmap = bitmap;
+                //encoding image to string
+                Base64ImageString = getStringImage(lastBitmap);
+                Log.d("image",Base64ImageString);
+                btnImage.setImageBitmap(bitmap);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public String getStringImage(Bitmap bmp) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+        byte[] imageBytes = baos.toByteArray();
+        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        return encodedImage;
+
+    }
+
     /*
      * JsonObjectRequest takes in five paramaters
      * Request Type - This specifies the type of the request eg: GET,POST
@@ -214,6 +276,16 @@ public class Product_Wijzigen_Single extends Fragment {
                     inputStock.setText(Integer.toString(product.getInt("ProductStock")));
                     inputBroken.setText(product.getString("ProductAmountBroken"));
                     spinner_category.setSelection(adapter.getPosition(product.getString("ProductCategory")));
+
+                    String encodedImage = product.getString("ProductImage");
+
+                    //Default icon
+                    Bitmap icon = BitmapFactory.decodeResource(getResources(),R.drawable.item_icon);
+                    if (encodedImage.length() > 0){
+                        byte[]decodedString = Base64.decode(encodedImage,Base64.DEFAULT);
+                        icon = BitmapFactory.decodeByteArray(decodedString,0,decodedString.length);
+                    }
+                    btnImage.setImageBitmap(icon);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -281,6 +353,8 @@ public class Product_Wijzigen_Single extends Fragment {
                     params.put("ProductStock", inputStock.getText().toString());}
                 if (inputBroken.getText().toString().length() > 0){
                     params.put("ProductAmountBroken", inputBroken.getText().toString());}
+                if (Base64ImageString.length() > 0){
+                    params.put("ProductImage", Base64ImageString);}
 
                 return params;
             }

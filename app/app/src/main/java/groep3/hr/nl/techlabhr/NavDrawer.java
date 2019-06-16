@@ -196,7 +196,7 @@ public class NavDrawer extends AppCompatActivity {
                 fragmentClass = Mijn_leningen.class;
                 break;
             case R.id.nav_info:
-                fragmentClass = Informatie.class; 
+                fragmentClass = Informatie.class;
                 break;
             case R.id.nav_add_beheerder:
                 fragmentClass = Permissions.class;
@@ -206,6 +206,12 @@ public class NavDrawer extends AppCompatActivity {
                 break;
             case R.id.nav_uitgeleend:
                 fragmentClass = Uitgeleend.class;
+                break;
+            case R.id.nav_leerlingen:
+                fragmentClass = Leerlingen.class;
+                break;
+            case R.id.nav_broken:
+                fragmentClass = brokenFragment.class;
                 break;
             default:
                 fragmentClass = Placeholder.class;
@@ -253,8 +259,20 @@ public class NavDrawer extends AppCompatActivity {
         }
         switch (item.getItemId()) {
             //noinspection SimplifiableIfStatement
+            case R.id.action_profile:
+                FragmentManager fragmentManagerPro = getSupportFragmentManager();
+                FragmentTransaction transactionPro = fragmentManagerPro.beginTransaction();
+                transactionPro.replace(R.id.fragment_container, Profile.newInstance()).addToBackStack(null);
+                transactionPro.commit();
+
             case R.id.action_settings:
                 return true;
+
+            case R.id.action_log_out:
+                Intent intent = new Intent(NavDrawer.this,LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
 
             case R.id.action_winkelmandje:
                 Fragment fragment = null;

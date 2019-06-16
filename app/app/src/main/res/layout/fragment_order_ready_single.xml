@@ -31,21 +31,33 @@
     <ListView
         android:id="@+id/listResponse"
         android:layout_width="match_parent"
-        android:layout_height="300dp">
+        android:layout_height="400dp">
 
     </ListView>
 
-    <!-- Button set Ready -->
-    <Button
-        android:id="@+id/btnSetOrderReadySingle"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/MarkOrderReady" />
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        style="?android:attr/buttonBarStyle"
+        android:layout_weight="1"
+        android:gravity="bottom">
+        <!-- Button set Ready -->
+        <Button
+            android:id="@+id/btnSetOrderReadySingle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:backgroundTint="@color/colorAccent"
+            android:text="@string/MarkOrderReady" />
 
-    <Button
-        android:id="@+id/btnSetOrderDeniedSingle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/wijs_order_af" />
+        <Button
+            android:id="@+id/btnSetOrderDeniedSingle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:backgroundTint="@color/colorBlack"
+            android:text="@string/wijs_order_af" />
+    </LinearLayout>
 
 </LinearLayout>

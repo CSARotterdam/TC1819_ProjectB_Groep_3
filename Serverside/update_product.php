@@ -9,7 +9,11 @@ $response= null;
 //check for required fields
 if (isset($_POST["ProductID"]) && isset($_POST["ProductManufacturer"]) && isset($_POST["ProductCategory"]) &&
 isset($_POST["ProductName"])&& isset($_POST["ProductStock"]) && isset($_POST["ProductAmountBroken"])){
-	
+
+    $Image = "";
+    if (isset($_POST["ProductImage"])){
+        $Image = $_POST["ProductImage"];
+    }
 	$ID = $_POST["ProductID"];
 	$Manufacturer = $_POST["ProductManufacturer"];
 	$Category = $_POST["ProductCategory"];
@@ -27,7 +31,8 @@ isset($_POST["ProductName"])&& isset($_POST["ProductStock"]) && isset($_POST["Pr
 			ProductCategory = :Category,
 			ProductName = :Name,
 			ProductStock = :Stock,
-			ProductAmountBroken = :AmountBroken
+			ProductAmountBroken = :AmountBroken,
+			ProductImage = :ProductImage
 	  WHERE ProductID = :ID
 EOF;
 	$stmt = $db->prepare($sql);
@@ -37,6 +42,7 @@ EOF;
 	$stmt->bindParam(':Stock',$Stock);
 	$stmt->bindParam(':AmountBroken',$AmountBroken);
 	$stmt->bindParam(':ID',$ID);
+	$stmt->bindParam(':ProductImage',$Image);
 	
 	 $ret = $stmt->execute();
 	 if (!$ret){

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical">
@@ -9,14 +10,24 @@
         android:id="@+id/btnAddProduct"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/design_default_color_primary_dark"
+        android:textColor="@color/colorWhite"
         android:text="@string/product_toevoegen" />
 
     <Button
         android:id="@+id/btnChangeProduct"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/product_wijzigen"
-        />
+        android:background="@color/colorAccent"
+        android:textColor="@color/colorWhite"
+        android:text="@string/product_wijzigen" />
+
+    <FrameLayout
+        android:id="@+id/productToevoegen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
 
 
 

@@ -1,75 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Mijn_leningen"
     android:background="@color/colorWhite"
     android:orientation="vertical">
-    <LinearLayout
+
+    <TextView
+        android:id="@+id/textPending"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorWhite"
+        android:background="@color/colorPrimaryDark"
+        android:text="Pending"
+        android:textStyle="bold"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Pending"
-            android:textStyle="bold"/>
+    <ListView
+        android:id="@+id/listPending"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp">">
+    </ListView>
 
-        <ListView
-            android:id="@+id/listPending"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </ListView>
+    <TextView
+        android:id="@+id/textReady"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorWhite"
+        android:background="@color/colorPrimaryDark"
+        android:text="Ready for pickup"
+        android:textStyle="bold"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Ready for pickup"
-            android:textStyle="bold"/>
+    <ListView
+        android:id="@+id/listReady"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp">>
+    </ListView>
 
-        <ListView
-            android:id="@+id/listReady"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </ListView>
+    <TextView
+        android:id="@+id/textInProgress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorWhite"
+        android:background="@color/colorPrimaryDark"
+        android:text="In Progress"
+        android:textStyle="bold"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="In Progress"
-            android:textStyle="bold"/>
+    <ListView
+        android:id="@+id/listInProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp">>
+    </ListView>
 
-        <ListView
-            android:id="@+id/listInProgress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </ListView>
+    <TextView
+        android:id="@+id/textDenied"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorWhite"
+        android:background="@color/colorPrimaryDark"
+        android:text="Denied"
+        android:textStyle="bold"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Denied"
-            android:textStyle="bold"/>
+    <ListView
+        android:id="@+id/listDenied"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp">>
 
-        <ListView
-            android:id="@+id/listDenied"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </ListView>
+    </ListView>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Completed"
-            android:textStyle="bold"/>
+    <TextView
+        android:id="@+id/textCompleted"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorWhite"
+        android:background="@color/colorPrimaryDark"
+        android:text="Completed"
+        android:textStyle="bold"/>
 
-        <ListView
-            android:id="@+id/listCompleted"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </ListView>
-    </LinearLayout>
+    <ListView
+        android:id="@+id/listCompleted"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp">
+    </ListView>
+    <FrameLayout
+        android:id="@+id/extraDetails"
+        android:background="@color/cardview_shadow_start_color"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
 
-</ScrollView>
+</LinearLayout>
