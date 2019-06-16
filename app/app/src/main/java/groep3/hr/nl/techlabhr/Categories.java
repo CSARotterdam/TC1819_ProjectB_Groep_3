@@ -156,7 +156,39 @@ public class Categories extends Fragment {
 
                             HashMap<String,String> map = new HashMap<String,String>();
                             map.put(TAG_CATEGORY,(String) Categories.get(i));
-                            map.put(TAG_ICON,Integer.toString(R.drawable.cat_icon));
+                            String icon = Integer.toString(R.drawable.cat_icon);
+                            switch ((String) Categories.get(i)){
+                                case "Drone":
+                                    icon = Integer.toString(R.drawable.ic_drone);
+                                    break;
+                                case "Virtual Reality":
+                                    icon = Integer.toString(R.drawable.ic_vr);
+                                    break;
+                                case "Gameconsole":
+                                    icon = Integer.toString(R.drawable.ic_console);
+                                    break;
+                                case "MicroComputer":
+                                    icon = Integer.toString(R.drawable.ic_microcontroller);
+                                    break;
+                                case "Radio Controlled":
+                                    icon = Integer.toString(R.drawable.ic_rc);
+                                    break;
+                                case "Game":
+                                    icon = Integer.toString(R.drawable.ic_game);
+                                    break;
+                                case "Smart Technology":
+                                    icon = Integer.toString(R.drawable.ic_smart_tech);
+                                    break;
+                                case "Kabels":
+                                    icon = Integer.toString(R.drawable.ic_cable);
+                                    break;
+                                case "Internet":
+                                    icon = Integer.toString(R.drawable.ic_internet);
+                                    break;
+                                case "Computer":
+                                    icon = Integer.toString(R.drawable.ic_computer);
+                            }
+                            map.put(TAG_ICON,icon);
                             catList.add(map);
                             Log.d(TAG,catList.toString());
 
