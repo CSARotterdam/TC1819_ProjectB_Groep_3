@@ -194,7 +194,7 @@ public class Product_Wijzigen extends Fragment {
                                  * */
                                 ListAdapter adapter = new SimpleAdapter(
                                         getActivity(), productsList,
-                                        R.layout.product_list_item, new String[] { TAG_PID,
+                                        R.layout.edit_product_list_item, new String[] { TAG_PID,
                                         TAG_NAME,TAG_STOCK},
                                         new int[] { R.id.pid, R.id.product_name,R.id.product_stock });
 
