@@ -169,6 +169,7 @@ public class Inventaris extends Fragment {
 
             @Override
             public void onResponse(String response) {
+                final ArrayList<HashMap<String,String>> textList = new ArrayList<HashMap<String, String>>();
                 Log.d(TAG, response.toString());
                 productsList = new ArrayList<Product>();
                 try {
@@ -178,32 +179,39 @@ public class Inventaris extends Fragment {
                         for (int i = 0; i < Products.length(); i++) {
 
                             JSONObject product = (JSONObject) Products.get(i);
+                            HashMap<String,String> map = new HashMap<String,String>();
                             // Parsing json object response
                             // response will be a json object
                             String productID = product.getString("ProductID");
-                            String productManufacturer = product.getString("ProductManufacturer");
-                            String productCategory = product.getString("ProductCategory");
+                            map.put(TAG_PID,productID);
                             String productName = product.getString("ProductName");
+                            map.put(TAG_NAME,productName);
                             String productStock = Integer.toString(product.getInt("ProductStock")
                                     - (product.getInt("ProductAmountBroken") + product.getInt("ProductAmountInProgress")));
-                            int productAmountBroken = product.getInt("ProductAmountBroken");
+                            map.put(TAG_STOCK,productStock);
                             String encodedImage = product.getString("ProductImage");
+                            map.put(TAG_ICON, encodedImage);
+                            textList.add(map);
                             Log.d(TAG, Integer.toString(encodedImage.length()));
-                            //Default icon
-                            Bitmap icon = BitmapFactory.decodeResource(getResources(),R.drawable.item_icon);
-                            if (encodedImage.length() > 0){
-                                byte[]decodedString = Base64.decode(encodedImage,Base64.DEFAULT);
-                                icon = BitmapFactory.decodeByteArray(decodedString,0,decodedString.length);
-                            }
-                            Product productItem = new Product(productID,productName,productStock,icon);
-                            productsList.add(productItem);
-                            Log.d(TAG,productsList.toString());
-
-
                         }
                         hidepDialog();
                         getActivity().runOnUiThread(new Runnable() {
                             public void run() {
+                                //Decode Images
+                                for(int i=0;i<textList.size();i++){
+                                    String imageText = textList.get(i).get(TAG_ICON);
+                                    Bitmap icon = BitmapFactory.decodeResource(getResources(),R.drawable.item_icon);
+                                    if (imageText.length() > 0){
+                                        byte[]decodedString = Base64.decode(imageText,Base64.DEFAULT);
+                                        icon = BitmapFactory.decodeByteArray(decodedString,0,decodedString.length);
+                                    }
+                                    Product productItem = new Product(
+                                            textList.get(i).get(TAG_PID),
+                                            textList.get(i).get(TAG_NAME),
+                                            textList.get(i).get(TAG_STOCK),
+                                            icon);
+                                    productsList.add(productItem);
+                                }
                                 /**
                                  * Updating parsed JSON data into ListView
                                  * */
