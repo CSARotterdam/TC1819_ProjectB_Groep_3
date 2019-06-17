@@ -278,7 +278,7 @@ public class Product_Wijzigen_Single extends Fragment {
                     spinner_category.setSelection(adapter.getPosition(product.getString("ProductCategory")));
 
                     String encodedImage = product.getString("ProductImage");
-
+                    Base64ImageString = product.getString("ProductImage");
                     //Default icon
                     Bitmap icon = BitmapFactory.decodeResource(getResources(),R.drawable.item_icon);
                     if (encodedImage.length() > 0){

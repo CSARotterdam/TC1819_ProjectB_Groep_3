@@ -18,8 +18,8 @@
 
     <ListView
         android:id="@+id/listPending"
-        android:layout_width="wrap_content"
-        android:layout_height="80dp">">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     </ListView>
 
     <TextView
@@ -33,8 +33,8 @@
 
     <ListView
         android:id="@+id/listReady"
-        android:layout_width="wrap_content"
-        android:layout_height="80dp">>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">>
     </ListView>
 
     <TextView
@@ -48,8 +48,8 @@
 
     <ListView
         android:id="@+id/listInProgress"
-        android:layout_width="wrap_content"
-        android:layout_height="80dp">>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">>
     </ListView>
 
     <TextView
@@ -63,8 +63,8 @@
 
     <ListView
         android:id="@+id/listDenied"
-        android:layout_width="wrap_content"
-        android:layout_height="80dp">>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     </ListView>
 
@@ -79,8 +79,8 @@
 
     <ListView
         android:id="@+id/listCompleted"
-        android:layout_width="wrap_content"
-        android:layout_height="80dp">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     </ListView>
     <FrameLayout
         android:id="@+id/extraDetails"
