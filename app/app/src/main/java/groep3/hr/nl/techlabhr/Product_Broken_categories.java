@@ -52,6 +52,7 @@ public class Product_Broken_categories extends Fragment {
     private static final String TAG_PID = "ProductID";
     private static final String TAG_MANUFACTURER = "ProductManufacturer";
     private static final String TAG_CATEGORY = "ProductCategory";
+    private static final String TAG_ICON = "";
     private static final String TAG_NAME = "ProductName";
     private static final String TAG_STOCK = "ProductStock";
     private static final String TAG_BROKEN = "ProductAmountBroken";
@@ -107,7 +108,7 @@ public class Product_Broken_categories extends Fragment {
         toolbar.setTitle("Beschadigingen");
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_product_broken_categories, container, false);
+        View view = inflater.inflate(R.layout.fragment_product_wijzigen_categories, container, false);
 
         lv = (GridView) view.findViewById(R.id.listResponse);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -152,8 +153,42 @@ public class Product_Broken_categories extends Fragment {
 
                             HashMap<String,String> map = new HashMap<String,String>();
                             map.put(TAG_CATEGORY,(String) Categories.get(i));
+                                map.put(TAG_CATEGORY,(String) Categories.get(i));
+                                String icon = Integer.toString(R.drawable.cat_icon);
+                                switch ((String) Categories.get(i)){
+                                    case "Drone":
+                                        icon = Integer.toString(R.drawable.ic_drone);
+                                        break;
+                                    case "Virtual Reality":
+                                        icon = Integer.toString(R.drawable.ic_vr);
+                                        break;
+                                    case "Gameconsole":
+                                        icon = Integer.toString(R.drawable.ic_console);
+                                        break;
+                                    case "MicroComputer":
+                                        icon = Integer.toString(R.drawable.ic_microcontroller);
+                                        break;
+                                    case "Radio Controlled":
+                                        icon = Integer.toString(R.drawable.ic_rc);
+                                        break;
+                                    case "Game":
+                                        icon = Integer.toString(R.drawable.ic_game);
+                                        break;
+                                    case "Smart Technology":
+                                        icon = Integer.toString(R.drawable.ic_smart_tech);
+                                        break;
+                                    case "Kabels":
+                                        icon = Integer.toString(R.drawable.ic_cable);
+                                        break;
+                                    case "Internet":
+                                        icon = Integer.toString(R.drawable.ic_internet);
+                                        break;
+                                    case "Computer":
+                                        icon = Integer.toString(R.drawable.ic_computer);
+                                }
+                                map.put(TAG_ICON, icon);
+                                catList.add(map);
 
-                            catList.add(map);
                             Log.d(TAG,catList.toString());
 
 
@@ -166,9 +201,8 @@ public class Product_Broken_categories extends Fragment {
                                  * */
                                 ListAdapter adapter = new SimpleAdapter(
                                         getActivity(), catList,
-                                        R.layout.category_list_item, new String[] { TAG_CATEGORY},
-                                        new int[] { R.id.category_name });
-
+                                        R.layout.category_list_item, new String[] {TAG_ICON, TAG_CATEGORY},
+                                        new int[] {R.id.cat_icon, R.id.category_name });
                                 lv.setAdapter(adapter);
                             }
                         });
