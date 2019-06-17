@@ -176,6 +176,7 @@ public class Product_Broken extends Fragment {
                             map.put(TAG_STOCK,"In stock: " + Integer.toString(productStock));
                             productsList.add(map);
                             Log.d(TAG,productsList.toString());
+                            
 
 
                         }
